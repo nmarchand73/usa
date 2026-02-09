@@ -33,7 +33,9 @@ Carte interactive des **50 États US + Washington DC** avec données socio-écon
 │   └── criteria-data.js
 │
 ├── scripts/
-│   ├── merge-json.js       # Fusionne map-data/*.json → public/app-data.json
+│   ├── merge-json.js             # Fusionne map-data/*.json → public/app-data.json
+│   ├── generate-travel-hero-usa.js  # Génère le livre DOCX (app-data + paragraphs-usa)
+│   ├── docx-to-pdf.py            # Convertit le DOCX en PDF (docx2pdf + Word)
 │   ├── scrape-livability-cities.js
 │   ├── compute-airport-distances.js
 │   └── extract-livability-details.js
@@ -83,12 +85,21 @@ npm run build
 
 - **Prologue** : vous êtes à Bordeaux, vous envisagez les USA
 - **5 régions** : Nord-Est, Sud, Midwest, Rocheuses & Sud-Ouest, Côte Pacifique
-- **Chaque État** : meilleures villes, coût, climat, atouts pour un Français
+- **Chaque État** : contenu injecté depuis `app-data.json` (contraste, chiffres, conseil, lieux remarquables)
 - **3 fins** : Explorateur (short-list), Spécialiste (une région), Aventurier (esprit ouvert)
 
 Fichiers dans `book/` :
 - `Livre_Heros_USA_50_Etats.docx` — Word (éditable, liens cliquables)
 - `Livre_Heros_USA_50_Etats.pdf` — PDF pour lecture / impression
+
+### Générer le livre
+
+```powershell
+npm run book        # Génère book/Livre_Heros_USA_50_Etats.docx (données app-data + data/paragraphs-usa.js)
+npm run book:pdf    # Convertit le DOCX en PDF (nécessite : pip install docx2pdf + Microsoft Word sur Windows)
+```
+
+Pour tout régénérer : `npm run book ; npm run book:pdf`
 
 ## Sources de données
 

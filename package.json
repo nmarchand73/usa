@@ -5,7 +5,9 @@
   "scripts": {
     "start": "npx serve public",
     "scrape": "node scripts/scrape-livability-cities.js",
-    "build": "node scripts/merge-json.js"
+    "build": "node scripts/merge-json.js",
+    "book": "node scripts/generate-travel-hero-usa.js",
+    "book:pdf": "python scripts/docx-to-pdf.py"
   },
   "keywords": ["usa", "map", "leaflet", "livability"],
   "author": "Nicolas Marchand",
