@@ -1,6 +1,6 @@
 /**
- * Scrape Livability.com Quick Facts + Weather for all cities in city-coordinates.json
- * and _bestCities in state-map.json.
+ * Scrape Livability.com Quick Facts + Weather for all cities in city-coordinates.json,
+ * _bestCities, and _livabilityCities in state-map.json.
  * 
  * For each city, fetches https://livability.com/{state}/{city-slug}/
  * and extracts:
@@ -8,11 +8,17 @@
  *                Total Population, Average Commute, Median Property Tax
  *   Weather:     Average Temperatures (high/low), Annual Rainfall, Annual Snowfall
  * 
+ * Each HTML page is saved to html-pages/{STATE}-{slug}.html for later use.
+ *
  * Results are stored in state-map.json:
  *   - Each topCities entry gets a "livability" object
  *   - Each _bestCities entry gets a "livability" object
+ *   - Each _livabilityCities entry gets a "livability" object + population
  *
- * Usage: node scripts/scrape-livability-cities.js
+ * Usage:
+ *   node scripts/scrape-livability-cities.js              # scrape all (skip existing HTML)
+ *   node scripts/scrape-livability-cities.js --force       # re-scrape even if HTML exists
+ *   node scripts/scrape-livability-cities.js --test "TX|Flower Mound"  # test single city
  */
 
 const fs = require('fs');
@@ -22,14 +28,29 @@ const http = require('http');
 
 const cityCoordsPath = path.join(__dirname, '..', 'city-coordinates.json');
 const stateMapPath = path.join(__dirname, '..', 'state-map.json');
+const htmlPagesDir = path.join(__dirname, '..', 'html-pages');
 
 const cityCoords = JSON.parse(fs.readFileSync(cityCoordsPath, 'utf8'));
 const stateMap = JSON.parse(fs.readFileSync(stateMapPath, 'utf8'));
+
+// Ensure html-pages directory exists
+if (!fs.existsSync(htmlPagesDir)) {
+  fs.mkdirSync(htmlPagesDir, { recursive: true });
+}
+
+// Parse CLI args
+var FORCE = process.argv.includes('--force');
+var TEST_KEY = null;
+var testIdx = process.argv.indexOf('--test');
+if (testIdx >= 0 && process.argv[testIdx + 1]) {
+  TEST_KEY = process.argv[testIdx + 1]; // e.g. "TX|Flower Mound"
+}
 
 // Special slug overrides for cities whose URL differs from simple slugification
 const SLUG_OVERRIDES = {
   'NY|New York City': 'new-york-city',
   'MO|Saint Louis': 'st-louis',
+  'MO|St. Louis': 'st-louis',
   'MN|Saint Paul': 'st-paul',
   'DC|Washington': 'washington-dc'
 };
@@ -43,6 +64,11 @@ function buildUrl(stateCode, cityName, key) {
   var st = stateCode.toLowerCase();
   if (stateCode === 'DC') return 'https://livability.com/dc/' + slug + '/';
   return 'https://livability.com/' + st + '/' + slug + '/';
+}
+
+function htmlFilename(stateCode, cityName, key) {
+  var slug = SLUG_OVERRIDES[key] || slugify(cityName);
+  return stateCode.toUpperCase() + '-' + slug + '.html';
 }
 
 function fetchPage(url, maxRedirects) {
@@ -141,35 +167,77 @@ async function scrapeList(cities, label) {
   var results = {};
   var success = 0;
   var failed = 0;
+  var skipped = 0;
 
   for (var i = 0; i < cities.length; i++) {
     var c = cities[i];
     var key = c.stateCode + '|' + c.name;
     if (results[key]) { console.log('[' + (i+1) + '/' + cities.length + '] ' + c.name + ', ' + c.stateCode + ' ... CACHED'); continue; }
+
+    var fname = htmlFilename(c.stateCode, c.name, key);
+    var fpath = path.join(htmlPagesDir, fname);
     var url = buildUrl(c.stateCode, c.name, key);
 
     process.stdout.write('[' + (i + 1) + '/' + cities.length + '] ' + c.name + ', ' + c.stateCode + ' ... ');
 
     try {
-      var html = await fetchPage(url);
-      var facts = extractQuickFacts(html);
-      if (facts) {
-        results[key] = facts;
-        success++;
-        console.log('OK (' + Object.keys(facts).length + ' facts)');
+      var html = null;
+
+      // If HTML file already exists, read from disk (skip network) unless --force
+      if (!FORCE && fs.existsSync(fpath)) {
+        html = fs.readFileSync(fpath, 'utf8');
+        var facts = extractQuickFacts(html);
+        if (facts) {
+          results[key] = facts;
+          success++;
+          skipped++;
+          console.log('FROM DISK (' + Object.keys(facts).length + ' facts)');
+        } else {
+          // HTML exists but no data? re-fetch
+          html = await fetchPage(url);
+          if (html) {
+            fs.writeFileSync(fpath, html, 'utf8');
+          }
+          facts = extractQuickFacts(html);
+          if (facts) {
+            results[key] = facts;
+            success++;
+            console.log('RE-FETCHED OK (' + Object.keys(facts).length + ' facts)');
+          } else {
+            failed++;
+            console.log('NO DATA');
+          }
+        }
       } else {
-        failed++;
-        console.log('NO DATA');
+        // Fetch from network
+        html = await fetchPage(url);
+        if (html) {
+          // Save HTML page
+          fs.writeFileSync(fpath, html, 'utf8');
+          var facts = extractQuickFacts(html);
+          if (facts) {
+            results[key] = facts;
+            success++;
+            console.log('OK (' + Object.keys(facts).length + ' facts) → ' + fname);
+          } else {
+            failed++;
+            console.log('NO DATA (HTML saved: ' + fname + ')');
+          }
+        } else {
+          failed++;
+          console.log('NO PAGE (404 or error)');
+        }
       }
     } catch (err) {
       failed++;
       console.log('ERROR: ' + err.message);
     }
 
-    if (i < cities.length - 1) await sleep(400);
+    // Rate limit only for network requests (not disk reads)
+    if (!(!FORCE && fs.existsSync(fpath)) && i < cities.length - 1) await sleep(400);
   }
 
-  console.log('\n=== ' + label + ': ' + success + ' OK, ' + failed + ' failed ===\n');
+  console.log('\n=== ' + label + ': ' + success + ' OK (' + skipped + ' from disk), ' + failed + ' failed ===\n');
   return results;
 }
 
@@ -185,15 +253,36 @@ async function main() {
     return { stateCode: c.stateCode, name: c.name };
   });
 
+  // Build list from _livabilityCities in state-map.json
+  var livCities = (stateMap._livabilityCities || []).map(function (c) {
+    return { stateCode: c.state, name: c.name };
+  });
+
   // Merge and deduplicate
   var seen = {};
   var allCities = [];
-  coordCities.concat(bestCities).forEach(function (c) {
+  coordCities.concat(bestCities).concat(livCities).forEach(function (c) {
     var key = c.stateCode + '|' + c.name;
     if (!seen[key]) { seen[key] = true; allCities.push(c); }
   });
 
-  var results = await scrapeList(allCities, 'All cities (coords + best)');
+  // If --test mode, filter to just that city
+  if (TEST_KEY) {
+    allCities = allCities.filter(function (c) {
+      return (c.stateCode + '|' + c.name) === TEST_KEY;
+    });
+    if (allCities.length === 0) {
+      // Try to build test city from the key even if not in any list
+      var parts = TEST_KEY.split('|');
+      if (parts.length === 2) {
+        allCities = [{ stateCode: parts[0], name: parts[1] }];
+      }
+    }
+    console.log('TEST MODE: scraping only ' + TEST_KEY + '\n');
+    FORCE = true; // always re-fetch in test mode
+  }
+
+  var results = await scrapeList(allCities, 'All cities (coords + best + livability)');
 
   // Inject into topCities
   var enriched = 0;
@@ -226,8 +315,23 @@ async function main() {
     });
   }
 
+  // Inject into _livabilityCities
+  var livEnriched = 0;
+  if (stateMap._livabilityCities && Array.isArray(stateMap._livabilityCities)) {
+    stateMap._livabilityCities.forEach(function (city) {
+      var key = city.state + '|' + city.name;
+      var facts = results[key];
+      if (facts) {
+        city.livability = buildLivabilityObj(facts);
+        if (facts.population) city.population = facts.population;
+        livEnriched++;
+      }
+    });
+  }
+
   fs.writeFileSync(stateMapPath, JSON.stringify(stateMap, null, 2), 'utf8');
-  console.log('Enriched ' + enriched + ' topCities + ' + bestEnriched + ' bestCities in state-map.json');
+  console.log('Enriched ' + enriched + ' topCities + ' + bestEnriched + ' bestCities + ' + livEnriched + ' livabilityCities in state-map.json');
+  console.log('HTML pages saved in: ' + htmlPagesDir);
   console.log('Done!');
 }
 

@@ -643,9 +643,20 @@
       },
       {
         "name": "Lynn",
-        "population": 101253,
+        "population": 102088,
         "frenchEstimate": 4820,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 473051,
+          "medianIncome": 79690,
+          "medianRent": 1498,
+          "medianPropertyTax": 2104,
+          "avgCommute": 29,
+          "avgTempHighF": 58,
+          "avgTempLowF": 41,
+          "annualRainfallIn": 49,
+          "annualSnowfallIn": 43
+        }
       },
       {
         "name": "New Bedford",
@@ -999,9 +1010,20 @@
       },
       {
         "name": "Danbury",
-        "population": 86518,
+        "population": 87191,
         "frenchEstimate": 3383,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 392848,
+          "medianIncome": 91100,
+          "medianRent": 1679,
+          "medianPropertyTax": 2492,
+          "avgCommute": 24,
+          "avgTempHighF": 60,
+          "avgTempLowF": 40,
+          "annualRainfallIn": 51,
+          "annualSnowfallIn": 50
+        }
       },
       {
         "name": "New Britain",
@@ -1355,9 +1377,20 @@
       },
       {
         "name": "Clifton",
-        "population": 90296,
+        "population": 89920,
         "frenchEstimate": 804,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 438054,
+          "medianIncome": 105422,
+          "medianRent": 1460,
+          "medianPropertyTax": 2766,
+          "avgCommute": 23,
+          "avgTempHighF": 63,
+          "avgTempLowF": 43,
+          "annualRainfallIn": 49,
+          "annualSnowfallIn": 31
+        }
       },
       {
         "name": "Camden",
@@ -1546,9 +1579,20 @@
       },
       {
         "name": "Bethlehem",
-        "population": 75524,
+        "population": 80677,
         "frenchEstimate": 989,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 249745,
+          "medianIncome": 69628,
+          "medianRent": 1143,
+          "medianPropertyTax": 1959,
+          "avgCommute": 18,
+          "avgTempHighF": 62,
+          "avgTempLowF": 41,
+          "annualRainfallIn": 47,
+          "annualSnowfallIn": 33
+        }
       },
       {
         "name": "Lancaster",
@@ -2167,9 +2211,20 @@
       },
       {
         "name": "Richmond",
-        "population": 226610,
+        "population": 234941,
         "frenchEstimate": 3241,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 354664,
+          "medianIncome": 69015,
+          "medianRent": 1284,
+          "medianPropertyTax": 1633,
+          "avgCommute": 20,
+          "avgTempHighF": 69,
+          "avgTempLowF": 47,
+          "annualRainfallIn": 44,
+          "annualSnowfallIn": 10
+        }
       },
       {
         "name": "Newport News",
@@ -2191,9 +2246,20 @@
       },
       {
         "name": "Roanoke",
-        "population": 100011,
+        "population": 98468,
         "frenchEstimate": 1430,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 197134,
+          "medianIncome": 54267,
+          "medianRent": 882,
+          "medianPropertyTax": 1785,
+          "avgCommute": 17,
+          "avgTempHighF": 68,
+          "avgTempLowF": 46,
+          "annualRainfallIn": 42,
+          "annualSnowfallIn": 15
+        }
       },
       {
         "name": "Portsmouth",
@@ -2526,21 +2592,54 @@
       },
       {
         "name": "Greensboro",
-        "population": 302296,
+        "population": 310878,
         "frenchEstimate": 3960,
-        "description": "Greensboro : centre, textile."
+        "description": "Greensboro : centre, textile.",
+        "livability": {
+          "medianHomeValue": 236451,
+          "medianIncome": 62864,
+          "medianRent": 1033,
+          "medianPropertyTax": 1979,
+          "avgCommute": 18,
+          "avgTempHighF": 70,
+          "avgTempLowF": 49,
+          "annualRainfallIn": 44,
+          "annualSnowfallIn": 6
+        }
       },
       {
         "name": "Durham",
-        "population": 296186,
+        "population": 304063,
         "frenchEstimate": 3880,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 377377,
+          "medianIncome": 84645,
+          "medianRent": 1433,
+          "medianPropertyTax": 2205,
+          "avgCommute": 19,
+          "avgTempHighF": 70,
+          "avgTempLowF": 48,
+          "annualRainfallIn": 46,
+          "annualSnowfallIn": 3
+        }
       },
       {
         "name": "Winston-Salem",
-        "population": 252975,
+        "population": 259598,
         "frenchEstimate": 3314,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 244376,
+          "medianIncome": 62029,
+          "medianRent": 930,
+          "medianPropertyTax": 2140,
+          "avgCommute": 18,
+          "avgTempHighF": 70,
+          "avgTempLowF": 49,
+          "annualRainfallIn": 45,
+          "annualSnowfallIn": 3
+        }
       },
       {
         "name": "Fayetteville",
@@ -2567,9 +2666,20 @@
       },
       {
         "name": "Wilmington",
-        "population": 123744,
+        "population": 122944,
         "frenchEstimate": 1621,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 365418,
+          "medianIncome": 67477,
+          "medianRent": 1322,
+          "medianPropertyTax": 1933,
+          "avgCommute": 16,
+          "avgTempHighF": 74,
+          "avgTempLowF": 53,
+          "annualRainfallIn": 58,
+          "annualSnowfallIn": 2
+        }
       },
       {
         "name": "High Point",
@@ -2738,9 +2848,20 @@
       },
       {
         "name": "Greenville",
-        "population": 72866,
+        "population": 82477,
         "frenchEstimate": 1027,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 420025,
+          "medianIncome": 76686,
+          "medianRent": 1234,
+          "medianPropertyTax": 1810,
+          "avgCommute": 17,
+          "avgTempHighF": 71,
+          "avgTempLowF": 51,
+          "annualRainfallIn": 51,
+          "annualSnowfallIn": 3
+        }
       },
       {
         "name": "Summerville",
@@ -2903,9 +3024,20 @@
       },
       {
         "name": "Augusta",
-        "population": 200884,
+        "population": 203005,
         "frenchEstimate": 2149,
-        "description": "Columbus : militaire, Chattahoochee."
+        "description": "Columbus : militaire, Chattahoochee.",
+        "livability": {
+          "medianHomeValue": 163376,
+          "medianIncome": 55897,
+          "medianRent": 933,
+          "medianPropertyTax": 1870,
+          "avgCommute": 18,
+          "avgTempHighF": 76,
+          "avgTempLowF": 54,
+          "annualRainfallIn": 46,
+          "annualSnowfallIn": 0
+        }
       },
       {
         "name": "Macon",
@@ -2921,9 +3053,20 @@
       },
       {
         "name": "Athens",
-        "population": 127315,
+        "population": 129466,
         "frenchEstimate": 1362,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 258778,
+          "medianIncome": 54378,
+          "medianRent": 1003,
+          "medianPropertyTax": 1593,
+          "avgCommute": 16,
+          "avgTempHighF": 73,
+          "avgTempLowF": 51,
+          "annualRainfallIn": 48,
+          "annualSnowfallIn": 2
+        }
       },
       {
         "name": "Sandy Springs",
@@ -2933,9 +3076,20 @@
       },
       {
         "name": "Roswell",
-        "population": 94785,
+        "population": 89140,
         "frenchEstimate": 1014,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 485018,
+          "medianIncome": 132260,
+          "medianRent": 1667,
+          "medianPropertyTax": 3541,
+          "avgCommute": 25,
+          "avgTempHighF": 70,
+          "avgTempLowF": 49,
+          "annualRainfallIn": 53,
+          "annualSnowfallIn": 1
+        }
       },
       {
         "name": "Johns Creek",
@@ -3111,15 +3265,37 @@
       },
       {
         "name": "Tampa",
-        "population": 403364,
+        "population": 422810,
         "frenchEstimate": 6454,
-        "description": "Côte ouest ; plus abordable que Miami, sport, croisières, ambiance décontractée."
+        "description": "Côte ouest ; plus abordable que Miami, sport, croisières, ambiance décontractée.",
+        "livability": {
+          "medianHomeValue": 414677,
+          "medianIncome": 79670,
+          "medianRent": 1626,
+          "medianPropertyTax": 2103,
+          "avgCommute": 22,
+          "avgTempHighF": 82,
+          "avgTempLowF": 65,
+          "annualRainfallIn": 48,
+          "annualSnowfallIn": 0
+        }
       },
       {
         "name": "Orlando",
-        "population": 320742,
+        "population": 346520,
         "frenchEstimate": 5132,
-        "description": "Parks (Disney, Universal), tourisme ; chaleur, emplois services et tech."
+        "description": "Parks (Disney, Universal), tourisme ; chaleur, emplois services et tech.",
+        "livability": {
+          "medianHomeValue": 388075,
+          "medianIncome": 74826,
+          "medianRent": 1652,
+          "medianPropertyTax": 1654,
+          "avgCommute": 24,
+          "avgTempHighF": 83,
+          "avgTempLowF": 64,
+          "annualRainfallIn": 52,
+          "annualSnowfallIn": 0
+        }
       },
       {
         "name": "St. Petersburg",
@@ -3464,15 +3640,37 @@
       },
       {
         "name": "Knoxville",
-        "population": 190740,
+        "population": 206721,
         "frenchEstimate": 2480,
-        "description": "Knoxville : Smokies, Vols."
+        "description": "Knoxville : Smokies, Vols.",
+        "livability": {
+          "medianHomeValue": 276074,
+          "medianIncome": 56331,
+          "medianRent": 1086,
+          "medianPropertyTax": 1809,
+          "avgCommute": 20,
+          "avgTempHighF": 69,
+          "avgTempLowF": 46,
+          "annualRainfallIn": 51,
+          "annualSnowfallIn": 7
+        }
       },
       {
         "name": "Chattanooga",
-        "population": 181099,
+        "population": 195518,
         "frenchEstimate": 2354,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 298784,
+          "medianIncome": 68230,
+          "medianRent": 1135,
+          "medianPropertyTax": 2100,
+          "avgCommute": 17,
+          "avgTempHighF": 71,
+          "avgTempLowF": 51,
+          "annualRainfallIn": 54,
+          "annualSnowfallIn": 3
+        }
       },
       {
         "name": "Clarksville",
@@ -3482,9 +3680,20 @@
       },
       {
         "name": "Murfreesboro",
-        "population": 152769,
+        "population": 173651,
         "frenchEstimate": 1986,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 398921,
+          "medianIncome": 83708,
+          "medianRent": 1394,
+          "medianPropertyTax": 2395,
+          "avgCommute": 21,
+          "avgTempHighF": 70,
+          "avgTempLowF": 45,
+          "annualRainfallIn": 53,
+          "annualSnowfallIn": 3
+        }
       },
       {
         "name": "Jackson",
@@ -3666,9 +3875,20 @@
       },
       {
         "name": "Hoover",
-        "population": 92438,
+        "population": 91649,
         "frenchEstimate": 1109,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 368547,
+          "medianIncome": 104005,
+          "medianRent": 1145,
+          "medianPropertyTax": 3215,
+          "avgCommute": 23,
+          "avgTempHighF": 73,
+          "avgTempLowF": 51,
+          "annualRainfallIn": 57,
+          "annualSnowfallIn": 1
+        }
       },
       {
         "name": "Dothan",
@@ -3678,9 +3898,20 @@
       },
       {
         "name": "Auburn",
-        "population": 66210,
+        "population": 82239,
         "frenchEstimate": 795,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 318639,
+          "medianIncome": 54092,
+          "medianRent": 861,
+          "medianPropertyTax": 1950,
+          "avgCommute": 15,
+          "avgTempHighF": 75,
+          "avgTempLowF": 52,
+          "annualRainfallIn": 53,
+          "annualSnowfallIn": 1
+        }
       },
       {
         "name": "Decatur",
@@ -4366,9 +4597,20 @@
       },
       {
         "name": "Norman",
-        "population": 130046,
+        "population": 134536,
         "frenchEstimate": 1847,
-        "description": "Norman : université, proche OKC."
+        "description": "Norman : université, proche OKC.",
+        "livability": {
+          "medianHomeValue": 248548,
+          "medianIncome": 67195,
+          "medianRent": 928,
+          "medianPropertyTax": 2137,
+          "avgCommute": 19,
+          "avgTempHighF": 71,
+          "avgTempLowF": 49,
+          "annualRainfallIn": 39,
+          "annualSnowfallIn": 5
+        }
       },
       {
         "name": "Broken Arrow",
@@ -4378,9 +4620,20 @@
       },
       {
         "name": "Edmond",
-        "population": 98103,
+        "population": 97532,
         "frenchEstimate": 1393,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 317536,
+          "medianIncome": 103283,
+          "medianRent": 1032,
+          "medianPropertyTax": 3371,
+          "avgCommute": 22,
+          "avgTempHighF": 72,
+          "avgTempLowF": 49,
+          "annualRainfallIn": 37,
+          "annualSnowfallIn": 3
+        }
       },
       {
         "name": "Lawton",
@@ -4795,9 +5048,20 @@
       },
       {
         "name": "Troy",
-        "population": 87294,
+        "population": 90584,
         "frenchEstimate": 2697,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 385318,
+          "medianIncome": 120757,
+          "medianRent": 1287,
+          "medianPropertyTax": 3661,
+          "avgCommute": 22,
+          "avgTempHighF": 58,
+          "avgTempLowF": 39,
+          "annualRainfallIn": 32,
+          "annualSnowfallIn": 34
+        }
       }
     ],
     "frenchCount": 317216,
@@ -4935,9 +5199,20 @@
       },
       {
         "name": "Cincinnati",
-        "population": 311097,
+        "population": 326092,
         "frenchEstimate": 5226,
-        "description": "Cincinnati : sud, chili, collines."
+        "description": "Cincinnati : sud, chili, collines.",
+        "livability": {
+          "medianHomeValue": 235965,
+          "medianIncome": 55258,
+          "medianRent": 876,
+          "medianPropertyTax": 1473,
+          "avgCommute": 20,
+          "avgTempHighF": 64,
+          "avgTempLowF": 43,
+          "annualRainfallIn": 44,
+          "annualSnowfallIn": 14
+        }
       },
       {
         "name": "Toledo",
@@ -5163,9 +5438,20 @@
       },
       {
         "name": "Bloomington",
-        "population": 79168,
+        "population": 80814,
         "frenchEstimate": 1275,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 448943,
+          "medianIncome": 49926,
+          "medianRent": 972,
+          "medianPropertyTax": 1257,
+          "avgCommute": 14,
+          "avgTempHighF": 64,
+          "avgTempLowF": 43,
+          "annualRainfallIn": 47,
+          "annualSnowfallIn": 15
+        }
       },
       {
         "name": "Hammond",
@@ -5359,15 +5645,37 @@
       },
       {
         "name": "Peoria",
-        "population": 112644,
+        "population": 113758,
         "frenchEstimate": 1611,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 151100,
+          "medianIncome": 60353,
+          "medianRent": 725,
+          "medianPropertyTax": 2195,
+          "avgCommute": 14,
+          "avgTempHighF": 62,
+          "avgTempLowF": 42,
+          "annualRainfallIn": 38,
+          "annualSnowfallIn": 24
+        }
       },
       {
         "name": "Champaign",
-        "population": 88302,
+        "population": 92960,
         "frenchEstimate": 1263,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 199871,
+          "medianIncome": 53205,
+          "medianRent": 880,
+          "medianPropertyTax": 1649,
+          "avgCommute": 14,
+          "avgTempHighF": 62,
+          "avgTempLowF": 41,
+          "annualRainfallIn": 41,
+          "annualSnowfallIn": 23
+        }
       },
       {
         "name": "Waukegan",
@@ -5511,9 +5819,20 @@
       },
       {
         "name": "Green Bay",
-        "population": 107395,
+        "population": 106231,
         "frenchEstimate": 2674,
-        "description": "Green Bay : Packers, petite ville."
+        "description": "Green Bay : Packers, petite ville.",
+        "livability": {
+          "medianHomeValue": 206179,
+          "medianIncome": 64982,
+          "medianRent": 829,
+          "medianPropertyTax": 2161,
+          "avgCommute": 16,
+          "avgTempHighF": 54,
+          "avgTempLowF": 35,
+          "annualRainfallIn": 30,
+          "annualSnowfallIn": 51
+        }
       },
       {
         "name": "Kenosha",
@@ -5529,9 +5848,20 @@
       },
       {
         "name": "Appleton",
-        "population": 75444,
+        "population": 77146,
         "frenchEstimate": 1879,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 220113,
+          "medianIncome": 80704,
+          "medianRent": 878,
+          "medianPropertyTax": 2686,
+          "avgCommute": 17,
+          "avgTempHighF": 54,
+          "avgTempLowF": 37,
+          "annualRainfallIn": 31,
+          "annualSnowfallIn": 44
+        }
       },
       {
         "name": "Waukesha",
@@ -5694,21 +6024,54 @@
       },
       {
         "name": "Rochester",
-        "population": 122413,
+        "population": 125554,
         "frenchEstimate": 3232,
-        "description": "Rochester : Mayo Clinic, santé."
+        "description": "Rochester : Mayo Clinic, santé.",
+        "livability": {
+          "medianHomeValue": 291249,
+          "medianIncome": 92472,
+          "medianRent": 1271,
+          "medianPropertyTax": 2924,
+          "avgCommute": 15,
+          "avgTempHighF": 55,
+          "avgTempLowF": 34,
+          "annualRainfallIn": 34,
+          "annualSnowfallIn": 48
+        }
       },
       {
         "name": "Duluth",
-        "population": 87680,
+        "population": 82160,
         "frenchEstimate": 2315,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 234322,
+          "medianIncome": 65743,
+          "medianRent": 929,
+          "medianPropertyTax": 2190,
+          "avgCommute": 16,
+          "avgTempHighF": 48,
+          "avgTempLowF": 30,
+          "annualRainfallIn": 31,
+          "annualSnowfallIn": 75
+        }
       },
       {
         "name": "Bloomington",
-        "population": 87398,
+        "population": 89349,
         "frenchEstimate": 2307,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 350986,
+          "medianIncome": 93068,
+          "medianRent": 1372,
+          "medianPropertyTax": 2800,
+          "avgCommute": 19,
+          "avgTempHighF": 55,
+          "avgTempLowF": 37,
+          "annualRainfallIn": 31,
+          "annualSnowfallIn": 53
+        }
       },
       {
         "name": "Brooklyn Park",
@@ -5873,9 +6236,20 @@
       },
       {
         "name": "Davenport",
-        "population": 100354,
+        "population": 102349,
         "frenchEstimate": 1485,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 164976,
+          "medianIncome": 66152,
+          "medianRent": 810,
+          "medianPropertyTax": 2309,
+          "avgCommute": 17,
+          "avgTempHighF": 60,
+          "avgTempLowF": 42,
+          "annualRainfallIn": 37,
+          "annualSnowfallIn": 28
+        }
       },
       {
         "name": "Sioux City",
@@ -5885,9 +6259,20 @@
       },
       {
         "name": "Iowa City",
-        "population": 75678,
+        "population": 77797,
         "frenchEstimate": 1120,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 260681,
+          "medianIncome": 58893,
+          "medianRent": 943,
+          "medianPropertyTax": 1925,
+          "avgCommute": 16,
+          "avgTempHighF": 60,
+          "avgTempLowF": 40,
+          "annualRainfallIn": 37,
+          "annualSnowfallIn": 27
+        }
       },
       {
         "name": "Ames",
@@ -6058,9 +6443,20 @@
       },
       {
         "name": "Columbia",
-        "population": 129330,
+        "population": 132353,
         "frenchEstimate": 2936,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 273349,
+          "medianIncome": 67254,
+          "medianRent": 925,
+          "medianPropertyTax": 2000,
+          "avgCommute": 14,
+          "avgTempHighF": 66,
+          "avgTempLowF": 46,
+          "annualRainfallIn": 46,
+          "annualSnowfallIn": 15
+        }
       },
       {
         "name": "Independence",
@@ -6239,9 +6635,20 @@
       },
       {
         "name": "Olathe",
-        "population": 147461,
+        "population": 149608,
         "frenchEstimate": 2846,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 348048,
+          "medianIncome": 112130,
+          "medianRent": 1214,
+          "medianPropertyTax": 3652,
+          "avgCommute": 19,
+          "avgTempHighF": 65,
+          "avgTempLowF": 45,
+          "annualRainfallIn": 41,
+          "annualSnowfallIn": 15
+        }
       },
       {
         "name": "Topeka",
@@ -7138,9 +7545,20 @@
       },
       {
         "name": "Nampa",
-        "population": 114268,
+        "population": 120466,
         "frenchEstimate": 2183,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 393920,
+          "medianIncome": 75300,
+          "medianRent": 1257,
+          "medianPropertyTax": 2877,
+          "avgCommute": 23,
+          "avgTempHighF": 65,
+          "avgTempLowF": 38,
+          "annualRainfallIn": 11,
+          "annualSnowfallIn": 9
+        }
       },
       {
         "name": "Caldwell",
@@ -7497,9 +7915,20 @@
       },
       {
         "name": "Aurora",
-        "population": 395052,
+        "population": 408729,
         "frenchEstimate": 8573,
-        "description": "Aurora : banlieue est de Denver."
+        "description": "Aurora : banlieue est de Denver.",
+        "livability": {
+          "medianHomeValue": 493736,
+          "medianIncome": 91862,
+          "medianRent": 1758,
+          "medianPropertyTax": 2851,
+          "avgCommute": 26,
+          "avgTempHighF": 64,
+          "avgTempLowF": 36,
+          "annualRainfallIn": 16,
+          "annualSnowfallIn": 54
+        }
       },
       {
         "name": "Fort Collins",
@@ -7679,15 +8108,37 @@
       },
       {
         "name": "Rio Rancho",
-        "population": 110660,
+        "population": 110038,
         "frenchEstimate": 1627,
-        "description": "Rio Rancho : banlieue Albuquerque."
+        "description": "Rio Rancho : banlieue Albuquerque.",
+        "livability": {
+          "medianHomeValue": 297034,
+          "medianIncome": 88395,
+          "medianRent": 1193,
+          "medianPropertyTax": 3455,
+          "avgCommute": 30,
+          "avgTempHighF": 71,
+          "avgTempLowF": 40,
+          "annualRainfallIn": 12,
+          "annualSnowfallIn": 9
+        }
       },
       {
         "name": "Santa Fe",
-        "population": 89167,
+        "population": 90294,
         "frenchEstimate": 1311,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 446470,
+          "medianIncome": 73935,
+          "medianRent": 1155,
+          "medianPropertyTax": 2347,
+          "avgCommute": 17,
+          "avgTempHighF": 65,
+          "avgTempLowF": 36,
+          "annualRainfallIn": 14,
+          "annualSnowfallIn": 26
+        }
       },
       {
         "name": "Roswell",
@@ -7873,9 +8324,20 @@
       },
       {
         "name": "Gilbert",
-        "population": 275411,
+        "population": 278573,
         "frenchEstimate": 4847,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 496010,
+          "medianIncome": 123352,
+          "medianRent": 1764,
+          "medianPropertyTax": 3687,
+          "avgCommute": 23,
+          "avgTempHighF": 86,
+          "avgTempLowF": 57,
+          "annualRainfallIn": 10,
+          "annualSnowfallIn": 0
+        }
       },
       {
         "name": "Glendale",
@@ -7891,9 +8353,20 @@
       },
       {
         "name": "Tempe",
-        "population": 190921,
+        "population": 184075,
         "frenchEstimate": 3360,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 465197,
+          "medianIncome": 83353,
+          "medianRent": 1634,
+          "medianPropertyTax": 1654,
+          "avgCommute": 20,
+          "avgTempHighF": 87,
+          "avgTempLowF": 57,
+          "annualRainfallIn": 9,
+          "annualSnowfallIn": 0
+        }
       },
       {
         "name": "Peoria",
@@ -8418,9 +8891,20 @@
       },
       {
         "name": "Vancouver",
-        "population": 190915,
+        "population": 201190,
         "frenchEstimate": 4410,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 483547,
+          "medianIncome": 83916,
+          "medianRent": 1564,
+          "medianPropertyTax": 2126,
+          "avgCommute": 19,
+          "avgTempHighF": 62,
+          "avgTempLowF": 44,
+          "annualRainfallIn": 40,
+          "annualSnowfallIn": 3
+        }
       },
       {
         "name": "Bellevue",
@@ -8605,15 +9089,37 @@
       },
       {
         "name": "Salem",
-        "population": 177432,
+        "population": 182504,
         "frenchEstimate": 4365,
-        "description": "Eugene : Ducks, vert, alternatif."
+        "description": "Eugene : Ducks, vert, alternatif.",
+        "livability": {
+          "medianHomeValue": 391619,
+          "medianIncome": 76877,
+          "medianRent": 1235,
+          "medianPropertyTax": 2390,
+          "avgCommute": 17,
+          "avgTempHighF": 63,
+          "avgTempLowF": 42,
+          "annualRainfallIn": 40,
+          "annualSnowfallIn": 6
+        }
       },
       {
         "name": "Gresham",
-        "population": 110685,
+        "population": 107312,
         "frenchEstimate": 2723,
-        "description": ""
+        "description": "",
+        "livability": {
+          "medianHomeValue": 448551,
+          "medianIncome": 78108,
+          "medianRent": 1339,
+          "medianPropertyTax": 2455,
+          "avgCommute": 22,
+          "avgTempHighF": 62,
+          "avgTempLowF": 43,
+          "annualRainfallIn": 46,
+          "annualSnowfallIn": 3
+        }
       },
       {
         "name": "Hillsboro",
@@ -9901,502 +10407,3702 @@
     {
       "name": "Flower Mound",
       "state": "TX",
-      "livScore": 875
+      "livScore": 875,
+      "livability": {
+        "medianHomeValue": 476609,
+        "medianIncome": 167151,
+        "medianRent": 1822,
+        "medianPropertyTax": 4480,
+        "avgCommute": 26,
+        "avgTempHighF": 76,
+        "avgTempLowF": 54,
+        "annualRainfallIn": 38,
+        "annualSnowfallIn": 0
+      },
+      "population": 77576,
+      "nearestAirport": {
+        "code": "DFW",
+        "name": "Dallas/Fort Worth",
+        "distanceKm": 15
+      },
+      "categories": {
+        "amenities": 68,
+        "economy": 87,
+        "education": 77,
+        "environment": 54,
+        "health": 88,
+        "housing": 81,
+        "safety": 84,
+        "transportation": 76
+      },
+      "topCategories": [
+        "Health",
+        "Economy",
+        "Safety"
+      ]
     },
     {
       "name": "Carmel",
       "state": "IN",
-      "livScore": 872
+      "livScore": 872,
+      "livability": {
+        "medianHomeValue": 448943,
+        "medianIncome": 144615,
+        "medianRent": 1457,
+        "medianPropertyTax": 3968,
+        "avgCommute": 21,
+        "avgTempHighF": 61,
+        "avgTempLowF": 42,
+        "annualRainfallIn": 42,
+        "annualSnowfallIn": 22
+      },
+      "population": 103768,
+      "nearestAirport": {
+        "code": "IND",
+        "name": "Indianapolis",
+        "distanceKm": 33
+      },
+      "categories": {
+        "amenities": 72,
+        "economy": 85,
+        "education": 79,
+        "environment": 45,
+        "health": 87,
+        "housing": 88,
+        "safety": 83,
+        "transportation": 74
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Health",
+        "Economy"
+      ]
     },
     {
       "name": "Sugar Land",
       "state": "TX",
-      "livScore": 854
+      "livScore": 854,
+      "livability": {
+        "medianHomeValue": 402094,
+        "medianIncome": 140511,
+        "medianRent": 1707,
+        "medianPropertyTax": 4213,
+        "avgCommute": 28,
+        "avgTempHighF": 80,
+        "avgTempLowF": 60,
+        "annualRainfallIn": 50,
+        "annualSnowfallIn": 0
+      },
+      "population": 114818,
+      "nearestAirport": {
+        "code": "IAH",
+        "name": "Houston George Bush",
+        "distanceKm": 50
+      },
+      "categories": {
+        "amenities": 69,
+        "economy": 85,
+        "education": 81,
+        "environment": 41,
+        "health": 89,
+        "housing": 88,
+        "safety": 73,
+        "transportation": 72
+      },
+      "topCategories": [
+        "Health",
+        "Housing & Cost of Living",
+        "Economy"
+      ]
     },
     {
       "name": "Naperville",
       "state": "IL",
-      "livScore": 841
+      "livScore": 841,
+      "livability": {
+        "medianHomeValue": 473285,
+        "medianIncome": 151621,
+        "medianRent": 1664,
+        "medianPropertyTax": 4096,
+        "avgCommute": 26,
+        "avgTempHighF": 59,
+        "avgTempLowF": 39,
+        "annualRainfallIn": 39,
+        "annualSnowfallIn": 29
+      },
+      "population": 150856,
+      "nearestAirport": {
+        "code": "ORD",
+        "name": "Chicago O'Hare",
+        "distanceKm": 32
+      },
+      "categories": {
+        "amenities": 73,
+        "economy": 73,
+        "education": 83,
+        "environment": 40,
+        "health": 91,
+        "housing": 75,
+        "safety": 81,
+        "transportation": 64
+      },
+      "topCategories": [
+        "Health",
+        "Education",
+        "Safety"
+      ]
     },
     {
       "name": "Roswell",
       "state": "GA",
-      "livScore": 838
+      "livScore": 838,
+      "livability": {
+        "medianHomeValue": 485018,
+        "medianIncome": 132260,
+        "medianRent": 1667,
+        "medianPropertyTax": 3541,
+        "avgCommute": 25,
+        "avgTempHighF": 70,
+        "avgTempLowF": 49,
+        "annualRainfallIn": 53,
+        "annualSnowfallIn": 1
+      },
+      "population": 89140,
+      "nearestAirport": {
+        "code": "ATL",
+        "name": "Atlanta Hartsfield-Jackson",
+        "distanceKm": 43
+      },
+      "categories": {
+        "amenities": 80,
+        "economy": 90,
+        "education": 64,
+        "environment": 69,
+        "health": 81,
+        "housing": 70,
+        "safety": 63,
+        "transportation": 66
+      },
+      "topCategories": [
+        "Economy",
+        "Health",
+        "Amenities"
+      ]
     },
     {
       "name": "Overland Park",
       "state": "KS",
-      "livScore": 831
+      "livScore": 831,
+      "livability": {
+        "medianHomeValue": 386658,
+        "medianIncome": 105887,
+        "medianRent": 1255,
+        "medianPropertyTax": 2989,
+        "avgCommute": 19,
+        "avgTempHighF": 65,
+        "avgTempLowF": 45,
+        "annualRainfallIn": 41,
+        "annualSnowfallIn": 14
+      },
+      "population": 205979,
+      "nearestAirport": {
+        "code": "MCI",
+        "name": "Kansas City",
+        "distanceKm": 35
+      },
+      "categories": {
+        "amenities": 68,
+        "economy": 84,
+        "education": 87,
+        "environment": 51,
+        "health": 85,
+        "housing": 71,
+        "safety": 61,
+        "transportation": 67
+      },
+      "topCategories": [
+        "Education",
+        "Health",
+        "Economy"
+      ]
     },
     {
       "name": "Troy",
       "state": "MI",
-      "livScore": 829
+      "livScore": 829,
+      "livability": {
+        "medianHomeValue": 385318,
+        "medianIncome": 120757,
+        "medianRent": 1287,
+        "medianPropertyTax": 3661,
+        "avgCommute": 22,
+        "avgTempHighF": 58,
+        "avgTempLowF": 39,
+        "annualRainfallIn": 32,
+        "annualSnowfallIn": 34
+      },
+      "population": 90584,
+      "nearestAirport": {
+        "code": "DTW",
+        "name": "Detroit Metro",
+        "distanceKm": 47
+      },
+      "categories": {
+        "amenities": 75,
+        "economy": 69,
+        "education": 76,
+        "environment": 47,
+        "health": 85,
+        "housing": 73,
+        "safety": 77,
+        "transportation": 67
+      },
+      "topCategories": [
+        "Health",
+        "Safety",
+        "Education"
+      ]
     },
     {
       "name": "Columbia",
       "state": "MD",
-      "livScore": 828
+      "livScore": 828,
+      "livability": {
+        "medianHomeValue": 495708,
+        "medianIncome": 137768,
+        "medianRent": 1841,
+        "medianPropertyTax": 3279,
+        "avgCommute": 24,
+        "avgTempHighF": 66,
+        "avgTempLowF": 44,
+        "annualRainfallIn": 44,
+        "annualSnowfallIn": 18
+      },
+      "population": 106578,
+      "nearestAirport": {
+        "code": "BWI",
+        "name": "Baltimore-Washington",
+        "distanceKm": 17
+      },
+      "categories": {
+        "amenities": 70,
+        "economy": 80,
+        "education": 89,
+        "environment": 60,
+        "health": 88,
+        "housing": 61,
+        "safety": 57,
+        "transportation": 64
+      },
+      "topCategories": [
+        "Education",
+        "Health",
+        "Economy"
+      ]
     },
     {
       "name": "Olathe",
       "state": "KS",
-      "livScore": 799
+      "livScore": 799,
+      "livability": {
+        "medianHomeValue": 348048,
+        "medianIncome": 112130,
+        "medianRent": 1214,
+        "medianPropertyTax": 3652,
+        "avgCommute": 19,
+        "avgTempHighF": 65,
+        "avgTempLowF": 45,
+        "annualRainfallIn": 41,
+        "annualSnowfallIn": 15
+      },
+      "population": 149608,
+      "nearestAirport": {
+        "code": "MCI",
+        "name": "Kansas City",
+        "distanceKm": 47
+      },
+      "categories": {
+        "amenities": 56,
+        "economy": 81,
+        "education": 79,
+        "environment": 52,
+        "health": 80,
+        "housing": 67,
+        "safety": 62,
+        "transportation": 68
+      },
+      "topCategories": [
+        "Economy",
+        "Health",
+        "Education"
+      ]
     },
     {
       "name": "Round Rock",
       "state": "TX",
-      "livScore": 793
+      "livScore": 793,
+      "livability": {
+        "medianHomeValue": 463739,
+        "medianIncome": 102841,
+        "medianRent": 1498,
+        "medianPropertyTax": 2763,
+        "avgCommute": 22,
+        "avgTempHighF": 79,
+        "avgTempLowF": 56,
+        "annualRainfallIn": 36,
+        "annualSnowfallIn": 0
+      },
+      "population": 128126,
+      "nearestAirport": {
+        "code": "AUS",
+        "name": "Austin-Bergstrom",
+        "distanceKm": 35
+      },
+      "categories": {
+        "amenities": 62,
+        "economy": 74,
+        "education": 62,
+        "environment": 77,
+        "health": 71,
+        "housing": 77,
+        "safety": 63,
+        "transportation": 70
+      },
+      "topCategories": [
+        "Environment",
+        "Housing & Cost of Living",
+        "Economy"
+      ]
     },
     {
       "name": "Gilbert",
       "state": "AZ",
-      "livScore": 791
+      "livScore": 791,
+      "livability": {
+        "medianHomeValue": 496010,
+        "medianIncome": 123352,
+        "medianRent": 1764,
+        "medianPropertyTax": 3687,
+        "avgCommute": 23,
+        "avgTempHighF": 86,
+        "avgTempLowF": 57,
+        "annualRainfallIn": 10,
+        "annualSnowfallIn": 0
+      },
+      "population": 278573,
+      "nearestAirport": {
+        "code": "PHX",
+        "name": "Phoenix Sky Harbor",
+        "distanceKm": 22
+      },
+      "categories": {
+        "amenities": 63,
+        "economy": 82,
+        "education": 68,
+        "environment": 24,
+        "health": 78,
+        "housing": 77,
+        "safety": 76,
+        "transportation": 73
+      },
+      "topCategories": [
+        "Economy",
+        "Health",
+        "Housing & Cost of Living"
+      ]
     },
     {
       "name": "Edmond",
       "state": "OK",
-      "livScore": 778
+      "livScore": 778,
+      "livability": {
+        "medianHomeValue": 317536,
+        "medianIncome": 103283,
+        "medianRent": 1032,
+        "medianPropertyTax": 3371,
+        "avgCommute": 22,
+        "avgTempHighF": 72,
+        "avgTempLowF": 49,
+        "annualRainfallIn": 37,
+        "annualSnowfallIn": 3
+      },
+      "population": 97532,
+      "nearestAirport": {
+        "code": "OKC",
+        "name": "Oklahoma City Will Rogers",
+        "distanceKm": 32
+      },
+      "categories": {
+        "amenities": 53,
+        "economy": 78,
+        "education": 53,
+        "environment": 72,
+        "health": 68,
+        "housing": 71,
+        "safety": 64,
+        "transportation": 71
+      },
+      "topCategories": [
+        "Economy",
+        "Environment",
+        "Housing & Cost of Living"
+      ]
     },
     {
       "name": "Clifton",
       "state": "NJ",
-      "livScore": 771
+      "livScore": 771,
+      "livability": {
+        "medianHomeValue": 438054,
+        "medianIncome": 105422,
+        "medianRent": 1460,
+        "medianPropertyTax": 2766,
+        "avgCommute": 23,
+        "avgTempHighF": 63,
+        "avgTempLowF": 43,
+        "annualRainfallIn": 49,
+        "annualSnowfallIn": 31
+      },
+      "population": 89920,
+      "nearestAirport": {
+        "code": "EWR",
+        "name": "Newark Liberty",
+        "distanceKm": 19
+      },
+      "categories": {
+        "amenities": 90,
+        "economy": 77,
+        "education": 78,
+        "environment": 30,
+        "health": 78,
+        "housing": 62,
+        "safety": 70,
+        "transportation": 43
+      },
+      "topCategories": [
+        "Amenities",
+        "Education",
+        "Health"
+      ]
     },
     {
       "name": "Virginia Beach",
       "state": "VA",
-      "livScore": 770
+      "livScore": 770,
+      "livability": {
+        "medianHomeValue": 376063,
+        "medianIncome": 94931,
+        "medianRent": 1549,
+        "medianPropertyTax": 2920,
+        "avgCommute": 21,
+        "avgTempHighF": 69,
+        "avgTempLowF": 51,
+        "annualRainfallIn": 46,
+        "annualSnowfallIn": 7
+      },
+      "population": 457403,
+      "nearestAirport": {
+        "code": "ORF",
+        "name": "Norfolk",
+        "distanceKm": 20
+      },
+      "categories": {
+        "amenities": 65,
+        "economy": 68,
+        "education": 65,
+        "environment": 73,
+        "health": 65,
+        "housing": 64,
+        "safety": 68,
+        "transportation": 62
+      },
+      "topCategories": [
+        "Environment",
+        "Economy",
+        "Safety"
+      ]
     },
     {
       "name": "Hoover",
       "state": "AL",
-      "livScore": 763
+      "livScore": 763,
+      "livability": {
+        "medianHomeValue": 368547,
+        "medianIncome": 104005,
+        "medianRent": 1145,
+        "medianPropertyTax": 3215,
+        "avgCommute": 23,
+        "avgTempHighF": 73,
+        "avgTempLowF": 51,
+        "annualRainfallIn": 57,
+        "annualSnowfallIn": 1
+      },
+      "population": 91649,
+      "nearestAirport": {
+        "code": "BHM",
+        "name": "Birmingham-Shuttlesworth",
+        "distanceKm": 25
+      },
+      "categories": {
+        "amenities": 54,
+        "economy": 78,
+        "education": 58,
+        "environment": 46,
+        "health": 70,
+        "housing": 74,
+        "safety": 66,
+        "transportation": 68
+      },
+      "topCategories": [
+        "Economy",
+        "Housing & Cost of Living",
+        "Health"
+      ]
     },
     {
       "name": "Warwick",
       "state": "RI",
-      "livScore": 761
+      "livScore": 761,
+      "livability": {
+        "medianHomeValue": 332783,
+        "medianIncome": 90844,
+        "medianRent": 1164,
+        "medianPropertyTax": 2924,
+        "avgCommute": 22,
+        "avgTempHighF": 61,
+        "avgTempLowF": 43,
+        "annualRainfallIn": 47,
+        "annualSnowfallIn": 34
+      },
+      "population": 83612,
+      "nearestAirport": {
+        "code": "BOS",
+        "name": "Boston Logan",
+        "distanceKm": 81
+      },
+      "categories": {
+        "amenities": 68,
+        "economy": 65,
+        "education": 72,
+        "environment": 47,
+        "health": 63,
+        "housing": 65,
+        "safety": 75,
+        "transportation": 53
+      },
+      "topCategories": [
+        "Safety",
+        "Education",
+        "Amenities"
+      ]
     },
     {
       "name": "Evanston",
       "state": "IL",
-      "livScore": 759
+      "livScore": 759,
+      "livability": {
+        "medianHomeValue": 420228,
+        "medianIncome": 99756,
+        "medianRent": 1497,
+        "medianPropertyTax": 2486,
+        "avgCommute": 25,
+        "avgTempHighF": 59,
+        "avgTempLowF": 41,
+        "annualRainfallIn": 38,
+        "annualSnowfallIn": 36
+      },
+      "population": 78098,
+      "nearestAirport": {
+        "code": "ORD",
+        "name": "Chicago O'Hare",
+        "distanceKm": 20
+      },
+      "categories": {
+        "amenities": 82,
+        "economy": 76,
+        "education": 69,
+        "environment": 36,
+        "health": 85,
+        "housing": 71,
+        "safety": 56,
+        "transportation": 46
+      },
+      "topCategories": [
+        "Health",
+        "Amenities",
+        "Economy"
+      ]
     },
     {
       "name": "New Braunfels",
       "state": "TX",
-      "livScore": 758
+      "livScore": 758,
+      "livability": {
+        "medianHomeValue": 329097,
+        "medianIncome": 94067,
+        "medianRent": 1368,
+        "medianPropertyTax": 2851,
+        "avgCommute": 22,
+        "avgTempHighF": 79,
+        "avgTempLowF": 56,
+        "annualRainfallIn": 34,
+        "annualSnowfallIn": 0
+      },
+      "population": 105592,
+      "nearestAirport": {
+        "code": "SAT",
+        "name": "San Antonio",
+        "distanceKm": 38
+      },
+      "categories": {
+        "amenities": 55,
+        "economy": 56,
+        "education": 55,
+        "environment": 82,
+        "health": 56,
+        "housing": 83,
+        "safety": 63,
+        "transportation": 69
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Environment",
+        "Transportation"
+      ]
     },
     {
       "name": "Raleigh",
       "state": "NC",
-      "livScore": 758
+      "livScore": 758,
+      "livability": {
+        "medianHomeValue": 456019,
+        "medianIncome": 93059,
+        "medianRent": 1465,
+        "medianPropertyTax": 2249,
+        "avgCommute": 21,
+        "avgTempHighF": 72,
+        "avgTempLowF": 50,
+        "annualRainfallIn": 46,
+        "annualSnowfallIn": 4
+      },
+      "population": 502551,
+      "nearestAirport": {
+        "code": "RDU",
+        "name": "Raleigh-Durham",
+        "distanceKm": 18
+      },
+      "categories": {
+        "amenities": 67,
+        "economy": 73,
+        "education": 63,
+        "environment": 74,
+        "health": 65,
+        "housing": 63,
+        "safety": 46,
+        "transportation": 73
+      },
+      "topCategories": [
+        "Environment",
+        "Economy",
+        "Transportation"
+      ]
     },
     {
       "name": "Bloomington",
       "state": "MN",
-      "livScore": 755
+      "livScore": 755,
+      "livability": {
+        "medianHomeValue": 350986,
+        "medianIncome": 93068,
+        "medianRent": 1372,
+        "medianPropertyTax": 2800,
+        "avgCommute": 19,
+        "avgTempHighF": 55,
+        "avgTempLowF": 37,
+        "annualRainfallIn": 31,
+        "annualSnowfallIn": 53
+      },
+      "population": 89349,
+      "nearestAirport": {
+        "code": "MSP",
+        "name": "Minneapolis-Saint Paul",
+        "distanceKm": 10
+      },
+      "categories": {
+        "amenities": 68,
+        "economy": 75,
+        "education": 75,
+        "environment": 39,
+        "health": 81,
+        "housing": 66,
+        "safety": 53,
+        "transportation": 55
+      },
+      "topCategories": [
+        "Health",
+        "Economy",
+        "Education"
+      ]
     },
     {
       "name": "Loveland",
       "state": "CO",
-      "livScore": 744
+      "livScore": 744,
+      "livability": {
+        "medianHomeValue": 479719,
+        "medianIncome": 86908,
+        "medianRent": 1573,
+        "medianPropertyTax": 2658,
+        "avgCommute": 22,
+        "avgTempHighF": 64,
+        "avgTempLowF": 33,
+        "annualRainfallIn": 16,
+        "annualSnowfallIn": 41
+      },
+      "population": 76739,
+      "nearestAirport": {
+        "code": "DEN",
+        "name": "Denver",
+        "distanceKm": 69
+      },
+      "categories": {
+        "amenities": 58,
+        "economy": 68,
+        "education": 74,
+        "environment": 65,
+        "health": 66,
+        "housing": 66,
+        "safety": 53,
+        "transportation": 68
+      },
+      "topCategories": [
+        "Education",
+        "Economy",
+        "Transportation"
+      ]
     },
     {
       "name": "Vancouver",
       "state": "WA",
-      "livScore": 731
+      "livScore": 731,
+      "livability": {
+        "medianHomeValue": 483547,
+        "medianIncome": 83916,
+        "medianRent": 1564,
+        "medianPropertyTax": 2126,
+        "avgCommute": 19,
+        "avgTempHighF": 62,
+        "avgTempLowF": 44,
+        "annualRainfallIn": 40,
+        "annualSnowfallIn": 3
+      },
+      "population": 201190,
+      "nearestAirport": {
+        "code": "PDX",
+        "name": "Portland (OR)",
+        "distanceKm": 8
+      },
+      "categories": {
+        "amenities": 73,
+        "economy": 72,
+        "education": 65,
+        "environment": 75,
+        "health": 61,
+        "housing": 71,
+        "safety": 33,
+        "transportation": 65
+      },
+      "topCategories": [
+        "Environment",
+        "Amenities",
+        "Economy"
+      ]
     },
     {
       "name": "Clovis",
       "state": "CA",
-      "livScore": 731
+      "livScore": 731,
+      "livability": {
+        "medianHomeValue": 448689,
+        "medianIncome": 102690,
+        "medianRent": 1385,
+        "medianPropertyTax": 3137,
+        "avgCommute": 20,
+        "avgTempHighF": 77,
+        "avgTempLowF": 51,
+        "annualRainfallIn": 12,
+        "annualSnowfallIn": 0
+      },
+      "population": 126598,
+      "nearestAirport": {
+        "code": "SFO",
+        "name": "San Francisco",
+        "distanceKm": 253
+      },
+      "categories": {
+        "amenities": 64,
+        "economy": 68,
+        "education": 51,
+        "environment": 66,
+        "health": 59,
+        "housing": 58,
+        "safety": 62,
+        "transportation": 62
+      },
+      "topCategories": [
+        "Economy",
+        "Environment",
+        "Amenities"
+      ]
     },
     {
       "name": "Nashua",
       "state": "NH",
-      "livScore": 730
+      "livScore": 730,
+      "livability": {
+        "medianHomeValue": 396310,
+        "medianIncome": 99143,
+        "medianRent": 1567,
+        "medianPropertyTax": 2539,
+        "avgCommute": 21,
+        "avgTempHighF": 59,
+        "avgTempLowF": 36,
+        "annualRainfallIn": 47,
+        "annualSnowfallIn": 57
+      },
+      "population": 91529,
+      "nearestAirport": {
+        "code": "MHT",
+        "name": "Manchester-Boston Regional",
+        "distanceKm": 19
+      },
+      "categories": {
+        "amenities": 63,
+        "economy": 62,
+        "education": 70,
+        "environment": 39,
+        "health": 64,
+        "housing": 68,
+        "safety": 72,
+        "transportation": 58
+      },
+      "topCategories": [
+        "Safety",
+        "Education",
+        "Housing & Cost of Living"
+      ]
     },
     {
       "name": "Pittsburgh",
       "state": "PA",
-      "livScore": 727
+      "livScore": 727,
+      "livability": {
+        "medianHomeValue": 206135,
+        "medianIncome": 70364,
+        "medianRent": 1068,
+        "medianPropertyTax": 1733,
+        "avgCommute": 21,
+        "avgTempHighF": 61,
+        "avgTempLowF": 42,
+        "annualRainfallIn": 38,
+        "annualSnowfallIn": 27
+      },
+      "population": 313789,
+      "nearestAirport": {
+        "code": "PIT",
+        "name": "Pittsburgh",
+        "distanceKm": 21
+      },
+      "categories": {
+        "amenities": 86,
+        "economy": 71,
+        "education": 59,
+        "environment": 56,
+        "health": 63,
+        "housing": 62,
+        "safety": 38,
+        "transportation": 53
+      },
+      "topCategories": [
+        "Amenities",
+        "Economy",
+        "Health"
+      ]
     },
     {
       "name": "Bloomington",
       "state": "IL",
-      "livScore": 727
+      "livScore": 727,
+      "livability": {
+        "medianHomeValue": 195487,
+        "medianIncome": 78431,
+        "medianRent": 867,
+        "medianPropertyTax": 2596,
+        "avgCommute": 14,
+        "avgTempHighF": 62,
+        "avgTempLowF": 40,
+        "annualRainfallIn": 39,
+        "annualSnowfallIn": 20
+      },
+      "population": 79439,
+      "nearestAirport": {
+        "code": "ORD",
+        "name": "Chicago O'Hare",
+        "distanceKm": 189
+      },
+      "categories": {
+        "amenities": 53,
+        "economy": 53,
+        "education": 64,
+        "environment": 55,
+        "health": 57,
+        "housing": 78,
+        "safety": 57,
+        "transportation": 67
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Transportation",
+        "Education"
+      ]
     },
     {
       "name": "Rochester",
       "state": "MN",
-      "livScore": 722
+      "livScore": 722,
+      "livability": {
+        "medianHomeValue": 291249,
+        "medianIncome": 92472,
+        "medianRent": 1271,
+        "medianPropertyTax": 2924,
+        "avgCommute": 15,
+        "avgTempHighF": 55,
+        "avgTempLowF": 34,
+        "annualRainfallIn": 34,
+        "annualSnowfallIn": 48
+      },
+      "population": 125554,
+      "nearestAirport": {
+        "code": "MSP",
+        "name": "Minneapolis-Saint Paul",
+        "distanceKm": 113
+      },
+      "categories": {
+        "amenities": 51,
+        "economy": 61,
+        "education": 69,
+        "environment": 43,
+        "health": 65,
+        "housing": 64,
+        "safety": 62,
+        "transportation": 60
+      },
+      "topCategories": [
+        "Education",
+        "Health",
+        "Housing & Cost of Living"
+      ]
     },
     {
       "name": "Charleston",
       "state": "SC",
-      "livScore": 719
+      "livScore": 719,
+      "livability": {
+        "medianHomeValue": 463644,
+        "medianIncome": 94333,
+        "medianRent": 1639,
+        "medianPropertyTax": 2464,
+        "avgCommute": 21,
+        "avgTempHighF": 74,
+        "avgTempLowF": 59,
+        "annualRainfallIn": 47,
+        "annualSnowfallIn": 0
+      },
+      "population": 163469,
+      "nearestAirport": {
+        "code": "CHS",
+        "name": "Charleston (SC)",
+        "distanceKm": 17
+      },
+      "categories": {
+        "amenities": 64,
+        "economy": 67,
+        "education": 53,
+        "environment": 78,
+        "health": 57,
+        "housing": 70,
+        "safety": 45,
+        "transportation": 61
+      },
+      "topCategories": [
+        "Environment",
+        "Housing & Cost of Living",
+        "Economy"
+      ]
     },
     {
       "name": "Cedar Rapids",
       "state": "IA",
-      "livScore": 718
+      "livScore": 718,
+      "livability": {
+        "medianHomeValue": 174452,
+        "medianIncome": 69896,
+        "medianRent": 800,
+        "medianPropertyTax": 2625,
+        "avgCommute": 15,
+        "avgTempHighF": 60,
+        "avgTempLowF": 39,
+        "annualRainfallIn": 36,
+        "annualSnowfallIn": 29
+      },
+      "population": 138542,
+      "nearestAirport": {
+        "code": "DSM",
+        "name": "Des Moines",
+        "distanceKm": 173
+      },
+      "categories": {
+        "amenities": 60,
+        "economy": 60,
+        "education": 55,
+        "environment": 51,
+        "health": 58,
+        "housing": 74,
+        "safety": 51,
+        "transportation": 68
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Transportation",
+        "Amenities"
+      ]
     },
     {
       "name": "Coral Springs",
       "state": "FL",
-      "livScore": 717
+      "livScore": 717,
+      "livability": {
+        "medianHomeValue": 466482,
+        "medianIncome": 97372,
+        "medianRent": 1904,
+        "medianPropertyTax": 2990,
+        "avgCommute": 29,
+        "avgTempHighF": 83,
+        "avgTempLowF": 67,
+        "annualRainfallIn": 60,
+        "annualSnowfallIn": 0
+      },
+      "population": 131966,
+      "nearestAirport": {
+        "code": "MIA",
+        "name": "Miami",
+        "distanceKm": 53
+      },
+      "categories": {
+        "amenities": 76,
+        "economy": 78,
+        "education": 59,
+        "environment": 16,
+        "health": 66,
+        "housing": 75,
+        "safety": 69,
+        "transportation": 57
+      },
+      "topCategories": [
+        "Economy",
+        "Amenities",
+        "Housing & Cost of Living"
+      ]
     },
     {
       "name": "Rio Rancho",
       "state": "NM",
-      "livScore": 716
+      "livScore": 716,
+      "livability": {
+        "medianHomeValue": 297034,
+        "medianIncome": 88395,
+        "medianRent": 1193,
+        "medianPropertyTax": 3455,
+        "avgCommute": 30,
+        "avgTempHighF": 71,
+        "avgTempLowF": 40,
+        "annualRainfallIn": 12,
+        "annualSnowfallIn": 9
+      },
+      "population": 110038,
+      "nearestAirport": {
+        "code": "ABQ",
+        "name": "Albuquerque Sunport",
+        "distanceKm": 31
+      },
+      "categories": {
+        "amenities": 47,
+        "economy": 59,
+        "education": 42,
+        "environment": 73,
+        "health": 54,
+        "housing": 69,
+        "safety": 51,
+        "transportation": 78
+      },
+      "topCategories": [
+        "Transportation",
+        "Environment",
+        "Housing & Cost of Living"
+      ]
     },
     {
       "name": "Ann Arbor",
       "state": "MI",
-      "livScore": 715
+      "livScore": 715,
+      "livability": {
+        "medianHomeValue": 430301,
+        "medianIncome": 81611,
+        "medianRent": 1388,
+        "medianPropertyTax": 1998,
+        "avgCommute": 18,
+        "avgTempHighF": 58,
+        "avgTempLowF": 39,
+        "annualRainfallIn": 36,
+        "annualSnowfallIn": 63
+      },
+      "population": 126229,
+      "nearestAirport": {
+        "code": "DTW",
+        "name": "Detroit Metro",
+        "distanceKm": 33
+      },
+      "categories": {
+        "amenities": 73,
+        "economy": 55,
+        "education": 76,
+        "environment": 33,
+        "health": 72,
+        "housing": 64,
+        "safety": 60,
+        "transportation": 56
+      },
+      "topCategories": [
+        "Education",
+        "Amenities",
+        "Health"
+      ]
     },
     {
       "name": "Midland",
       "state": "TX",
-      "livScore": 712
+      "livScore": 712,
+      "livability": {
+        "medianHomeValue": 291451,
+        "medianIncome": 91219,
+        "medianRent": 1233,
+        "medianPropertyTax": 3176,
+        "avgCommute": 18,
+        "avgTempHighF": 79,
+        "avgTempLowF": 51,
+        "annualRainfallIn": 16,
+        "annualSnowfallIn": 3
+      },
+      "population": 141939,
+      "nearestAirport": {
+        "code": "SAT",
+        "name": "San Antonio",
+        "distanceKm": 424
+      },
+      "categories": {
+        "amenities": 47,
+        "economy": 62,
+        "education": 48,
+        "environment": 73,
+        "health": 47,
+        "housing": 83,
+        "safety": 48,
+        "transportation": 65
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Environment",
+        "Transportation"
+      ]
     },
     {
       "name": "College Station",
       "state": "TX",
-      "livScore": 711
+      "livScore": 711,
+      "livability": {
+        "medianHomeValue": 292882,
+        "medianIncome": 51560,
+        "medianRent": 995,
+        "medianPropertyTax": 1597,
+        "avgCommute": 16,
+        "avgTempHighF": 79,
+        "avgTempLowF": 59,
+        "annualRainfallIn": 40,
+        "annualSnowfallIn": 0
+      },
+      "population": 126174,
+      "nearestAirport": {
+        "code": "IAH",
+        "name": "Houston George Bush",
+        "distanceKm": 119
+      },
+      "categories": {
+        "amenities": 53,
+        "economy": 49,
+        "education": 75,
+        "environment": 55,
+        "health": 59,
+        "housing": 74,
+        "safety": 60,
+        "transportation": 66
+      },
+      "topCategories": [
+        "Education",
+        "Housing & Cost of Living",
+        "Transportation"
+      ]
     },
     {
       "name": "Norman",
       "state": "OK",
-      "livScore": 711
+      "livScore": 711,
+      "livability": {
+        "medianHomeValue": 248548,
+        "medianIncome": 67195,
+        "medianRent": 928,
+        "medianPropertyTax": 2137,
+        "avgCommute": 19,
+        "avgTempHighF": 71,
+        "avgTempLowF": 49,
+        "annualRainfallIn": 39,
+        "annualSnowfallIn": 5
+      },
+      "population": 134536,
+      "nearestAirport": {
+        "code": "OKC",
+        "name": "Oklahoma City Will Rogers",
+        "distanceKm": 24
+      },
+      "categories": {
+        "amenities": 51,
+        "economy": 63,
+        "education": 48,
+        "environment": 71,
+        "health": 56,
+        "housing": 62,
+        "safety": 49,
+        "transportation": 69
+      },
+      "topCategories": [
+        "Environment",
+        "Transportation",
+        "Economy"
+      ]
     },
     {
       "name": "Greenville",
       "state": "SC",
-      "livScore": 710
+      "livScore": 710,
+      "livability": {
+        "medianHomeValue": 420025,
+        "medianIncome": 76686,
+        "medianRent": 1234,
+        "medianPropertyTax": 1810,
+        "avgCommute": 17,
+        "avgTempHighF": 71,
+        "avgTempLowF": 51,
+        "annualRainfallIn": 51,
+        "annualSnowfallIn": 3
+      },
+      "population": 82477,
+      "nearestAirport": {
+        "code": "GSP",
+        "name": "Greenville-Spartanburg",
+        "distanceKm": 17
+      },
+      "categories": {
+        "amenities": 68,
+        "economy": 55,
+        "education": 57,
+        "environment": 71,
+        "health": 60,
+        "housing": 71,
+        "safety": 33,
+        "transportation": 70
+      },
+      "topCategories": [
+        "Environment",
+        "Housing & Cost of Living",
+        "Transportation"
+      ]
     },
     {
       "name": "Durham",
       "state": "NC",
-      "livScore": 710
+      "livScore": 710,
+      "livability": {
+        "medianHomeValue": 377377,
+        "medianIncome": 84645,
+        "medianRent": 1433,
+        "medianPropertyTax": 2205,
+        "avgCommute": 19,
+        "avgTempHighF": 70,
+        "avgTempLowF": 48,
+        "annualRainfallIn": 46,
+        "annualSnowfallIn": 3
+      },
+      "population": 304063,
+      "nearestAirport": {
+        "code": "RDU",
+        "name": "Raleigh-Durham",
+        "distanceKm": 17
+      },
+      "categories": {
+        "amenities": 62,
+        "economy": 67,
+        "education": 59,
+        "environment": 75,
+        "health": 62,
+        "housing": 62,
+        "safety": 31,
+        "transportation": 67
+      },
+      "topCategories": [
+        "Environment",
+        "Economy",
+        "Transportation"
+      ]
     },
     {
       "name": "Iowa City",
       "state": "IA",
-      "livScore": 709
+      "livScore": 709,
+      "livability": {
+        "medianHomeValue": 260681,
+        "medianIncome": 58893,
+        "medianRent": 943,
+        "medianPropertyTax": 1925,
+        "avgCommute": 16,
+        "avgTempHighF": 60,
+        "avgTempLowF": 40,
+        "annualRainfallIn": 37,
+        "annualSnowfallIn": 27
+      },
+      "population": 77797,
+      "nearestAirport": {
+        "code": "DSM",
+        "name": "Des Moines",
+        "distanceKm": 178
+      },
+      "categories": {
+        "amenities": 59,
+        "economy": 56,
+        "education": 65,
+        "environment": 53,
+        "health": 67,
+        "housing": 65,
+        "safety": 57,
+        "transportation": 61
+      },
+      "topCategories": [
+        "Health",
+        "Education",
+        "Housing & Cost of Living"
+      ]
     },
     {
       "name": "Lincoln",
       "state": "NE",
-      "livScore": 707
+      "livScore": 707,
+      "livability": {
+        "medianHomeValue": 265255,
+        "medianIncome": 71936,
+        "medianRent": 917,
+        "medianPropertyTax": 2390,
+        "avgCommute": 20,
+        "avgTempHighF": 63,
+        "avgTempLowF": 40,
+        "annualRainfallIn": 31,
+        "annualSnowfallIn": 27
+      },
+      "population": 301084,
+      "nearestAirport": {
+        "code": "OMA",
+        "name": "Omaha Eppley",
+        "distanceKm": 85
+      },
+      "categories": {
+        "amenities": 59,
+        "economy": 57,
+        "education": 61,
+        "environment": 36,
+        "health": 60,
+        "housing": 71,
+        "safety": 54,
+        "transportation": 65
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Transportation",
+        "Education"
+      ]
     },
     {
       "name": "Fargo",
       "state": "ND",
-      "livScore": 706
+      "livScore": 706,
+      "livability": {
+        "medianHomeValue": 273770,
+        "medianIncome": 69135,
+        "medianRent": 868,
+        "medianPropertyTax": 1781,
+        "avgCommute": 14,
+        "avgTempHighF": 52,
+        "avgTempLowF": 32,
+        "annualRainfallIn": 24,
+        "annualSnowfallIn": 54
+      },
+      "population": 135967,
+      "nearestAirport": {
+        "code": "FAR",
+        "name": "Fargo Hector",
+        "distanceKm": 5
+      },
+      "categories": {
+        "amenities": 60,
+        "economy": 55,
+        "education": 69,
+        "environment": 40,
+        "health": 65,
+        "housing": 77,
+        "safety": 42,
+        "transportation": 58
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Education",
+        "Health"
+      ]
     },
     {
       "name": "Sioux Falls",
       "state": "SD",
-      "livScore": 704
+      "livScore": 704,
+      "livability": {
+        "medianHomeValue": 284520,
+        "medianIncome": 79229,
+        "medianRent": 880,
+        "medianPropertyTax": 2597,
+        "avgCommute": 16,
+        "avgTempHighF": 56,
+        "avgTempLowF": 35,
+        "annualRainfallIn": 26,
+        "annualSnowfallIn": 43
+      },
+      "population": 209839,
+      "nearestAirport": {
+        "code": "FSD",
+        "name": "Sioux Falls",
+        "distanceKm": 4
+      },
+      "categories": {
+        "amenities": 63,
+        "economy": 54,
+        "education": 52,
+        "environment": 40,
+        "health": 60,
+        "housing": 80,
+        "safety": 53,
+        "transportation": 63
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Amenities",
+        "Transportation"
+      ]
     },
     {
       "name": "Frederick",
       "state": "MD",
-      "livScore": 704
+      "livScore": 704,
+      "livability": {
+        "medianHomeValue": 399885,
+        "medianIncome": 126045,
+        "medianRent": 1603,
+        "medianPropertyTax": 2641,
+        "avgCommute": 21,
+        "avgTempHighF": 66,
+        "avgTempLowF": 45,
+        "annualRainfallIn": 42,
+        "annualSnowfallIn": 28
+      },
+      "population": 89273,
+      "nearestAirport": {
+        "code": "IAD",
+        "name": "Washington Dulles",
+        "distanceKm": 51
+      },
+      "categories": {
+        "amenities": 64,
+        "economy": 61,
+        "education": 70,
+        "environment": 54,
+        "health": 61,
+        "housing": 55,
+        "safety": 51,
+        "transportation": 57
+      },
+      "topCategories": [
+        "Education",
+        "Amenities",
+        "Economy"
+      ]
     },
     {
       "name": "Appleton",
       "state": "WI",
-      "livScore": 704
+      "livScore": 704,
+      "livability": {
+        "medianHomeValue": 220113,
+        "medianIncome": 80704,
+        "medianRent": 878,
+        "medianPropertyTax": 2686,
+        "avgCommute": 17,
+        "avgTempHighF": 54,
+        "avgTempLowF": 37,
+        "annualRainfallIn": 31,
+        "annualSnowfallIn": 44
+      },
+      "population": 77146,
+      "nearestAirport": {
+        "code": "MKE",
+        "name": "Milwaukee Mitchell",
+        "distanceKm": 152
+      },
+      "categories": {
+        "amenities": 67,
+        "economy": 42,
+        "education": 62,
+        "environment": 42,
+        "health": 61,
+        "housing": 55,
+        "safety": 65,
+        "transportation": 63
+      },
+      "topCategories": [
+        "Amenities",
+        "Safety",
+        "Transportation"
+      ]
     },
     {
       "name": "Omaha",
       "state": "NE",
-      "livScore": 701
+      "livScore": 701,
+      "livability": {
+        "medianHomeValue": 253521,
+        "medianIncome": 74651,
+        "medianRent": 1008,
+        "medianPropertyTax": 2446,
+        "avgCommute": 18,
+        "avgTempHighF": 61,
+        "avgTempLowF": 40,
+        "annualRainfallIn": 31,
+        "annualSnowfallIn": 31
+      },
+      "population": 491055,
+      "nearestAirport": {
+        "code": "OMA",
+        "name": "Omaha Eppley",
+        "distanceKm": 6
+      },
+      "categories": {
+        "amenities": 65,
+        "economy": 67,
+        "education": 59,
+        "environment": 38,
+        "health": 66,
+        "housing": 64,
+        "safety": 37,
+        "transportation": 64
+      },
+      "topCategories": [
+        "Economy",
+        "Health",
+        "Amenities"
+      ]
     },
     {
       "name": "Madison",
       "state": "WI",
-      "livScore": 700
+      "livScore": 700,
+      "livability": {
+        "medianHomeValue": 361084,
+        "medianIncome": 81267,
+        "medianRent": 1237,
+        "medianPropertyTax": 1905,
+        "avgCommute": 18,
+        "avgTempHighF": 56,
+        "avgTempLowF": 37,
+        "annualRainfallIn": 36,
+        "annualSnowfallIn": 43
+      },
+      "population": 285414,
+      "nearestAirport": {
+        "code": "MKE",
+        "name": "Milwaukee Mitchell",
+        "distanceKm": 123
+      },
+      "categories": {
+        "amenities": 68,
+        "economy": 66,
+        "education": 63,
+        "environment": 34,
+        "health": 68,
+        "housing": 63,
+        "safety": 54,
+        "transportation": 57
+      },
+      "topCategories": [
+        "Amenities",
+        "Health",
+        "Economy"
+      ]
     },
     {
       "name": "Gresham",
       "state": "OR",
-      "livScore": 700
+      "livScore": 700,
+      "livability": {
+        "medianHomeValue": 448551,
+        "medianIncome": 78108,
+        "medianRent": 1339,
+        "medianPropertyTax": 2455,
+        "avgCommute": 22,
+        "avgTempHighF": 62,
+        "avgTempLowF": 43,
+        "annualRainfallIn": 46,
+        "annualSnowfallIn": 3
+      },
+      "population": 107312,
+      "nearestAirport": {
+        "code": "PDX",
+        "name": "Portland (OR)",
+        "distanceKm": 16
+      },
+      "categories": {
+        "amenities": 74,
+        "economy": 70,
+        "education": 50,
+        "environment": 77,
+        "health": 57,
+        "housing": 57,
+        "safety": 37,
+        "transportation": 63
+      },
+      "topCategories": [
+        "Environment",
+        "Amenities",
+        "Economy"
+      ]
     },
     {
       "name": "Aurora",
       "state": "CO",
-      "livScore": 699
+      "livScore": 699,
+      "livability": {
+        "medianHomeValue": 493736,
+        "medianIncome": 91862,
+        "medianRent": 1758,
+        "medianPropertyTax": 2851,
+        "avgCommute": 26,
+        "avgTempHighF": 64,
+        "avgTempLowF": 36,
+        "annualRainfallIn": 16,
+        "annualSnowfallIn": 54
+      },
+      "population": 408729,
+      "nearestAirport": {
+        "code": "DEN",
+        "name": "Denver",
+        "distanceKm": 19
+      },
+      "categories": {
+        "amenities": 67,
+        "economy": 80,
+        "education": 61,
+        "environment": 52,
+        "health": 70,
+        "housing": 64,
+        "safety": 29,
+        "transportation": 63
+      },
+      "topCategories": [
+        "Economy",
+        "Health",
+        "Amenities"
+      ]
     },
     {
       "name": "Asheville",
       "state": "NC",
-      "livScore": 699
+      "livScore": 699,
+      "livability": {
+        "medianHomeValue": 407100,
+        "medianIncome": 70970,
+        "medianRent": 1267,
+        "medianPropertyTax": 1953,
+        "avgCommute": 17,
+        "avgTempHighF": 67,
+        "avgTempLowF": 45,
+        "annualRainfallIn": 40,
+        "annualSnowfallIn": 18
+      },
+      "population": 96701,
+      "nearestAirport": {
+        "code": "AVL",
+        "name": "Asheville Regional",
+        "distanceKm": 18
+      },
+      "categories": {
+        "amenities": 69,
+        "economy": 57,
+        "education": 68,
+        "environment": 79,
+        "health": 51,
+        "housing": 63,
+        "safety": 27,
+        "transportation": 68
+      },
+      "topCategories": [
+        "Environment",
+        "Amenities",
+        "Education"
+      ]
     },
     {
       "name": "Colorado Springs",
       "state": "CO",
-      "livScore": 698
+      "livScore": 698,
+      "livability": {
+        "medianHomeValue": 467431,
+        "medianIncome": 89455,
+        "medianRent": 1567,
+        "medianPropertyTax": 2680,
+        "avgCommute": 20,
+        "avgTempHighF": 61,
+        "avgTempLowF": 35,
+        "annualRainfallIn": 19,
+        "annualSnowfallIn": 59
+      },
+      "population": 494607,
+      "nearestAirport": {
+        "code": "DEN",
+        "name": "Denver",
+        "distanceKm": 114
+      },
+      "categories": {
+        "amenities": 61,
+        "economy": 63,
+        "education": 71,
+        "environment": 44,
+        "health": 55,
+        "housing": 74,
+        "safety": 37,
+        "transportation": 74
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Transportation",
+        "Education"
+      ]
     },
     {
       "name": "Kennewick",
       "state": "WA",
-      "livScore": 697
+      "livScore": 697,
+      "livability": {
+        "medianHomeValue": 381322,
+        "medianIncome": 81978,
+        "medianRent": 1211,
+        "medianPropertyTax": 2796,
+        "avgCommute": 17,
+        "avgTempHighF": 65,
+        "avgTempLowF": 42,
+        "annualRainfallIn": 8,
+        "annualSnowfallIn": 3
+      },
+      "population": 87790,
+      "nearestAirport": {
+        "code": "PDX",
+        "name": "Portland (OR)",
+        "distanceKm": 278
+      },
+      "categories": {
+        "amenities": 54,
+        "economy": 58,
+        "education": 49,
+        "environment": 74,
+        "health": 47,
+        "housing": 70,
+        "safety": 44,
+        "transportation": 68
+      },
+      "topCategories": [
+        "Environment",
+        "Housing & Cost of Living",
+        "Transportation"
+      ]
     },
     {
       "name": "Eugene",
       "state": "OR",
-      "livScore": 696
+      "livScore": 696,
+      "livability": {
+        "medianHomeValue": 455903,
+        "medianIncome": 68020,
+        "medianRent": 1280,
+        "medianPropertyTax": 1990,
+        "avgCommute": 16,
+        "avgTempHighF": 63,
+        "avgTempLowF": 42,
+        "annualRainfallIn": 46,
+        "annualSnowfallIn": 5
+      },
+      "population": 179748,
+      "nearestAirport": {
+        "code": "PDX",
+        "name": "Portland (OR)",
+        "distanceKm": 175
+      },
+      "categories": {
+        "amenities": 73,
+        "economy": 53,
+        "education": 63,
+        "environment": 76,
+        "health": 51,
+        "housing": 58,
+        "safety": 45,
+        "transportation": 63
+      },
+      "topCategories": [
+        "Environment",
+        "Amenities",
+        "Education"
+      ]
     },
     {
       "name": "Bethlehem",
       "state": "PA",
-      "livScore": 696
+      "livScore": 696,
+      "livability": {
+        "medianHomeValue": 249745,
+        "medianIncome": 69628,
+        "medianRent": 1143,
+        "medianPropertyTax": 1959,
+        "avgCommute": 18,
+        "avgTempHighF": 62,
+        "avgTempLowF": 41,
+        "annualRainfallIn": 47,
+        "annualSnowfallIn": 33
+      },
+      "population": 80677,
+      "nearestAirport": {
+        "code": "PHL",
+        "name": "Philadelphia",
+        "distanceKm": 83
+      },
+      "categories": {
+        "amenities": 72,
+        "economy": 61,
+        "education": 73,
+        "environment": 26,
+        "health": 55,
+        "housing": 64,
+        "safety": 62,
+        "transportation": 52
+      },
+      "topCategories": [
+        "Education",
+        "Amenities",
+        "Housing & Cost of Living"
+      ]
     },
     {
       "name": "Tempe",
       "state": "AZ",
-      "livScore": 692
+      "livScore": 692,
+      "livability": {
+        "medianHomeValue": 465197,
+        "medianIncome": 83353,
+        "medianRent": 1634,
+        "medianPropertyTax": 1654,
+        "avgCommute": 20,
+        "avgTempHighF": 87,
+        "avgTempLowF": 57,
+        "annualRainfallIn": 9,
+        "annualSnowfallIn": 0
+      },
+      "population": 184075,
+      "nearestAirport": {
+        "code": "PHX",
+        "name": "Phoenix Sky Harbor",
+        "distanceKm": 6
+      },
+      "categories": {
+        "amenities": 79,
+        "economy": 78,
+        "education": 66,
+        "environment": 16,
+        "health": 74,
+        "housing": 71,
+        "safety": 35,
+        "transportation": 62
+      },
+      "topCategories": [
+        "Amenities",
+        "Economy",
+        "Health"
+      ]
     },
     {
       "name": "Danbury",
       "state": "CT",
-      "livScore": 690
+      "livScore": 690,
+      "livability": {
+        "medianHomeValue": 392848,
+        "medianIncome": 91100,
+        "medianRent": 1679,
+        "medianPropertyTax": 2492,
+        "avgCommute": 24,
+        "avgTempHighF": 60,
+        "avgTempLowF": 40,
+        "annualRainfallIn": 51,
+        "annualSnowfallIn": 50
+      },
+      "population": 87191,
+      "nearestAirport": {
+        "code": "BDL",
+        "name": "Hartford Bradley",
+        "distanceKm": 88
+      },
+      "categories": {
+        "amenities": 69,
+        "economy": 72,
+        "education": 52,
+        "environment": 31,
+        "health": 69,
+        "housing": 59,
+        "safety": 68,
+        "transportation": 50
+      },
+      "topCategories": [
+        "Economy",
+        "Amenities",
+        "Health"
+      ]
     },
     {
       "name": "Bloomington",
       "state": "IN",
-      "livScore": 690
+      "livScore": 690,
+      "livability": {
+        "medianHomeValue": 448943,
+        "medianIncome": 49926,
+        "medianRent": 972,
+        "medianPropertyTax": 1257,
+        "avgCommute": 14,
+        "avgTempHighF": 64,
+        "avgTempLowF": 43,
+        "annualRainfallIn": 47,
+        "annualSnowfallIn": 15
+      },
+      "population": 80814,
+      "nearestAirport": {
+        "code": "IND",
+        "name": "Indianapolis",
+        "distanceKm": 65
+      },
+      "categories": {
+        "amenities": 63,
+        "economy": 51,
+        "education": 69,
+        "environment": 52,
+        "health": 57,
+        "housing": 70,
+        "safety": 46,
+        "transportation": 70
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Transportation",
+        "Education"
+      ]
     },
     {
       "name": "Fayetteville",
       "state": "AR",
-      "livScore": 689
+      "livScore": 689,
+      "livability": {
+        "medianHomeValue": 318319,
+        "medianIncome": 61917,
+        "medianRent": 870,
+        "medianPropertyTax": 1676,
+        "avgCommute": 17,
+        "avgTempHighF": 68,
+        "avgTempLowF": 47,
+        "annualRainfallIn": 46,
+        "annualSnowfallIn": 5
+      },
+      "population": 102767,
+      "nearestAirport": {
+        "code": "TUL",
+        "name": "Tulsa",
+        "distanceKm": 156
+      },
+      "categories": {
+        "amenities": 61,
+        "economy": 42,
+        "education": 59,
+        "environment": 70,
+        "health": 57,
+        "housing": 60,
+        "safety": 34,
+        "transportation": 73
+      },
+      "topCategories": [
+        "Transportation",
+        "Environment",
+        "Amenities"
+      ]
     },
     {
       "name": "Nampa",
       "state": "ID",
-      "livScore": 687
+      "livScore": 687,
+      "livability": {
+        "medianHomeValue": 393920,
+        "medianIncome": 75300,
+        "medianRent": 1257,
+        "medianPropertyTax": 2877,
+        "avgCommute": 23,
+        "avgTempHighF": 65,
+        "avgTempLowF": 38,
+        "annualRainfallIn": 11,
+        "annualSnowfallIn": 9
+      },
+      "population": 120466,
+      "nearestAirport": {
+        "code": "BOI",
+        "name": "Boise",
+        "distanceKm": 27
+      },
+      "categories": {
+        "amenities": 49,
+        "economy": 59,
+        "education": 45,
+        "environment": 74,
+        "health": 50,
+        "housing": 58,
+        "safety": 53,
+        "transportation": 73
+      },
+      "topCategories": [
+        "Environment",
+        "Transportation",
+        "Economy"
+      ]
     },
     {
       "name": "Lynchburg",
       "state": "VA",
-      "livScore": 687
+      "livScore": 687,
+      "livability": {
+        "medianHomeValue": 227528,
+        "medianIncome": 60626,
+        "medianRent": 908,
+        "medianPropertyTax": 1829,
+        "avgCommute": 15,
+        "avgTempHighF": 67,
+        "avgTempLowF": 43,
+        "annualRainfallIn": 42,
+        "annualSnowfallIn": 13
+      },
+      "population": 80704,
+      "nearestAirport": {
+        "code": "RIC",
+        "name": "Richmond",
+        "distanceKm": 161
+      },
+      "categories": {
+        "amenities": 48,
+        "economy": 47,
+        "education": 48,
+        "environment": 76,
+        "health": 42,
+        "housing": 70,
+        "safety": 48,
+        "transportation": 71
+      },
+      "topCategories": [
+        "Environment",
+        "Transportation",
+        "Housing & Cost of Living"
+      ]
     },
     {
       "name": "Minneapolis",
       "state": "MN",
-      "livScore": 685
+      "livScore": 685,
+      "livability": {
+        "medianHomeValue": 361884,
+        "medianIncome": 85510,
+        "medianRent": 1265,
+        "medianPropertyTax": 2000,
+        "avgCommute": 20,
+        "avgTempHighF": 56,
+        "avgTempLowF": 37,
+        "annualRainfallIn": 32,
+        "annualSnowfallIn": 53
+      },
+      "population": 433823,
+      "nearestAirport": {
+        "code": "MSP",
+        "name": "Minneapolis-Saint Paul",
+        "distanceKm": 11
+      },
+      "categories": {
+        "amenities": 86,
+        "economy": 72,
+        "education": 62,
+        "environment": 31,
+        "health": 79,
+        "housing": 60,
+        "safety": 24,
+        "transportation": 44
+      },
+      "topCategories": [
+        "Amenities",
+        "Health",
+        "Economy"
+      ]
     },
     {
       "name": "Spokane",
       "state": "WA",
-      "livScore": 683
+      "livScore": 683,
+      "livability": {
+        "medianHomeValue": 404436,
+        "medianIncome": 70190,
+        "medianRent": 1135,
+        "medianPropertyTax": 2276,
+        "avgCommute": 19,
+        "avgTempHighF": 59,
+        "avgTempLowF": 38,
+        "annualRainfallIn": 17,
+        "annualSnowfallIn": 33
+      },
+      "population": 230407,
+      "nearestAirport": {
+        "code": "SEA",
+        "name": "Seattle-Tacoma",
+        "distanceKm": 367
+      },
+      "categories": {
+        "amenities": 69,
+        "economy": 66,
+        "education": 60,
+        "environment": 64,
+        "health": 47,
+        "housing": 65,
+        "safety": 30,
+        "transportation": 62
+      },
+      "topCategories": [
+        "Amenities",
+        "Economy",
+        "Housing & Cost of Living"
+      ]
     },
     {
       "name": "Richmond",
       "state": "VA",
-      "livScore": 680
+      "livScore": 680,
+      "livability": {
+        "medianHomeValue": 354664,
+        "medianIncome": 69015,
+        "medianRent": 1284,
+        "medianPropertyTax": 1633,
+        "avgCommute": 20,
+        "avgTempHighF": 69,
+        "avgTempLowF": 47,
+        "annualRainfallIn": 44,
+        "annualSnowfallIn": 10
+      },
+      "population": 234941,
+      "nearestAirport": {
+        "code": "RIC",
+        "name": "Richmond",
+        "distanceKm": 11
+      },
+      "categories": {
+        "amenities": 75,
+        "economy": 63,
+        "education": 45,
+        "environment": 69,
+        "health": 53,
+        "housing": 62,
+        "safety": 41,
+        "transportation": 52
+      },
+      "topCategories": [
+        "Amenities",
+        "Environment",
+        "Economy"
+      ]
     },
     {
       "name": "Duluth",
       "state": "MN",
-      "livScore": 679
+      "livScore": 679,
+      "livability": {
+        "medianHomeValue": 234322,
+        "medianIncome": 65743,
+        "medianRent": 929,
+        "medianPropertyTax": 2190,
+        "avgCommute": 16,
+        "avgTempHighF": 48,
+        "avgTempLowF": 30,
+        "annualRainfallIn": 31,
+        "annualSnowfallIn": 75
+      },
+      "population": 82160,
+      "nearestAirport": {
+        "code": "MSP",
+        "name": "Minneapolis-Saint Paul",
+        "distanceKm": 228
+      },
+      "categories": {
+        "amenities": 50,
+        "economy": 56,
+        "education": 66,
+        "environment": 40,
+        "health": 54,
+        "housing": 62,
+        "safety": 50,
+        "transportation": 67
+      },
+      "topCategories": [
+        "Transportation",
+        "Education",
+        "Housing & Cost of Living"
+      ]
     },
     {
       "name": "Louisville",
       "state": "KY",
-      "livScore": 678
+      "livScore": 678,
+      "livability": {
+        "medianHomeValue": 247510,
+        "medianIncome": 77179,
+        "medianRent": 971,
+        "medianPropertyTax": 2909,
+        "avgCommute": 22,
+        "avgTempHighF": 67,
+        "avgTempLowF": 47,
+        "annualRainfallIn": 47,
+        "annualSnowfallIn": 15
+      },
+      "population": 396724,
+      "nearestAirport": {
+        "code": "CVG",
+        "name": "Cincinnati/Northern Kentucky",
+        "distanceKm": 130
+      },
+      "categories": {
+        "amenities": 58,
+        "economy": 68,
+        "education": 50,
+        "environment": 44,
+        "health": 56,
+        "housing": 57,
+        "safety": 38,
+        "transportation": 69
+      },
+      "topCategories": [
+        "Transportation",
+        "Economy",
+        "Amenities"
+      ]
     },
     {
       "name": "Winston-Salem",
       "state": "NC",
-      "livScore": 676
+      "livScore": 676,
+      "livability": {
+        "medianHomeValue": 244376,
+        "medianIncome": 62029,
+        "medianRent": 930,
+        "medianPropertyTax": 2140,
+        "avgCommute": 18,
+        "avgTempHighF": 70,
+        "avgTempLowF": 49,
+        "annualRainfallIn": 45,
+        "annualSnowfallIn": 3
+      },
+      "population": 259598,
+      "nearestAirport": {
+        "code": "CLT",
+        "name": "Charlotte Douglas",
+        "distanceKm": 117
+      },
+      "categories": {
+        "amenities": 58,
+        "economy": 48,
+        "education": 53,
+        "environment": 78,
+        "health": 48,
+        "housing": 56,
+        "safety": 32,
+        "transportation": 71
+      },
+      "topCategories": [
+        "Environment",
+        "Transportation",
+        "Amenities"
+      ]
     },
     {
       "name": "Tyler",
       "state": "TX",
-      "livScore": 676
+      "livScore": 676,
+      "livability": {
+        "medianHomeValue": 228736,
+        "medianIncome": 67319,
+        "medianRent": 1101,
+        "medianPropertyTax": 2133,
+        "avgCommute": 18,
+        "avgTempHighF": 77,
+        "avgTempLowF": 55,
+        "annualRainfallIn": 46,
+        "annualSnowfallIn": 1
+      },
+      "population": 108570,
+      "nearestAirport": {
+        "code": "DFW",
+        "name": "Dallas/Fort Worth",
+        "distanceKm": 174
+      },
+      "categories": {
+        "amenities": 47,
+        "economy": 60,
+        "education": 52,
+        "environment": 73,
+        "health": 40,
+        "housing": 72,
+        "safety": 39,
+        "transportation": 63
+      },
+      "topCategories": [
+        "Environment",
+        "Housing & Cost of Living",
+        "Transportation"
+      ]
     },
     {
       "name": "Huntsville",
       "state": "AL",
-      "livScore": 674
+      "livScore": 674,
+      "livability": {
+        "medianHomeValue": 302276,
+        "medianIncome": 77753,
+        "medianRent": 1069,
+        "medianPropertyTax": 2410,
+        "avgCommute": 19,
+        "avgTempHighF": 72,
+        "avgTempLowF": 49,
+        "annualRainfallIn": 55,
+        "annualSnowfallIn": 3
+      },
+      "population": 233615,
+      "nearestAirport": {
+        "code": "BHM",
+        "name": "Birmingham-Shuttlesworth",
+        "distanceKm": 131
+      },
+      "categories": {
+        "amenities": 51,
+        "economy": 48,
+        "education": 46,
+        "environment": 59,
+        "health": 48,
+        "housing": 79,
+        "safety": 52,
+        "transportation": 56
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Environment",
+        "Transportation"
+      ]
     },
     {
       "name": "Greensboro",
       "state": "NC",
-      "livScore": 674
+      "livScore": 674,
+      "livability": {
+        "medianHomeValue": 236451,
+        "medianIncome": 62864,
+        "medianRent": 1033,
+        "medianPropertyTax": 1979,
+        "avgCommute": 18,
+        "avgTempHighF": 70,
+        "avgTempLowF": 49,
+        "annualRainfallIn": 44,
+        "annualSnowfallIn": 6
+      },
+      "population": 310878,
+      "nearestAirport": {
+        "code": "RDU",
+        "name": "Raleigh-Durham",
+        "distanceKm": 93
+      },
+      "categories": {
+        "amenities": 66,
+        "economy": 45,
+        "education": 49,
+        "environment": 77,
+        "health": 52,
+        "housing": 54,
+        "safety": 33,
+        "transportation": 70
+      },
+      "topCategories": [
+        "Environment",
+        "Transportation",
+        "Amenities"
+      ]
     },
     {
       "name": "Tampa",
       "state": "FL",
-      "livScore": 673
+      "livScore": 673,
+      "livability": {
+        "medianHomeValue": 414677,
+        "medianIncome": 79670,
+        "medianRent": 1626,
+        "medianPropertyTax": 2103,
+        "avgCommute": 22,
+        "avgTempHighF": 82,
+        "avgTempLowF": 65,
+        "annualRainfallIn": 48,
+        "annualSnowfallIn": 0
+      },
+      "population": 422810,
+      "nearestAirport": {
+        "code": "TPA",
+        "name": "Tampa",
+        "distanceKm": 8
+      },
+      "categories": {
+        "amenities": 75,
+        "economy": 74,
+        "education": 53,
+        "environment": 26,
+        "health": 57,
+        "housing": 72,
+        "safety": 47,
+        "transportation": 59
+      },
+      "topCategories": [
+        "Amenities",
+        "Economy",
+        "Housing & Cost of Living"
+      ]
     },
     {
       "name": "Salem",
       "state": "OR",
-      "livScore": 671
+      "livScore": 671,
+      "livability": {
+        "medianHomeValue": 391619,
+        "medianIncome": 76877,
+        "medianRent": 1235,
+        "medianPropertyTax": 2390,
+        "avgCommute": 17,
+        "avgTempHighF": 63,
+        "avgTempLowF": 42,
+        "annualRainfallIn": 40,
+        "annualSnowfallIn": 6
+      },
+      "population": 182504,
+      "nearestAirport": {
+        "code": "PDX",
+        "name": "Portland (OR)",
+        "distanceKm": 80
+      },
+      "categories": {
+        "amenities": 68,
+        "economy": 44,
+        "education": 48,
+        "environment": 75,
+        "health": 45,
+        "housing": 57,
+        "safety": 48,
+        "transportation": 66
+      },
+      "topCategories": [
+        "Environment",
+        "Amenities",
+        "Transportation"
+      ]
     },
     {
       "name": "Manchester",
       "state": "NH",
-      "livScore": 669
+      "livScore": 669,
+      "livability": {
+        "medianHomeValue": 371951,
+        "medianIncome": 86419,
+        "medianRent": 1442,
+        "medianPropertyTax": 1894,
+        "avgCommute": 20,
+        "avgTempHighF": 58,
+        "avgTempLowF": 38,
+        "annualRainfallIn": 43,
+        "annualSnowfallIn": 57
+      },
+      "population": 119382,
+      "nearestAirport": {
+        "code": "MHT",
+        "name": "Manchester-Boston Regional",
+        "distanceKm": 7
+      },
+      "categories": {
+        "amenities": 71,
+        "economy": 58,
+        "education": 63,
+        "environment": 39,
+        "health": 53,
+        "housing": 63,
+        "safety": 48,
+        "transportation": 51
+      },
+      "topCategories": [
+        "Amenities",
+        "Education",
+        "Housing & Cost of Living"
+      ]
     },
     {
       "name": "Auburn",
       "state": "AL",
-      "livScore": 666
+      "livScore": 666,
+      "livability": {
+        "medianHomeValue": 318639,
+        "medianIncome": 54092,
+        "medianRent": 861,
+        "medianPropertyTax": 1950,
+        "avgCommute": 15,
+        "avgTempHighF": 75,
+        "avgTempLowF": 52,
+        "annualRainfallIn": 53,
+        "annualSnowfallIn": 1
+      },
+      "population": 82239,
+      "nearestAirport": {
+        "code": "ATL",
+        "name": "Atlanta Hartsfield-Jackson",
+        "distanceKm": 151
+      },
+      "categories": {
+        "amenities": 43,
+        "economy": 46,
+        "education": 56,
+        "environment": 58,
+        "health": 53,
+        "housing": 78,
+        "safety": 64,
+        "transportation": 53
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Safety",
+        "Environment"
+      ]
     },
     {
       "name": "Columbia",
       "state": "MO",
-      "livScore": 663
+      "livScore": 663,
+      "livability": {
+        "medianHomeValue": 273349,
+        "medianIncome": 67254,
+        "medianRent": 925,
+        "medianPropertyTax": 2000,
+        "avgCommute": 14,
+        "avgTempHighF": 66,
+        "avgTempLowF": 46,
+        "annualRainfallIn": 46,
+        "annualSnowfallIn": 15
+      },
+      "population": 132353,
+      "nearestAirport": {
+        "code": "STL",
+        "name": "Saint Louis Lambert",
+        "distanceKm": 172
+      },
+      "categories": {
+        "amenities": 50,
+        "economy": 51,
+        "education": 55,
+        "environment": 37,
+        "health": 57,
+        "housing": 67,
+        "safety": 44,
+        "transportation": 69
+      },
+      "topCategories": [
+        "Transportation",
+        "Housing & Cost of Living",
+        "Health"
+      ]
     },
     {
       "name": "Billings",
       "state": "MT",
-      "livScore": 663
+      "livScore": 663,
+      "livability": {
+        "medianHomeValue": 341146,
+        "medianIncome": 75202,
+        "medianRent": 957,
+        "medianPropertyTax": 2559,
+        "avgCommute": 19,
+        "avgTempHighF": 61,
+        "avgTempLowF": 36,
+        "annualRainfallIn": 14,
+        "annualSnowfallIn": 51
+      },
+      "population": 121680,
+      "nearestAirport": {
+        "code": "BIL",
+        "name": "Billings Logan",
+        "distanceKm": 4
+      },
+      "categories": {
+        "amenities": 51,
+        "economy": 59,
+        "education": 56,
+        "environment": 52,
+        "health": 48,
+        "housing": 67,
+        "safety": 32,
+        "transportation": 65
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Transportation",
+        "Economy"
+      ]
     },
     {
       "name": "Wichita",
       "state": "KS",
-      "livScore": 662
+      "livScore": 662,
+      "livability": {
+        "medianHomeValue": 191957,
+        "medianIncome": 64103,
+        "medianRent": 751,
+        "medianPropertyTax": 2351,
+        "avgCommute": 17,
+        "avgTempHighF": 68,
+        "avgTempLowF": 46,
+        "annualRainfallIn": 34,
+        "annualSnowfallIn": 13
+      },
+      "population": 409257,
+      "nearestAirport": {
+        "code": "ICT",
+        "name": "Wichita Eisenhower",
+        "distanceKm": 10
+      },
+      "categories": {
+        "amenities": 54,
+        "economy": 49,
+        "education": 52,
+        "environment": 57,
+        "health": 48,
+        "housing": 66,
+        "safety": 31,
+        "transportation": 68
+      },
+      "topCategories": [
+        "Transportation",
+        "Housing & Cost of Living",
+        "Environment"
+      ]
     },
     {
       "name": "Davenport",
       "state": "IA",
-      "livScore": 662
+      "livScore": 662,
+      "livability": {
+        "medianHomeValue": 164976,
+        "medianIncome": 66152,
+        "medianRent": 810,
+        "medianPropertyTax": 2309,
+        "avgCommute": 17,
+        "avgTempHighF": 60,
+        "avgTempLowF": 42,
+        "annualRainfallIn": 37,
+        "annualSnowfallIn": 28
+      },
+      "population": 102349,
+      "nearestAirport": {
+        "code": "ORD",
+        "name": "Chicago O'Hare",
+        "distanceKm": 227
+      },
+      "categories": {
+        "amenities": 65,
+        "economy": 54,
+        "education": 48,
+        "environment": 49,
+        "health": 55,
+        "housing": 70,
+        "safety": 30,
+        "transportation": 55
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Amenities",
+        "Health"
+      ]
     },
     {
       "name": "Murfreesboro",
       "state": "TN",
-      "livScore": 661
+      "livScore": 661,
+      "livability": {
+        "medianHomeValue": 398921,
+        "medianIncome": 83708,
+        "medianRent": 1394,
+        "medianPropertyTax": 2395,
+        "avgCommute": 21,
+        "avgTempHighF": 70,
+        "avgTempLowF": 45,
+        "annualRainfallIn": 53,
+        "annualSnowfallIn": 3
+      },
+      "population": 173651,
+      "nearestAirport": {
+        "code": "BNA",
+        "name": "Nashville",
+        "distanceKm": 40
+      },
+      "categories": {
+        "amenities": 50,
+        "economy": 52,
+        "education": 45,
+        "environment": 59,
+        "health": 47,
+        "housing": 71,
+        "safety": 46,
+        "transportation": 74
+      },
+      "topCategories": [
+        "Transportation",
+        "Housing & Cost of Living",
+        "Environment"
+      ]
     },
     {
       "name": "Lynn",
       "state": "MA",
-      "livScore": 661
+      "livScore": 661,
+      "livability": {
+        "medianHomeValue": 473051,
+        "medianIncome": 79690,
+        "medianRent": 1498,
+        "medianPropertyTax": 2104,
+        "avgCommute": 29,
+        "avgTempHighF": 58,
+        "avgTempLowF": 41,
+        "annualRainfallIn": 49,
+        "annualSnowfallIn": 43
+      },
+      "population": 102088,
+      "nearestAirport": {
+        "code": "BOS",
+        "name": "Boston Logan",
+        "distanceKm": 12
+      },
+      "categories": {
+        "amenities": 80,
+        "economy": 69,
+        "education": 57,
+        "environment": 36,
+        "health": 62,
+        "housing": 54,
+        "safety": 51,
+        "transportation": 44
+      },
+      "topCategories": [
+        "Amenities",
+        "Economy",
+        "Health"
+      ]
     },
     {
       "name": "Abilene",
       "state": "TX",
-      "livScore": 659
+      "livScore": 659,
+      "livability": {
+        "medianHomeValue": 182377,
+        "medianIncome": 64437,
+        "medianRent": 1026,
+        "medianPropertyTax": 2173,
+        "avgCommute": 14,
+        "avgTempHighF": 77,
+        "avgTempLowF": 52,
+        "annualRainfallIn": 26,
+        "annualSnowfallIn": 5
+      },
+      "population": 129318,
+      "nearestAirport": {
+        "code": "DFW",
+        "name": "Dallas/Fort Worth",
+        "distanceKm": 258
+      },
+      "categories": {
+        "amenities": 48,
+        "economy": 52,
+        "education": 47,
+        "environment": 64,
+        "health": 37,
+        "housing": 76,
+        "safety": 45,
+        "transportation": 66
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Transportation",
+        "Environment"
+      ]
     },
     {
       "name": "Worcester",
       "state": "MA",
-      "livScore": 656
+      "livScore": 656,
+      "livability": {
+        "medianHomeValue": 350645,
+        "medianIncome": 72873,
+        "medianRent": 1266,
+        "medianPropertyTax": 1735,
+        "avgCommute": 20,
+        "avgTempHighF": 58,
+        "avgTempLowF": 41,
+        "annualRainfallIn": 48,
+        "annualSnowfallIn": 59
+      },
+      "population": 212034,
+      "nearestAirport": {
+        "code": "BOS",
+        "name": "Boston Logan",
+        "distanceKm": 66
+      },
+      "categories": {
+        "amenities": 78,
+        "economy": 56,
+        "education": 62,
+        "environment": 33,
+        "health": 52,
+        "housing": 54,
+        "safety": 48,
+        "transportation": 55
+      },
+      "topCategories": [
+        "Amenities",
+        "Education",
+        "Economy"
+      ]
     },
     {
       "name": "Champaign",
       "state": "IL",
-      "livScore": 655
+      "livScore": 655,
+      "livability": {
+        "medianHomeValue": 199871,
+        "medianIncome": 53205,
+        "medianRent": 880,
+        "medianPropertyTax": 1649,
+        "avgCommute": 14,
+        "avgTempHighF": 62,
+        "avgTempLowF": 41,
+        "annualRainfallIn": 41,
+        "annualSnowfallIn": 23
+      },
+      "population": 92960,
+      "nearestAirport": {
+        "code": "IND",
+        "name": "Indianapolis",
+        "distanceKm": 172
+      },
+      "categories": {
+        "amenities": 53,
+        "economy": 41,
+        "education": 60,
+        "environment": 53,
+        "health": 50,
+        "housing": 74,
+        "safety": 46,
+        "transportation": 54
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Education",
+        "Transportation"
+      ]
     },
     {
       "name": "Wilmington",
       "state": "NC",
-      "livScore": 653
+      "livScore": 653,
+      "livability": {
+        "medianHomeValue": 365418,
+        "medianIncome": 67477,
+        "medianRent": 1322,
+        "medianPropertyTax": 1933,
+        "avgCommute": 16,
+        "avgTempHighF": 74,
+        "avgTempLowF": 53,
+        "annualRainfallIn": 58,
+        "annualSnowfallIn": 2
+      },
+      "population": 122944,
+      "nearestAirport": {
+        "code": "RDU",
+        "name": "Raleigh-Durham",
+        "distanceKm": 198
+      },
+      "categories": {
+        "amenities": 59,
+        "economy": 56,
+        "education": 62,
+        "environment": 53,
+        "health": 46,
+        "housing": 63,
+        "safety": 39,
+        "transportation": 64
+      },
+      "topCategories": [
+        "Transportation",
+        "Housing & Cost of Living",
+        "Education"
+      ]
     },
     {
       "name": "Redding",
       "state": "CA",
-      "livScore": 653
+      "livScore": 653,
+      "livability": {
+        "medianHomeValue": 362940,
+        "medianIncome": 74691,
+        "medianRent": 1166,
+        "medianPropertyTax": 2264,
+        "avgCommute": 13,
+        "avgTempHighF": 75,
+        "avgTempLowF": 51,
+        "annualRainfallIn": 43,
+        "annualSnowfallIn": 0
+      },
+      "population": 92697,
+      "nearestAirport": {
+        "code": "SFO",
+        "name": "San Francisco",
+        "distanceKm": 330
+      },
+      "categories": {
+        "amenities": 51,
+        "economy": 49,
+        "education": 45,
+        "environment": 75,
+        "health": 43,
+        "housing": 56,
+        "safety": 38,
+        "transportation": 64
+      },
+      "topCategories": [
+        "Environment",
+        "Transportation",
+        "Housing & Cost of Living"
+      ]
     },
     {
       "name": "Peoria",
       "state": "IL",
-      "livScore": 651
+      "livScore": 651,
+      "livability": {
+        "medianHomeValue": 151100,
+        "medianIncome": 60353,
+        "medianRent": 725,
+        "medianPropertyTax": 2195,
+        "avgCommute": 14,
+        "avgTempHighF": 62,
+        "avgTempLowF": 42,
+        "annualRainfallIn": 38,
+        "annualSnowfallIn": 24
+      },
+      "population": 113758,
+      "nearestAirport": {
+        "code": "ORD",
+        "name": "Chicago O'Hare",
+        "distanceKm": 200
+      },
+      "categories": {
+        "amenities": 56,
+        "economy": 53,
+        "education": 47,
+        "environment": 50,
+        "health": 48,
+        "housing": 81,
+        "safety": 29,
+        "transportation": 55
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Amenities",
+        "Transportation"
+      ]
     },
     {
       "name": "Knoxville",
       "state": "TN",
-      "livScore": 648
+      "livScore": 648,
+      "livability": {
+        "medianHomeValue": 276074,
+        "medianIncome": 56331,
+        "medianRent": 1086,
+        "medianPropertyTax": 1809,
+        "avgCommute": 20,
+        "avgTempHighF": 69,
+        "avgTempLowF": 46,
+        "annualRainfallIn": 51,
+        "annualSnowfallIn": 7
+      },
+      "population": 206721,
+      "nearestAirport": {
+        "code": "AVL",
+        "name": "Asheville Regional",
+        "distanceKm": 138
+      },
+      "categories": {
+        "amenities": 61,
+        "economy": 56,
+        "education": 41,
+        "environment": 63,
+        "health": 48,
+        "housing": 76,
+        "safety": 28,
+        "transportation": 67
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Transportation",
+        "Environment"
+      ]
     },
     {
       "name": "Green Bay",
       "state": "WI",
-      "livScore": 648
+      "livScore": 648,
+      "livability": {
+        "medianHomeValue": 206179,
+        "medianIncome": 64982,
+        "medianRent": 829,
+        "medianPropertyTax": 2161,
+        "avgCommute": 16,
+        "avgTempHighF": 54,
+        "avgTempLowF": 35,
+        "annualRainfallIn": 30,
+        "annualSnowfallIn": 51
+      },
+      "population": 106231,
+      "nearestAirport": {
+        "code": "MKE",
+        "name": "Milwaukee Mitchell",
+        "distanceKm": 174
+      },
+      "categories": {
+        "amenities": 60,
+        "economy": 42,
+        "education": 51,
+        "environment": 42,
+        "health": 51,
+        "housing": 52,
+        "safety": 50,
+        "transportation": 61
+      },
+      "topCategories": [
+        "Transportation",
+        "Amenities",
+        "Housing & Cost of Living"
+      ]
     },
     {
       "name": "Columbia",
       "state": "SC",
-      "livScore": 646
+      "livScore": 646,
+      "livability": {
+        "medianHomeValue": 249080,
+        "medianIncome": 57568,
+        "medianRent": 1022,
+        "medianPropertyTax": 1771,
+        "avgCommute": 16,
+        "avgTempHighF": 77,
+        "avgTempLowF": 54,
+        "annualRainfallIn": 46,
+        "annualSnowfallIn": 1
+      },
+      "population": 147198,
+      "nearestAirport": {
+        "code": "CLT",
+        "name": "Charlotte Douglas",
+        "distanceKm": 135
+      },
+      "categories": {
+        "amenities": 60,
+        "economy": 53,
+        "education": 49,
+        "environment": 62,
+        "health": 48,
+        "housing": 63,
+        "safety": 31,
+        "transportation": 65
+      },
+      "topCategories": [
+        "Transportation",
+        "Housing & Cost of Living",
+        "Environment"
+      ]
     },
     {
       "name": "Athens",
       "state": "GA",
-      "livScore": 646
+      "livScore": 646,
+      "livability": {
+        "medianHomeValue": 258778,
+        "medianIncome": 54378,
+        "medianRent": 1003,
+        "medianPropertyTax": 1593,
+        "avgCommute": 16,
+        "avgTempHighF": 73,
+        "avgTempLowF": 51,
+        "annualRainfallIn": 48,
+        "annualSnowfallIn": 2
+      },
+      "population": 129466,
+      "nearestAirport": {
+        "code": "ATL",
+        "name": "Atlanta Hartsfield-Jackson",
+        "distanceKm": 103
+      },
+      "categories": {
+        "amenities": 54,
+        "economy": 48,
+        "education": 45,
+        "environment": 71,
+        "health": 48,
+        "housing": 59,
+        "safety": 38,
+        "transportation": 71
+      },
+      "topCategories": [
+        "Environment",
+        "Transportation",
+        "Housing & Cost of Living"
+      ]
     },
     {
       "name": "Tulsa",
       "state": "OK",
-      "livScore": 644
+      "livScore": 644,
+      "livability": {
+        "medianHomeValue": 213956,
+        "medianIncome": 59104,
+        "medianRent": 864,
+        "medianPropertyTax": 2031,
+        "avgCommute": 17,
+        "avgTempHighF": 71,
+        "avgTempLowF": 49,
+        "annualRainfallIn": 42,
+        "annualSnowfallIn": 12
+      },
+      "population": 425712,
+      "nearestAirport": {
+        "code": "TUL",
+        "name": "Tulsa",
+        "distanceKm": 11
+      },
+      "categories": {
+        "amenities": 61,
+        "economy": 59,
+        "education": 43,
+        "environment": 56,
+        "health": 43,
+        "housing": 69,
+        "safety": 22,
+        "transportation": 66
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Transportation",
+        "Amenities"
+      ]
     },
     {
       "name": "Little Rock",
       "state": "AR",
-      "livScore": 644
+      "livScore": 644,
+      "livability": {
+        "medianHomeValue": 224033,
+        "medianIncome": 64195,
+        "medianRent": 851,
+        "medianPropertyTax": 2200,
+        "avgCommute": 17,
+        "avgTempHighF": 72,
+        "avgTempLowF": 52,
+        "annualRainfallIn": 52,
+        "annualSnowfallIn": 4
+      },
+      "population": 206065,
+      "nearestAirport": {
+        "code": "LIT",
+        "name": "Little Rock Clinton",
+        "distanceKm": 6
+      },
+      "categories": {
+        "amenities": 60,
+        "economy": 60,
+        "education": 46,
+        "environment": 54,
+        "health": 48,
+        "housing": 64,
+        "safety": 17,
+        "transportation": 61
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Transportation",
+        "Amenities"
+      ]
     },
     {
       "name": "Greenville",
       "state": "NC",
-      "livScore": 643
+      "livScore": 643,
+      "livability": {
+        "medianHomeValue": 236303,
+        "medianIncome": 55166,
+        "medianRent": 869,
+        "medianPropertyTax": 1530,
+        "avgCommute": 15,
+        "avgTempHighF": 72,
+        "avgTempLowF": 51,
+        "annualRainfallIn": 50,
+        "annualSnowfallIn": 3
+      },
+      "population": 96325,
+      "nearestAirport": {
+        "code": "RDU",
+        "name": "Raleigh-Durham",
+        "distanceKm": 131
+      },
+      "categories": {
+        "amenities": 44,
+        "economy": 46,
+        "education": 53,
+        "environment": 72,
+        "health": 44,
+        "housing": 53,
+        "safety": 43,
+        "transportation": 63
+      },
+      "topCategories": [
+        "Environment",
+        "Transportation",
+        "Education"
+      ]
     },
     {
       "name": "Santa Fe",
       "state": "NM",
-      "livScore": 641
+      "livScore": 641,
+      "livability": {
+        "medianHomeValue": 446470,
+        "medianIncome": 73935,
+        "medianRent": 1155,
+        "medianPropertyTax": 2347,
+        "avgCommute": 17,
+        "avgTempHighF": 65,
+        "avgTempLowF": 36,
+        "annualRainfallIn": 14,
+        "annualSnowfallIn": 26
+      },
+      "population": 90294,
+      "nearestAirport": {
+        "code": "ABQ",
+        "name": "Albuquerque Sunport",
+        "distanceKm": 94
+      },
+      "categories": {
+        "amenities": 64,
+        "economy": 45,
+        "education": 24,
+        "environment": 76,
+        "health": 50,
+        "housing": 72,
+        "safety": 33,
+        "transportation": 68
+      },
+      "topCategories": [
+        "Environment",
+        "Housing & Cost of Living",
+        "Transportation"
+      ]
     },
     {
       "name": "Gainesville",
       "state": "FL",
-      "livScore": 639
+      "livScore": 639,
+      "livability": {
+        "medianHomeValue": 250373,
+        "medianIncome": 48578,
+        "medianRent": 1181,
+        "medianPropertyTax": 1329,
+        "avgCommute": 17,
+        "avgTempHighF": 80,
+        "avgTempLowF": 57,
+        "annualRainfallIn": 49,
+        "annualSnowfallIn": 0
+      },
+      "population": 145212,
+      "nearestAirport": {
+        "code": "JAX",
+        "name": "Jacksonville",
+        "distanceKm": 112
+      },
+      "categories": {
+        "amenities": 56,
+        "economy": 48,
+        "education": 59,
+        "environment": 51,
+        "health": 52,
+        "housing": 72,
+        "safety": 36,
+        "transportation": 61
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Transportation",
+        "Education"
+      ]
     },
     {
       "name": "Anchorage",
       "state": "AK",
-      "livScore": 639
+      "livScore": 639,
+      "livability": {
+        "medianHomeValue": 374530,
+        "medianIncome": 101301,
+        "medianRent": 1338,
+        "medianPropertyTax": 2925,
+        "avgCommute": 16,
+        "avgTempHighF": 45,
+        "avgTempLowF": 29,
+        "annualRainfallIn": 18,
+        "annualSnowfallIn": 97
+      },
+      "population": 291223,
+      "nearestAirport": {
+        "code": "ANC",
+        "name": "Anchorage Ted Stevens",
+        "distanceKm": 7
+      },
+      "categories": {
+        "amenities": 57,
+        "economy": 62,
+        "education": 46,
+        "environment": 18,
+        "health": 56,
+        "housing": 80,
+        "safety": 28,
+        "transportation": 60
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Economy",
+        "Transportation"
+      ]
     },
     {
       "name": "Orlando",
       "state": "FL",
-      "livScore": 638
+      "livScore": 638,
+      "livability": {
+        "medianHomeValue": 388075,
+        "medianIncome": 74826,
+        "medianRent": 1652,
+        "medianPropertyTax": 1654,
+        "avgCommute": 24,
+        "avgTempHighF": 83,
+        "avgTempLowF": 64,
+        "annualRainfallIn": 52,
+        "annualSnowfallIn": 0
+      },
+      "population": 346520,
+      "nearestAirport": {
+        "code": "MCO",
+        "name": "Orlando",
+        "distanceKm": 14
+      },
+      "categories": {
+        "amenities": 68,
+        "economy": 72,
+        "education": 52,
+        "environment": 26,
+        "health": 57,
+        "housing": 77,
+        "safety": 25,
+        "transportation": 59
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Economy",
+        "Amenities"
+      ]
     },
     {
       "name": "St. Louis",
       "state": "MO",
-      "livScore": 636
+      "livScore": 636,
+      "livability": {
+        "medianHomeValue": 197774,
+        "medianIncome": 59263,
+        "medianRent": 843,
+        "medianPropertyTax": 1542,
+        "avgCommute": 20,
+        "avgTempHighF": 66,
+        "avgTempLowF": 47,
+        "annualRainfallIn": 43,
+        "annualSnowfallIn": 15
+      },
+      "population": 281222,
+      "nearestAirport": {
+        "code": "STL",
+        "name": "Saint Louis Lambert",
+        "distanceKm": 21
+      },
+      "categories": {
+        "amenities": 83,
+        "economy": 55,
+        "education": 47,
+        "environment": 40,
+        "health": 45,
+        "housing": 69,
+        "safety": 14,
+        "transportation": 51
+      },
+      "topCategories": [
+        "Amenities",
+        "Housing & Cost of Living",
+        "Economy"
+      ]
     },
     {
       "name": "Roanoke",
       "state": "VA",
-      "livScore": 636
+      "livScore": 636,
+      "livability": {
+        "medianHomeValue": 197134,
+        "medianIncome": 54267,
+        "medianRent": 882,
+        "medianPropertyTax": 1785,
+        "avgCommute": 17,
+        "avgTempHighF": 68,
+        "avgTempLowF": 46,
+        "annualRainfallIn": 42,
+        "annualSnowfallIn": 15
+      },
+      "population": 98468,
+      "nearestAirport": {
+        "code": "RDU",
+        "name": "Raleigh-Durham",
+        "distanceKm": 186
+      },
+      "categories": {
+        "amenities": 55,
+        "economy": 45,
+        "education": 39,
+        "environment": 70,
+        "health": 34,
+        "housing": 63,
+        "safety": 43,
+        "transportation": 62
+      },
+      "topCategories": [
+        "Environment",
+        "Housing & Cost of Living",
+        "Transportation"
+      ]
     },
     {
       "name": "Cincinnati",
       "state": "OH",
-      "livScore": 636
+      "livScore": 636,
+      "livability": {
+        "medianHomeValue": 235965,
+        "medianIncome": 55258,
+        "medianRent": 876,
+        "medianPropertyTax": 1473,
+        "avgCommute": 20,
+        "avgTempHighF": 64,
+        "avgTempLowF": 43,
+        "annualRainfallIn": 44,
+        "annualSnowfallIn": 14
+      },
+      "population": 326092,
+      "nearestAirport": {
+        "code": "CVG",
+        "name": "Cincinnati/Northern Kentucky",
+        "distanceKm": 15
+      },
+      "categories": {
+        "amenities": 77,
+        "economy": 60,
+        "education": 45,
+        "environment": 46,
+        "health": 56,
+        "housing": 56,
+        "safety": 22,
+        "transportation": 54
+      },
+      "topCategories": [
+        "Amenities",
+        "Economy",
+        "Health"
+      ]
     },
     {
       "name": "Rapid City",
       "state": "SD",
-      "livScore": 634
+      "livScore": 634,
+      "livability": {
+        "medianHomeValue": 316354,
+        "medianIncome": 70067,
+        "medianRent": 982,
+        "medianPropertyTax": 2389,
+        "avgCommute": 15,
+        "avgTempHighF": 59,
+        "avgTempLowF": 36,
+        "annualRainfallIn": 19,
+        "annualSnowfallIn": 42
+      },
+      "population": 78657,
+      "nearestAirport": {
+        "code": "BIL",
+        "name": "Billings Logan",
+        "distanceKm": 460
+      },
+      "categories": {
+        "amenities": 46,
+        "economy": 44,
+        "education": 42,
+        "environment": 65,
+        "health": 41,
+        "housing": 72,
+        "safety": 31,
+        "transportation": 67
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Transportation",
+        "Environment"
+      ]
     },
     {
       "name": "Chattanooga",
       "state": "TN",
-      "livScore": 634
+      "livScore": 634,
+      "livability": {
+        "medianHomeValue": 298784,
+        "medianIncome": 68230,
+        "medianRent": 1135,
+        "medianPropertyTax": 2100,
+        "avgCommute": 17,
+        "avgTempHighF": 71,
+        "avgTempLowF": 51,
+        "annualRainfallIn": 54,
+        "annualSnowfallIn": 3
+      },
+      "population": 195518,
+      "nearestAirport": {
+        "code": "BNA",
+        "name": "Nashville",
+        "distanceKm": 172
+      },
+      "categories": {
+        "amenities": 61,
+        "economy": 60,
+        "education": 38,
+        "environment": 64,
+        "health": 41,
+        "housing": 75,
+        "safety": 21,
+        "transportation": 64
+      },
+      "topCategories": [
+        "Housing & Cost of Living",
+        "Environment",
+        "Transportation"
+      ]
     },
     {
       "name": "Augusta",
       "state": "GA",
-      "livScore": 633
+      "livScore": 633,
+      "livability": {
+        "medianHomeValue": 163376,
+        "medianIncome": 55897,
+        "medianRent": 933,
+        "medianPropertyTax": 1870,
+        "avgCommute": 18,
+        "avgTempHighF": 76,
+        "avgTempLowF": 54,
+        "annualRainfallIn": 46,
+        "annualSnowfallIn": 0
+      },
+      "population": 203005,
+      "nearestAirport": {
+        "code": "GSP",
+        "name": "Greenville-Spartanburg",
+        "distanceKm": 160
+      },
+      "categories": {
+        "amenities": 48,
+        "economy": 52,
+        "education": 31,
+        "environment": 75,
+        "health": 33,
+        "housing": 65,
+        "safety": 41,
+        "transportation": 66
+      },
+      "topCategories": [
+        "Environment",
+        "Transportation",
+        "Housing & Cost of Living"
+      ]
     }
   ]
 }
