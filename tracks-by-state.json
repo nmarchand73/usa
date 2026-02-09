@@ -1,0 +1,573 @@
+{
+  "AL": [
+    {
+      "name": "Protective Stadium",
+      "type": "supercross",
+      "city": "Birmingham",
+      "stateCode": "AL",
+      "lat": 33.5185,
+      "lng": -86.8094
+    }
+  ],
+  "AK": [],
+  "AZ": [
+    {
+      "name": "State Farm Stadium",
+      "type": "supercross",
+      "city": "Glendale",
+      "stateCode": "AZ",
+      "lat": 33.5276,
+      "lng": -112.2626
+    },
+    {
+      "name": "Black Mountain BMX",
+      "type": "bmx_race",
+      "city": "Phoenix",
+      "stateCode": "AZ",
+      "lat": 33.72,
+      "lng": -112.09
+    }
+  ],
+  "AR": [
+    {
+      "name": "Runway Bike Park (Velosolutions)",
+      "type": "bmx_pumptrack",
+      "city": "Springdale",
+      "stateCode": "AR",
+      "lat": 36.1825,
+      "lng": -94.1312
+    }
+  ],
+  "CA": [
+    {
+      "name": "Angel Stadium",
+      "type": "supercross",
+      "city": "Anaheim",
+      "stateCode": "CA",
+      "lat": 33.800308,
+      "lng": -117.882732
+    },
+    {
+      "name": "Snapdragon Stadium",
+      "type": "supercross",
+      "city": "San Diego",
+      "stateCode": "CA",
+      "lat": 32.78444,
+      "lng": -117.12278
+    },
+    {
+      "name": "Fox Raceway",
+      "type": "mx",
+      "city": "Pala",
+      "stateCode": "CA",
+      "lat": 33.364,
+      "lng": -117.07
+    },
+    {
+      "name": "Glen Helen Raceway",
+      "type": "mx",
+      "city": "San Bernardino",
+      "stateCode": "CA",
+      "lat": 34.1913,
+      "lng": -117.39
+    },
+    {
+      "name": "Hangtown (Prairie City MX)",
+      "type": "mx",
+      "city": "Rancho Cordova",
+      "stateCode": "CA",
+      "lat": 38.60115,
+      "lng": -121.14443
+    }
+  ],
+  "CO": [
+    {
+      "name": "Empower Field",
+      "type": "supercross",
+      "city": "Denver",
+      "stateCode": "CO",
+      "lat": 39.756,
+      "lng": -105.021
+    },
+    {
+      "name": "Thunder Valley MX",
+      "type": "mx",
+      "city": "Lakewood",
+      "stateCode": "CO",
+      "lat": 39.6533,
+      "lng": -105.1567
+    },
+    {
+      "name": "Trestle Bike Park",
+      "type": "vtt",
+      "city": "Winter Park",
+      "stateCode": "CO",
+      "lat": 39.88694,
+      "lng": -105.7625
+    },
+    {
+      "name": "Snowmass Bike Park",
+      "type": "vtt",
+      "city": "Aspen",
+      "stateCode": "CO",
+      "lat": 39.1911,
+      "lng": -106.8175
+    },
+    {
+      "name": "Keystone Bike Park",
+      "type": "vtt",
+      "city": "Keystone",
+      "stateCode": "CO",
+      "lat": 39.6052,
+      "lng": -105.9347
+    }
+  ],
+  "CT": [],
+  "DE": [],
+  "DC": [],
+  "FL": [
+    {
+      "name": "Raymond James Stadium",
+      "type": "supercross",
+      "city": "Tampa",
+      "stateCode": "FL",
+      "lat": 27.9759,
+      "lng": -82.5033
+    },
+    {
+      "name": "Daytona International Speedway",
+      "type": "supercross",
+      "city": "Daytona Beach",
+      "stateCode": "FL",
+      "lat": 29.185,
+      "lng": -81.0702
+    },
+    {
+      "name": "Okeeheelee BMX (Sunshine State Nationals)",
+      "type": "bmx_race",
+      "city": "West Palm Beach",
+      "stateCode": "FL",
+      "lat": 26.651,
+      "lng": -80.158
+    }
+  ],
+  "GA": [
+    {
+      "name": "Jarrod's Place Bike Park",
+      "type": "vtt",
+      "city": "Summerville",
+      "stateCode": "GA",
+      "lat": 34.4809,
+      "lng": -85.3248
+    }
+  ],
+  "HI": [],
+  "ID": [
+    {
+      "name": "Silver Mountain Bike Park",
+      "type": "vtt",
+      "city": "Kellogg",
+      "stateCode": "ID",
+      "lat": 47.5357,
+      "lng": -116.1196
+    },
+    {
+      "name": "Sun Valley Bike Park",
+      "type": "vtt",
+      "city": "Ketchum",
+      "stateCode": "ID",
+      "lat": 43.6971,
+      "lng": -114.3828
+    }
+  ],
+  "IL": [
+    {
+      "name": "Rockford BMX",
+      "type": "bmx_race",
+      "city": "Rockford",
+      "stateCode": "IL",
+      "lat": 42.2828,
+      "lng": -89.0586
+    }
+  ],
+  "IN": [
+    {
+      "name": "Lucas Oil Stadium",
+      "type": "supercross",
+      "city": "Indianapolis",
+      "stateCode": "IN",
+      "lat": 39.7601,
+      "lng": -86.1639
+    },
+    {
+      "name": "Ironman Raceway",
+      "type": "mx",
+      "city": "Crawfordsville",
+      "stateCode": "IN",
+      "lat": 40.010585,
+      "lng": -86.929117
+    }
+  ],
+  "IA": [],
+  "KS": [],
+  "KY": [],
+  "LA": [],
+  "ME": [],
+  "MD": [
+    {
+      "name": "Budds Creek MX Park",
+      "type": "mx",
+      "city": "Mechanicsville",
+      "stateCode": "MD",
+      "lat": 38.43,
+      "lng": -76.75
+    }
+  ],
+  "MA": [
+    {
+      "name": "Gillette Stadium",
+      "type": "supercross",
+      "city": "Foxborough",
+      "stateCode": "MA",
+      "lat": 42.0909,
+      "lng": -71.2643
+    },
+    {
+      "name": "The Wick 338 (Southwick)",
+      "type": "mx",
+      "city": "Southwick",
+      "stateCode": "MA",
+      "lat": 42.0559,
+      "lng": -72.7494
+    },
+    {
+      "name": "Thunder Mountain Bike Park",
+      "type": "vtt",
+      "city": "Charlemont",
+      "stateCode": "MA",
+      "lat": 42.694,
+      "lng": -73.083
+    }
+  ],
+  "MI": [
+    {
+      "name": "Ford Field",
+      "type": "supercross",
+      "city": "Detroit",
+      "stateCode": "MI",
+      "lat": 42.34,
+      "lng": -83.0456
+    },
+    {
+      "name": "RedBud MX",
+      "type": "mx",
+      "city": "Buchanan",
+      "stateCode": "MI",
+      "lat": 41.87,
+      "lng": -86.37
+    },
+    {
+      "name": "Grand Traverse County BMX (GTC BMX)",
+      "type": "bmx_race",
+      "city": "Kingsley",
+      "stateCode": "MI",
+      "lat": 44.585,
+      "lng": -85.535
+    }
+  ],
+  "MN": [
+    {
+      "name": "Spring Creek MX Park",
+      "type": "mx",
+      "city": "Millville",
+      "stateCode": "MN",
+      "lat": 44.29966,
+      "lng": -92.26122
+    },
+    {
+      "name": "Spirit Mountain Bike Park",
+      "type": "vtt",
+      "city": "Duluth",
+      "stateCode": "MN",
+      "lat": 46.722,
+      "lng": -92.1992
+    }
+  ],
+  "MS": [],
+  "MO": [
+    {
+      "name": "The Dome at America's Center (SMX)",
+      "type": "smx",
+      "city": "St. Louis",
+      "stateCode": "MO",
+      "lat": 38.6325,
+      "lng": -90.1886
+    },
+    {
+      "name": "Howler Bike Park",
+      "type": "vtt",
+      "city": "Branson",
+      "stateCode": "MO",
+      "lat": 36.6431,
+      "lng": -93.2185
+    }
+  ],
+  "MT": [
+    {
+      "name": "Big Sky Bike Park",
+      "type": "vtt",
+      "city": "Big Sky",
+      "stateCode": "MT",
+      "lat": 45.2846,
+      "lng": -111.383
+    },
+    {
+      "name": "Whitefish Bike Park",
+      "type": "vtt",
+      "city": "Whitefish",
+      "stateCode": "MT",
+      "lat": 48.4861,
+      "lng": -114.3536
+    }
+  ],
+  "NE": [],
+  "NV": [
+    {
+      "name": "Las Vegas Motor Speedway (SMX Final)",
+      "type": "smx",
+      "city": "Las Vegas",
+      "stateCode": "NV",
+      "lat": 36.2722,
+      "lng": -115.0101
+    }
+  ],
+  "NH": [
+    {
+      "name": "Highland Mountain Bike Park",
+      "type": "vtt",
+      "city": "Northfield",
+      "stateCode": "NH",
+      "lat": 43.40672,
+      "lng": -71.55442
+    }
+  ],
+  "NJ": [
+    {
+      "name": "MetLife Stadium",
+      "type": "supercross",
+      "city": "East Rutherford",
+      "stateCode": "NJ",
+      "lat": 40.8128,
+      "lng": -74.0742
+    },
+    {
+      "name": "Mountain Creek Bike Park",
+      "type": "vtt",
+      "city": "Vernon",
+      "stateCode": "NJ",
+      "lat": 41.1984,
+      "lng": -74.5029
+    }
+  ],
+  "NM": [
+    {
+      "name": "Angel Fire Bike Park",
+      "type": "vtt",
+      "city": "Angel Fire",
+      "stateCode": "NM",
+      "lat": 36.3931,
+      "lng": -105.285
+    }
+  ],
+  "NY": [
+    {
+      "name": "Unadilla MX",
+      "type": "mx",
+      "city": "New Berlin",
+      "stateCode": "NY",
+      "lat": 42.6245,
+      "lng": -75.3312
+    }
+  ],
+  "NC": [
+    {
+      "name": "zMAX Dragway (SMX)",
+      "type": "smx",
+      "city": "Concord",
+      "stateCode": "NC",
+      "lat": 35.3526,
+      "lng": -80.6857
+    },
+    {
+      "name": "Ride Rock Creek",
+      "type": "vtt",
+      "city": "Zirconia",
+      "stateCode": "NC",
+      "lat": 35.2282,
+      "lng": -82.4601
+    }
+  ],
+  "ND": [],
+  "OH": [],
+  "OK": [
+    {
+      "name": "Hardesty National BMX Stadium (USA BMX HQ)",
+      "type": "bmx_race",
+      "city": "Tulsa",
+      "stateCode": "OK",
+      "lat": 36.1537,
+      "lng": -95.9926
+    }
+  ],
+  "OR": [
+    {
+      "name": "Gateway Green Velosolutions Pump Track",
+      "type": "bmx_pumptrack",
+      "city": "Portland",
+      "stateCode": "OR",
+      "lat": 45.53844,
+      "lng": -122.56167
+    },
+    {
+      "name": "Mt. Bachelor Bike Park",
+      "type": "vtt",
+      "city": "Bend",
+      "stateCode": "OR",
+      "lat": 43.9794,
+      "lng": -121.6886
+    }
+  ],
+  "PA": [
+    {
+      "name": "Lincoln Financial Field",
+      "type": "supercross",
+      "city": "Philadelphia",
+      "stateCode": "PA",
+      "lat": 39.9008,
+      "lng": -75.1675
+    },
+    {
+      "name": "Acrisure Stadium",
+      "type": "supercross",
+      "city": "Pittsburgh",
+      "stateCode": "PA",
+      "lat": 40.4469,
+      "lng": -79.0157
+    },
+    {
+      "name": "High Point Raceway",
+      "type": "mx",
+      "city": "Mount Morris",
+      "stateCode": "PA",
+      "lat": 39.7245,
+      "lng": -80.0667
+    }
+  ],
+  "RI": [],
+  "SC": [
+    {
+      "name": "Novant Health BMX Supercross Track",
+      "type": "bmx_race",
+      "city": "Rock Hill",
+      "stateCode": "SC",
+      "lat": 34.9256,
+      "lng": -81.0268
+    }
+  ],
+  "SD": [],
+  "TN": [
+    {
+      "name": "Loretta Lynn Ranch (AMA Amateur Nationals)",
+      "type": "mx",
+      "city": "Hurricane Mills",
+      "stateCode": "TN",
+      "lat": 35.97748,
+      "lng": -87.76324
+    },
+    {
+      "name": "Windrock Bike Park",
+      "type": "vtt",
+      "city": "Oliver Springs",
+      "stateCode": "TN",
+      "lat": 36.0484,
+      "lng": -84.3583
+    }
+  ],
+  "TX": [
+    {
+      "name": "AT&T Stadium",
+      "type": "supercross",
+      "city": "Arlington",
+      "stateCode": "TX",
+      "lat": 32.7473,
+      "lng": -97.0945
+    },
+    {
+      "name": "DeSoto BMX",
+      "type": "bmx_race",
+      "city": "DeSoto",
+      "stateCode": "TX",
+      "lat": 32.5896,
+      "lng": -96.8572
+    },
+    {
+      "name": "Crown Festival Park Pump Track (UCI Qualifier)",
+      "type": "bmx_pumptrack",
+      "city": "Sugar Land",
+      "stateCode": "TX",
+      "lat": 29.619,
+      "lng": -95.634
+    }
+  ],
+  "UT": [
+    {
+      "name": "Rice-Eccles Stadium",
+      "type": "supercross",
+      "city": "Salt Lake City",
+      "stateCode": "UT",
+      "lat": 40.7606,
+      "lng": -111.8498
+    }
+  ],
+  "VT": [
+    {
+      "name": "Killington Bike Park",
+      "type": "vtt",
+      "city": "Killington",
+      "stateCode": "VT",
+      "lat": 43.6024,
+      "lng": -72.8238
+    }
+  ],
+  "VA": [],
+  "WA": [
+    {
+      "name": "Lumen Field",
+      "type": "supercross",
+      "city": "Seattle",
+      "stateCode": "WA",
+      "lat": 47.5952,
+      "lng": -122.3316
+    },
+    {
+      "name": "Washougal MX Park",
+      "type": "mx",
+      "city": "Washougal",
+      "stateCode": "WA",
+      "lat": 45.5817,
+      "lng": -122.3386
+    }
+  ],
+  "WV": [
+    {
+      "name": "Snowshoe Mountain Bike Park",
+      "type": "vtt",
+      "city": "Snowshoe",
+      "stateCode": "WV",
+      "lat": 38.4104,
+      "lng": -79.9956
+    }
+  ],
+  "WI": [],
+  "WY": []
+}

@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carte USA — Stats et histoires par État</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0a0e17;
+      --bg2: #111827;
+      --bg3: #1a2235;
+      --accent: #00d4aa;
+      --accent2: #7c3aed;
+      --red: #ef4444;
+      --green: #22c55e;
+      --yellow: #fbbf24;
+      --text: #e2e8f0;
+      --text-dim: #94a3b8;
+      --border: #1e293b;
+      --code-bg: #0d1117;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+    .app { display: flex; flex-direction: column; min-height: 100vh; }
+    .hero {
+      text-align: center;
+      padding: 2rem 1.5rem 1.5rem;
+    }
+    .hero h1 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .hero p {
+      color: var(--text-dim);
+      font-size: 1.1rem;
+    }
+    .hero-line {
+      height: 2px;
+      width: 200px;
+      margin: 1rem auto 0;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+    .main {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 1rem 1.5rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .map-legend {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 0.5rem;
+    }
+    .map-legend label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+    .map-legend .toggle {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .map-legend .toggle button {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      color: var(--text-dim);
+      cursor: pointer;
+    }
+    .map-legend .toggle button:hover { color: var(--text); border-color: var(--accent); }
+    .map-legend .toggle button.active {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+    .map-legend .scale {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+    .map-legend .scale-bar {
+      width: 120px;
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--green), var(--yellow), var(--red));
+    }
+    .map-legend .scale-bar.reste { background: linear-gradient(90deg, var(--red), var(--yellow), var(--green)); }
+    .venue-filters {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+      display: none;
+    }
+    .map-wrap.view-dynamic .venue-filters { display: block; }
+    .venue-filters .venue-filters-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      margin-bottom: 0.4rem;
+    }
+    .venue-filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+      align-items: center;
+    }
+    .venue-filters-row label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      cursor: pointer;
+    }
+    .venue-filters-row label:hover { color: var(--text); }
+    .venue-filters-row input[type="checkbox"] {
+      accent-color: var(--accent);
+      width: 1em;
+      height: 1em;
+    }
+    .map-wrap {
+      flex: 1 1 520px;
+      min-width: 0;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      position: relative;
+    }
+    #leafletMap {
+      width: 100%;
+      height: 480px;
+      min-height: 360px;
+      border-radius: 0 0 12px 12px;
+      background: var(--bg3);
+      position: relative;
+      display: block;
+    }
+    .map-wrap object {
+      width: 100%;
+      max-height: 520px;
+      display: block;
+    }
+    .map-wrap .path-map { display: none; height: 520px; max-height: 520px; }
+    .map-wrap.view-states #leafletMap { display: none !important; }
+    .map-wrap.view-states #d3MapWrap { display: block !important; }
+    .map-wrap.view-states .path-map { display: none !important; }
+    #d3MapWrap {
+      display: none;
+      width: 100%;
+      height: 480px;
+      min-height: 360px;
+      position: relative;
+      background: var(--bg3);
+      border-radius: 0 0 12px 12px;
+    }
+    #d3MapWrap svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+    }
+    #d3MapWrap svg:active { cursor: grabbing; }
+    #d3MapWrap path {
+      cursor: pointer;
+      stroke: var(--border);
+      stroke-width: 0.5;
+      transition: fill 0.15s;
+    }
+    #d3MapWrap path:hover { opacity: 0.9; }
+    .map-tooltip {
+      position: fixed;
+      z-index: 10000;
+      pointer-events: none;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      line-height: 1.4;
+      max-width: 260px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      opacity: 0;
+      transition: opacity 0.12s ease-out;
+    }
+    .map-tooltip.visible { opacity: 1; }
+    .map-tooltip .tooltip-title { font-weight: 600; color: var(--accent); margin-bottom: 0.25rem; }
+    .map-tooltip .tooltip-line { color: var(--text-dim); font-size: 0.8rem; }
+    .map-wrap object path {
+      cursor: pointer;
+      fill: var(--bg3);
+      stroke: var(--border);
+      transition: fill 0.15s, stroke 0.15s;
+    }
+    .map-wrap object path:hover { opacity: 0.95; }
+    .map-wrap object path.active {
+      fill: var(--accent);
+      stroke: var(--accent);
+    }
+    .leaflet-popup-content-wrapper { background: var(--bg2); color: var(--text); border: 1px solid var(--border); border-radius: 8px; }
+    .leaflet-popup-tip { background: var(--bg2); }
+    .leaflet-tooltip-dark.leaflet-tooltip { background: var(--bg2); color: var(--text); border: 1px solid var(--border); font-size: 0.8rem; padding: 0.35rem 0.5rem; }
+    .leaflet-tooltip-dark.leaflet-tooltip-left::before { border-left-color: var(--bg2); }
+    .leaflet-tooltip-dark.leaflet-tooltip-right::before { border-right-color: var(--bg2); }
+    .leaflet-tooltip-dark.leaflet-tooltip-top::before { border-top-color: var(--bg2); }
+    .leaflet-tooltip-dark.leaflet-tooltip-bottom::before { border-bottom-color: var(--bg2); }
+    .sx-marker .sx-marker-inner { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 4px; border: 2px solid; font-size: 0.65rem; font-weight: 700; color: #fff; font-family: 'JetBrains Mono', monospace; box-shadow: 0 1px 4px rgba(0,0,0,0.4); }
+    .mtb-marker .mtb-marker-inner { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: #16a34a; border: 2px solid rgba(255,255,255,0.9); font-size: 0.6rem; font-weight: 700; color: #fff; font-family: 'JetBrains Mono', monospace; box-shadow: 0 1px 4px rgba(0,0,0,0.4); }
+    .bmx-marker .bmx-marker-inner { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 3px; background: #0284c7; border: 2px solid rgba(255,255,255,0.9); font-size: 0.6rem; font-weight: 700; color: #fff; font-family: 'JetBrains Mono', monospace; box-shadow: 0 1px 4px rgba(0,0,0,0.4); }
+    .mx-marker .mx-marker-inner { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 4px; background: #b45309; border: 2px solid rgba(255,255,255,0.9); font-size: 0.6rem; font-weight: 700; color: #fff; font-family: 'JetBrains Mono', monospace; box-shadow: 0 1px 4px rgba(0,0,0,0.4); }
+    .heart-marker .heart-marker-wrap { display: inline-flex; align-items: center; gap: 1px; cursor: pointer; animation: heartPulse 2s ease-in-out infinite; }
+    .heart-marker .heart-marker-inner { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: #e11d48; border: 2px solid rgba(255,255,255,0.95); font-size: 0.75rem; color: #fff; box-shadow: 0 2px 6px rgba(225,29,72,0.5); }
+    .heart-marker .heart-rank { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; font-weight: 700; color: #fff; background: rgba(225,29,72,0.85); border-radius: 3px; padding: 0px 3px; line-height: 1.4; box-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+    @keyframes heartPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+    .leaflet-popup-content .sx-popup-type { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.35rem; }
+    .leaflet-popup-content { margin: 0.75rem 1rem; font-family: 'DM Sans', sans-serif; min-width: 140px; }
+    .leaflet-popup-content .city-popup-name { font-weight: 600; color: var(--accent); margin-bottom: 0.25rem; }
+    .leaflet-popup-content .city-popup-state { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.5rem; }
+    .leaflet-popup-content .city-popup-btn { display: inline-block; margin-top: 0.5rem; padding: 0.35rem 0.75rem; background: var(--accent); color: var(--bg); border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+    .leaflet-popup-content .city-popup-btn:hover { opacity: 0.9; }
+    .map-view-toggle { margin-left: auto; display: flex; gap: 0.5rem; align-items: center; }
+    .map-view-toggle button {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      color: var(--text-dim);
+      cursor: pointer;
+    }
+    .map-view-toggle button.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .map-view-toggle button:hover:not(.active) { color: var(--text); border-color: var(--accent); }
+    .panel {
+      flex: 0 0 auto;
+      width: 400px;
+      min-width: 280px;
+      max-width: 460px;
+      height: 540px;
+      max-height: 80vh;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    #panelContent {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+    }
+    .panel-wrap {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    .panel-inner {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 0.75rem 1.25rem 1.25rem;
+      -webkit-overflow-scrolling: touch;
+    }
+    .panel-empty {
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg3);
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+    .panel-header-left { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem 0.6rem; }
+    .panel-header-right { flex-shrink: 0; }
+    .panel-header-block-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.35rem;
+    }
+    .panel-header-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 0.75rem;
+      line-height: 1.35;
+      color: var(--text-dim);
+    }
+    .panel-aime-deteste .panel-header-list li {
+      padding: 0.1rem 0;
+      padding-left: 0.75rem;
+    }
+    .panel-header-list li {
+      padding: 0.15rem 0;
+      padding-left: 0.85rem;
+      position: relative;
+    }
+    .panel-header-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5em;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+    }
+    /* (old header-aime-deteste media query removed — using panel-aime-deteste-grid now) */
+    .panel-aime-deteste {
+      padding: 0.6rem 0.75rem;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 0;
+    }
+    .panel-aime-deteste-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem 1rem;
+    }
+    .panel-aime-deteste-block { min-width: 0; }
+    .panel-aime-deteste-block .panel-header-block-label { margin-bottom: 0.25rem; font-size: 0.65rem; }
+    .panel-aime .panel-header-block-label { color: var(--accent); }
+    .panel-deteste .panel-header-block-label { color: var(--yellow); }
+    .panel-aime .panel-header-list li::before { background: var(--accent); }
+    .panel-deteste .panel-header-list li::before { background: var(--yellow); }
+    @media (max-width: 420px) {
+      .panel-aime-deteste-grid { grid-template-columns: 1fr; }
+    }
+    .panel-state-intro {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+    .panel h2 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0;
+      line-height: 1.2;
+    }
+    .panel .section-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      margin: 0;
+    }
+    .panel .header-sep { color: var(--text-dim); font-weight: 400; margin: 0 0.25rem; }
+    .panel-header-left h2 { display: inline; }
+    .panel-header-left .section-label { display: inline; }
+    .panel .badge-row {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.4rem;
+      margin: 0;
+    }
+    .panel .badge {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 0.28rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent);
+    }
+    .panel .badge.cout-eleve { color: var(--red); border-color: rgba(239,68,68,0.3); }
+    .panel .badge.cout-modere { color: var(--yellow); border-color: rgba(251,191,36,0.3); }
+    .panel .badge.cout-bas { color: var(--green); border-color: rgba(34,197,94,0.3); }
+    .panel .badge.cout-tres-eleve { color: var(--red); border-color: rgba(239,68,68,0.3); }
+    .panel .badge.pol-democrate { color: #60a5fa; border-color: rgba(96,165,250,0.35); }
+    .panel .badge.pol-republicain { color: #f87171; border-color: rgba(248,113,113,0.35); }
+    .panel .badge.pol-swing { color: #c084fc; border-color: rgba(192,132,252,0.35); }
+    .panel-block {
+      margin-top: 1.35rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+    .panel-block:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .panel-block .panel-section-title:not(:first-child) { margin-top: 1rem; }
+    .identity-sheet {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .identity-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+      padding: 0.45rem 0.8rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.81rem;
+    }
+    .identity-row:last-child { border-bottom: none; }
+    .identity-row .identity-label {
+      color: var(--text-dim);
+      flex-shrink: 0;
+      min-width: 0;
+    }
+    .identity-row .identity-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      text-align: right;
+    }
+    .identity-row-highlight { border-left: 3px solid var(--accent); background: rgba(0,212,170,0.04); }
+    .identity-row-reste.reste-pos .identity-value { color: var(--green); }
+    .identity-row-reste.reste-neg .identity-value { color: var(--red); }
+    .identity-row-legend { padding: 0.2rem 0.8rem 0.4rem; border-bottom: none; margin-top: -0.2rem; }
+    .identity-legend { font-size: 0.65rem; color: var(--text-dim); font-style: italic; line-height: 1.3; }
+    /* — Ambiance tagline in header — */
+    .panel-ambiance { font-size: 0.78rem; color: var(--text-dim); font-style: italic; line-height: 1.4; margin: 0.3rem 0 0; width: 100%; }
+    /* — Compact cities grid — */
+    .cities-compact { display: grid; grid-template-columns: 1fr 1fr; gap: 0.2rem 1rem; list-style: none; margin: 0; padding: 0; }
+    .cities-compact li { display: flex; justify-content: space-between; align-items: baseline; gap: 0.4rem; font-size: 0.82rem; padding: 0.25rem 0; border-bottom: 1px solid var(--border); }
+    .cities-compact li:nth-last-child(-n+2) { border-bottom: none; }
+    .cities-compact .city-name { color: var(--text); font-weight: 500; white-space: nowrap; }
+    .cities-compact .city-pop { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-dim); white-space: nowrap; }
+    @media (max-width: 420px) { .cities-compact { grid-template-columns: 1fr; } }
+    /* — Top villes US list — */
+    .top-cities-list { list-style: none; margin: 0; padding: 0; }
+    .top-city-item { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+    .top-city-item:last-child { border-bottom: none; }
+    .top-city-item:first-child { padding-top: 0; }
+    .top-city-rank { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 700; color: #e11d48; margin-right: 0.4rem; }
+    .top-city-name { font-size: 0.85rem; font-weight: 600; color: var(--text); display: flex; align-items: center; }
+    .top-city-name::before { content: '❤'; margin-right: 0.3rem; font-size: 0.7rem; }
+    .top-city-why { font-size: 0.75rem; color: var(--text-dim); line-height: 1.4; margin-top: 0.15rem; }
+    /* — Lieux remarquables inline tags — */
+    .lieux-group { margin-top: 0.45rem; }
+    .lieux-label { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; margin-right: 0.4rem; }
+    .lieux-label-culture { color: var(--accent); }
+    .lieux-label-parcs { color: #16a34a; }
+    .lieux-label-nature { color: #0ea5e9; }
+    .lieux-tags { display: inline; font-size: 0.78rem; color: var(--text-dim); line-height: 1.5; }
+    .lieux-tags span { display: inline; }
+    .lieux-tags span:not(:last-child)::after { content: ' · '; color: var(--border); }
+    /* — Callout grid (Contraste + Conseil side by side) — */
+    .callout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+    .callout-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 0.75rem; font-size: 0.8rem; color: var(--text-dim); line-height: 1.45; }
+    .callout-card-title { font-size: 0.62rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem; }
+    .callout-card-contraste .callout-card-title { color: var(--accent); }
+    .callout-card-conseil .callout-card-title { color: var(--yellow); }
+    .callout-card-contraste { border-left: 3px solid var(--accent); }
+    .callout-card-conseil { border-left: 3px solid var(--yellow); }
+    @media (max-width: 420px) { .callout-grid { grid-template-columns: 1fr; } }
+    /* — Pour qui footer — */
+    .panel-pour-qui { font-size: 0.78rem; color: var(--text-dim); font-style: italic; line-height: 1.4; padding-top: 0.25rem; }
+    .panel-section-title {
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--text-dim);
+      margin-bottom: 0.5rem;
+    }
+    .panel .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 0.6rem;
+      margin-bottom: 0;
+    }
+    .panel .stats-grid.budget-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .panel .stats-grid.budget-grid .data-card.span-full { grid-column: 1 / -1; }
+    .panel .stats-grid.budget-grid .data-card.reste { grid-column: 1 / -1; }
+    .panel .data-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      border-left: 3px solid var(--border);
+    }
+    .panel .data-card.highlight {
+      border-left-color: var(--accent);
+    }
+    .panel .data-card.reste-neg { border-left-color: var(--red); }
+    .panel .data-card.reste-pos { border-left-color: var(--green); }
+    .panel .data-card .label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-dim);
+      margin-bottom: 0.2rem;
+    }
+    .panel .data-card .value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    /* (removed .instruction + .conseil — replaced by .callout-card) */
+    .panel .qual-list { list-style: none; margin: 0; padding: 0; font-size: 0.88rem; color: var(--text); }
+    .panel .qual-list li { padding: 0.28rem 0; padding-left: 1rem; position: relative; line-height: 1.4; }
+    .panel .qual-list li::before { content: '·'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+    .panel .qual-list.qual-vigilance li::before { color: var(--yellow); }
+    /* (removed .qual-para — no longer used) */
+    /* (removed .conseil-title — replaced by .callout-card-title) */
+    .panel-header .state-link {
+      display: inline-block;
+      font-size: 0.72rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg2);
+      color: var(--accent);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .panel-header .state-link:hover {
+      border-color: var(--accent);
+      background: rgba(0,212,170,0.08);
+    }
+    /* (removed .panel .state-link, .cities-list — no longer used) */
+    .criteria-block {
+      margin-top: 1rem;
+    }
+    .criteria-block .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      margin-bottom: 0.5rem;
+    }
+    .criteria-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.35rem;
+      font-size: 0.8rem;
+    }
+    .criteria-row .name { flex: 1; color: var(--text-dim); }
+    .criteria-row .score { font-family: 'JetBrains Mono', monospace; min-width: 2rem; text-align: right; }
+    .criteria-row .bar-wrap {
+      flex: 0 0 60px;
+      height: 6px;
+      background: var(--bg3);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .criteria-row .bar {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.2s;
+    }
+    .map-legend select {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      padding: 0.35rem 0.5rem;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+    }
+    .load-err {
+      background: rgba(251,191,36,0.08);
+      border: 1px solid rgba(251,191,36,0.25);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin: 1rem 1.5rem;
+      color: var(--text-dim);
+    }
+    .load-err h4 { color: var(--yellow); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; margin-bottom: 0.5rem; }
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 1.8rem; }
+      .main { flex-direction: column; }
+      .panel { max-width: none; max-height: none; }
+      .panel { height: 60vh; max-height: none; width: 100%; max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="hero">
+      <h1>Carte USA — Stats et histoires</h1>
+      <p>Cliquez sur un État pour découvrir le contenu du Livre Héros (50 États + DC)</p>
+      <div class="hero-line"></div>
+    </header>
+    <div id="loadErr" class="load-err" style="display: none;">
+      <h4>Données non chargées</h4>
+      <p>Ouvrez cette page via un serveur local pour charger les fichiers JSON. Par exemple&nbsp;: <code>npm start</code> ou <code>npx serve .</code> dans le dossier du projet.</p>
+    </div>
+    <main class="main">
+      <div class="map-wrap view-states">
+        <div class="map-legend">
+          <label>Colorer par :</label>
+          <div class="toggle">
+            <button type="button" id="btnCost" class="active">Coût de la vie</button>
+            <button type="button" id="btnReste">Reste à vivre</button>
+            <button type="button" id="btnHomePrice">Maison 4ch</button>
+            <button type="button" id="btnRent">Loyer 3ch</button>
+          </div>
+          <div class="scale" id="scaleCost">
+            <span>86 (abordable)</span>
+            <div class="scale-bar"></div>
+            <span>130+ (cher)</span>
+          </div>
+          <div class="scale" id="scaleReste" style="display: none;">
+            <span>Faible</span>
+            <div class="scale-bar reste"></div>
+            <span>Élevé</span>
+          </div>
+          <div class="scale" id="scaleHomePrice" style="display: none;">
+            <span>$200k</span>
+            <div class="scale-bar"></div>
+            <span>$650k+</span>
+          </div>
+          <div class="scale" id="scaleRent" style="display: none;">
+            <span>$1 100/m</span>
+            <div class="scale-bar"></div>
+            <span>$2 200+/m</span>
+          </div>
+          <div class="scale" id="scaleCriteria" style="display: none;">
+            <span>Faible</span>
+            <div class="scale-bar reste"></div>
+            <span>Élevé</span>
+          </div>
+          <select id="selectCriteria" style="display: none;" title="Choisir un critère">
+            <option value="">Critère…</option>
+            <option value="qualiteDeVie">Qualité de vie</option>
+            <option value="securite">Sécurité</option>
+            <option value="sante">Santé</option>
+            <option value="transports">Transports</option>
+            <option value="commercesEtServices">Commerces et services</option>
+            <option value="education">Éducation</option>
+            <option value="protectionEnvironnement">Environnement</option>
+            <option value="financesImpotsLocaux">Finances et impôts</option>
+            <option value="solidarite">Solidarité</option>
+            <option value="sportsEtLoisirs">Sports et loisirs</option>
+            <option value="attractiviteImmobiliere">Attractivité immobilière</option>
+          </select>
+          <div class="map-view-toggle">
+            <label style="color: var(--text-dim); font-size: 0.85rem;">Vue :</label>
+            <button type="button" id="btnViewDynamic">Carte dynamique (zoom + villes)</button>
+            <button type="button" id="btnViewStates" class="active">Carte par États (couleurs)</button>
+          </div>
+          <div class="venue-filters" id="venueFilters">
+            <div class="venue-filters-title">Lieux (carte dynamique)</div>
+            <div class="venue-filters-row">
+              <label><input type="checkbox" id="filterSx" checked> SX / SMX</label>
+              <label><input type="checkbox" id="filterMx" checked> MX</label>
+              <label><input type="checkbox" id="filterMtb" checked> VTT</label>
+              <label><input type="checkbox" id="filterBmx" checked> BMX</label>
+              <label style="color:#e11d48;"><input type="checkbox" id="filterBestCities" checked> ❤ Top villes US</label>
+            </div>
+          </div>
+        </div>
+        <div id="leafletMap"></div>
+        <div id="d3MapWrap"><svg id="d3MapSvg"></svg></div>
+        <object id="svgMap" class="path-map" data="usa-states.svg" type="image/svg+xml" aria-hidden="true"></object>
+        <div id="mapTooltip" class="map-tooltip" aria-hidden="true" role="tooltip"></div>
+      </div>
+      <aside class="panel" id="panel">
+        <div class="panel-empty" id="panelEmpty">Cliquez sur un État pour afficher les stats et l’histoire.</div>
+        <div id="panelContent" style="display: none;"></div>
+      </aside>
+    </main>
+    <footer>
+      Données issues du Livre Héros USA 50 États. Carte dynamique&nbsp;: <a href="https://leafletjs.com/" target="_blank" rel="noopener" style="color: var(--accent);">Leaflet</a> + CARTO. Carte par États&nbsp;: <a href="https://simplemaps.com/resources/svg-us" target="_blank" rel="noopener" style="color: var(--accent);">SimpleMaps</a>.
+    </footer>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js" crossorigin=""></script>
+  <script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js" crossorigin=""></script>
+  <script>
+    (function () {
+      let stateMap = null;
+      let lastActivePath = null;
+      let lastActiveCode = null;
+      let currentColorMode = 'cost';
+      let leafletMap = null;
+      let leafletMarkers = [];
+      let sxMarkers = [];
+      let mtbMarkers = [];
+      let bmxMarkers = [];
+      let mxMarkers = [];
+      let sxVenuesLayer = null;
+      let mtbVenuesLayer = null;
+      let bmxVenuesLayer = null;
+      let mxVenuesLayer = null;
+      
+      let d3MapInitialized = false;
+      let d3PathByCode = null;
+      // Données chargées depuis venues-map.json (SX/SMX, VTT, BMX)
+      var SX_SMX_VENUES = [];
+      var MTB_BIKE_PARKS = [];
+      var BMX_TRACKS = [];
+      var MX_TRACKS = [];
+      // Top 25 villes — chargé depuis state-map.json clé _bestCities
+      var BEST_CITIES = [];
+      let bestCitiesLayer = null;
+      let bestCitiesMarkers = [];
+      var FIPS_TO_USPS = { 1: 'AL', 2: 'AK', 4: 'AZ', 5: 'AR', 6: 'CA', 8: 'CO', 9: 'CT', 10: 'DE', 11: 'DC', 12: 'FL', 13: 'GA', 15: 'HI', 16: 'ID', 17: 'IL', 18: 'IN', 19: 'IA', 20: 'KS', 21: 'KY', 22: 'LA', 23: 'ME', 24: 'MD', 25: 'MA', 26: 'MI', 27: 'MN', 28: 'MS', 29: 'MO', 30: 'MT', 31: 'NE', 32: 'NV', 33: 'NH', 34: 'NJ', 35: 'NM', 36: 'NY', 37: 'NC', 38: 'ND', 39: 'OH', 40: 'OK', 41: 'OR', 42: 'PA', 44: 'RI', 45: 'SC', 46: 'SD', 47: 'TN', 48: 'TX', 49: 'UT', 50: 'VT', 51: 'VA', 53: 'WA', 54: 'WV', 55: 'WI', 56: 'WY' };
+
+      function showLoadErr() {
+        document.getElementById('loadErr').style.display = 'block';
+      }
+
+      // Mapping code état → slug URL (pour Zillow, RentData, etc.)
+      var STATE_SLUGS = {
+        AL:'alabama',AK:'alaska',AZ:'arizona',AR:'arkansas',CA:'california',
+        CO:'colorado',CT:'connecticut',DE:'delaware',DC:'district-of-columbia',FL:'florida',
+        GA:'georgia',HI:'hawaii',ID:'idaho',IL:'illinois',IN:'indiana',
+        IA:'iowa',KS:'kansas',KY:'kentucky',LA:'louisiana',ME:'maine',
+        MD:'maryland',MA:'massachusetts',MI:'michigan',MN:'minnesota',MS:'mississippi',
+        MO:'missouri',MT:'montana',NE:'nebraska',NV:'nevada',NH:'new-hampshire',
+        NJ:'new-jersey',NM:'new-mexico',NY:'new-york',NC:'north-carolina',ND:'north-dakota',
+        OH:'ohio',OK:'oklahoma',OR:'oregon',PA:'pennsylvania',RI:'rhode-island',
+        SC:'south-carolina',SD:'south-dakota',TN:'tennessee',TX:'texas',UT:'utah',
+        VT:'vermont',VA:'virginia',WA:'washington',WV:'west-virginia',WI:'wisconsin',WY:'wyoming'
+      };
+
+      function renderPanel(data) {
+        const s = data.stats || {};
+        const cost = data.costOfLiving || {};
+        var coutSlug = (s.cout || '').toLowerCase().replace(/\s+/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, '') || '';
+        const coutClass = s.cout ? 'cout-' + coutSlug : '';
+        var restClass = (cost.resteALivre != null && cost.resteALivre < 10000) ? 'reste-neg' : 'reste-pos';
+
+        var hasBudget = cost.index != null || cost.medianIncomeFamily4 != null || cost.livingWageFamily4 != null || cost.resteALivre != null || cost.medianHomePrice != null || cost.medianRent != null;
+        var hasContexte = s.climat || data.politique || data.frenchCount != null;
+
+        // —— Structure : panel-wrap > panel-header (fixe) + panel-inner (scroll)
+        let html = '<div class="panel-wrap">';
+
+        // ── HEADER (compact, fixe en haut)
+        html += '<div class="panel-header">';
+        html += '<div class="panel-header-left">';
+        html += '<h2>' + escapeHtml(data.nameFr) + '</h2>';
+        html += '<span class="header-sep">·</span>';
+        html += '<span class="section-label">' + escapeHtml(data.sectionLabel) + '</span>';
+        html += '<div class="badge-row">';
+        if (s.cout) html += '<span class="badge ' + coutClass + '">Coût ' + escapeHtml(s.cout) + '</span>';
+        if (s.noIncomeTax) html += '<span class="badge">Pas d\'impôt sur le revenu</span>';
+        (s.classements || []).forEach(function (c) {
+          html += '<span class="badge">' + escapeHtml(c) + '</span>';
+        });
+        if (!s.cout && !s.noIncomeTax && (!s.classements || s.classements.length === 0) && cost.indexLabel) {
+          html += '<span class="badge">Indice ' + escapeHtml(cost.indexLabel) + '</span>';
+        }
+        if (data.politique) {
+          var polSlug = data.politique.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          var polIcon = polSlug === 'democrate' ? '🔵' : polSlug === 'republicain' ? '🔴' : '🟣';
+          html += '<span class="badge pol-' + polSlug + '">' + polIcon + ' ' + escapeHtml(data.politique) + '</span>';
+        }
+        html += '</div>';  // ferme badge-row
+        if (data.ambiance) {
+          html += '<p class="panel-ambiance">' + escapeHtml(data.ambiance) + '</p>';
+        }
+        html += '</div>';  // ferme panel-header-left
+        if (data.stateUrl) {
+          html += '<div class="panel-header-right"><a class="state-link" href="' + escapeHtml(data.stateUrl) + '" target="_blank" rel="noopener" title="' + escapeHtml(data.stateUrl) + '">Site officiel</a></div>';
+        }
+        html += '</div>';  // ferme panel-header
+
+        // ══ ZONE SCROLLABLE ══
+        html += '<div class="panel-inner">';
+
+        // ── 1. ON AIME / ON DÉTESTE
+        var onAime = (data.onAime && data.onAime.length) ? data.onAime : (data.atouts || []);
+        var onDeteste = (data.onDeteste && data.onDeteste.length) ? data.onDeteste : (data.pointsVigilance || []);
+        if (onAime.length || onDeteste.length) {
+          html += '<div class="panel-block panel-aime-deteste">';
+          html += '<div class="panel-aime-deteste-grid">';
+          if (onAime.length) {
+            html += '<div class="panel-aime-deteste-block panel-aime"><span class="panel-header-block-label">On aime</span><ul class="panel-header-list">';
+            onAime.slice(0, 4).forEach(function (item) { html += '<li>' + escapeHtml(item) + '</li>'; });
+            html += '</ul></div>';
+          }
+          if (onDeteste.length) {
+            html += '<div class="panel-aime-deteste-block panel-deteste"><span class="panel-header-block-label">On déteste</span><ul class="panel-header-list">';
+            onDeteste.slice(0, 4).forEach(function (item) { html += '<li>' + escapeHtml(item) + '</li>'; });
+            html += '</ul></div>';
+          }
+          html += '</div></div>';
+        }
+
+        // ── 2. CHIFFRES CLÉS
+        if (hasBudget || hasContexte) {
+          html += '<div class="panel-block"><div class="panel-section-title">Chiffres clés</div>';
+          html += '<div class="identity-sheet">';
+          if (cost.index != null) {
+            html += '<div class="identity-row identity-row-highlight"><span class="identity-label">Indice coût de la vie</span><span class="identity-value">' + escapeHtml(cost.indexLabel) + '</span></div>';
+          }
+          if (cost.medianIncomeFamily4 != null) {
+            html += '<div class="identity-row"><span class="identity-label">Revenu médian (fam. 4)</span><span class="identity-value">' + formatUSD(cost.medianIncomeFamily4) + '</span></div>';
+          }
+          if (cost.livingWageFamily4 != null) {
+            html += '<div class="identity-row"><span class="identity-label">Salaire vital (fam. 4)</span><span class="identity-value">' + formatUSD(cost.livingWageFamily4) + '</span></div>';
+          }
+          if (cost.resteALivre != null) {
+            // Rouge si négatif ou faible (< 10000$ par an pour une famille de 4)
+            var isLow = cost.resteALivre < 10000;
+            var valueColor = isLow ? ' style="color: var(--red);"' : ' style="color: var(--green);"';
+            html += '<div class="identity-row identity-row-reste ' + restClass + '"><span class="identity-label">Reste à vivre</span><span class="identity-value"' + valueColor + '>' + formatUSD(cost.resteALivre) + '</span></div>';
+          }
+          // Variables URL pour les liens de référence
+          var stCode = data.code.toLowerCase();
+          var titleSlug = (STATE_SLUGS[data.code] || '').split('-').map(function(w){return w.charAt(0).toUpperCase()+w.slice(1);}).join('-');
+          var nameSlug = titleSlug.replace(/-/g, ' ');
+          var rentSlug = STATE_SLUGS[data.code] || '';
+          if (cost.medianHomePrice != null) {
+            // Couleur selon le prix SF (Redfin 2025) : vert < 300k, jaune 300k-500k, rouge > 500k
+            var homePriceColor;
+            if (cost.medianHomePrice < 300000) {
+              homePriceColor = 'color: var(--green);';
+            } else if (cost.medianHomePrice <= 500000) {
+              homePriceColor = 'color: var(--yellow);';
+            } else {
+              homePriceColor = 'color: var(--red);';
+            }
+            var homeSizeText = cost.medianHomeSize != null ? ' <span style="color: var(--text-dim); font-size: 0.85em;">(' + cost.medianHomeSize + ' m²)</span>' : '';
+            html += '<div class="identity-row"><span class="identity-label">🏠 Maison 4 chambres</span><span class="identity-value" style="' + homePriceColor + '">' + formatUSD(cost.medianHomePrice) + homeSizeText + '</span></div>';
+            html += '<div class="identity-row-legend"><span class="identity-legend">Prix médian Single-Family (Redfin Mars 2025)' + (cost.medianHomeSize != null ? '<br>Hypothèse : ~' + cost.medianHomeSize + ' m², maison individuelle' : '') + '<br>🔗 <a href="https://www.zillow.com/browse/homes/' + stCode + '/" target="_blank" rel="noopener" style="color:var(--accent);">Zillow</a> · <a href="https://www.realtor.com/realestateandhomes-search/' + encodeURIComponent(nameSlug) + '" target="_blank" rel="noopener" style="color:var(--accent);">Realtor.com</a> · <a href="https://www.redfin.com/state/' + titleSlug + '" target="_blank" rel="noopener" style="color:var(--accent);">Redfin</a></span></div>';
+          }
+          if (cost.medianRent != null) {
+            // Couleur selon le loyer HUD FMR 3BR : vert < 1350, jaune 1350-1900, rouge > 1900
+            var rentColor;
+            if (cost.medianRent < 1350) {
+              rentColor = 'color: var(--green);';
+            } else if (cost.medianRent <= 1900) {
+              rentColor = 'color: var(--yellow);';
+            } else {
+              rentColor = 'color: var(--red);';
+            }
+            var rentSizeText = cost.medianRentSize != null ? ' <span style="color: var(--text-dim); font-size: 0.85em;">(' + cost.medianRentSize + ' m²)</span>' : '';
+            html += '<div class="identity-row"><span class="identity-label">🏘️ Appt 3 chambres</span><span class="identity-value" style="' + rentColor + '">' + formatUSD(cost.medianRent) + '/mois' + rentSizeText + '</span></div>';
+            html += '<div class="identity-row-legend"><span class="identity-legend">Loyer 3 chambres (HUD FMR 3BR 2025)' + (cost.medianRentSize != null ? '<br>Hypothèse : ~' + cost.medianRentSize + ' m², appartement 3 chambres' : '') + '<br>🔗 <a href="https://www.rentdata.org/states/' + rentSlug + '/2025" target="_blank" rel="noopener" style="color:var(--accent);">RentData.org</a> · <a href="https://www.apartments.com/' + stCode + '/" target="_blank" rel="noopener" style="color:var(--accent);">Apartments.com</a> · <a href="https://www.zillow.com/rental-manager/market-trends/' + stCode + '/" target="_blank" rel="noopener" style="color:var(--accent);">Zillow Rentals</a></span></div>';
+          }
+          if (s.climat) {
+            html += '<div class="identity-row"><span class="identity-label">Climat</span><span class="identity-value">' + escapeHtml(s.climat) + '</span></div>';
+          }
+          if (data.politique) {
+            var polColor = data.politique === 'Démocrate' ? 'color:#60a5fa;' : data.politique === 'Républicain' ? 'color:#f87171;' : 'color:#c084fc;';
+            html += '<div class="identity-row"><span class="identity-label">Bord politique</span><span class="identity-value" style="' + polColor + '">' + escapeHtml(data.politique) + '</span></div>';
+          }
+          if (data.frenchCount != null) {
+            var pct = data.frenchPercent != null ? ' (' + data.frenchPercent.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' %)' : '';
+            html += '<div class="identity-row"><span class="identity-label">Origine française</span><span class="identity-value">' + new Intl.NumberFormat('fr-FR').format(data.frenchCount) + pct + '</span></div>';
+          }
+          html += '</div></div>';
+        }
+
+        // ── 3. VILLES PRINCIPALES (compact 2-col grid, max 5)
+        if (data.topCities && data.topCities.length) {
+          html += '<div class="panel-block"><div class="panel-section-title">Villes principales</div>';
+          html += '<ul class="cities-compact">';
+          data.topCities.slice(0, 5).forEach(function (city) {
+            var pop = city.population != null ? new Intl.NumberFormat('fr-FR').format(city.population) : '—';
+            html += '<li><span class="city-name">' + escapeHtml(city.name) + '</span><span class="city-pop">' + pop + '</span></li>';
+          });
+          html += '</ul></div>';
+        }
+
+        // ── 3b. TOP VILLES US (si présentes dans cet État)
+        if (BEST_CITIES && BEST_CITIES.length) {
+          var topCitiesInState = BEST_CITIES.filter(function (c) { return c.stateCode === data.code; });
+          if (topCitiesInState.length > 0) {
+            html += '<div class="panel-block"><div class="panel-section-title">❤ Top villes US</div>';
+            html += '<div style="font-size:0.7rem;color:var(--text-dim);margin-bottom:0.4rem;line-height:1.3;">Score composite : moyenne pondérée des positions dans US News, Niche, Livability.com, SmartAsset + bonus multi-source</div>';
+            html += '<ul class="top-cities-list">';
+            topCitiesInState.forEach(function (city) {
+              html += '<li class="top-city-item">';
+              html += '<div style="display:flex;align-items:center;gap:0.4rem;">';
+              html += '<span class="top-city-rank">#' + city.rank + '</span>';
+              html += '<span class="top-city-name">' + cityNameLink(city.name, city.stateCode) + '</span>';
+              if (city.compositeScore != null) {
+                html += '<span style="font-size:0.7rem;color:var(--text-dim);margin-left:auto;">' + city.compositeScore + '/100</span>';
+              }
+              html += '</div>';
+              if (city.rankings && city.rankings.length) {
+                city.rankings.forEach(function (r) {
+                  html += '<div style="font-size:0.75rem;color:var(--accent);font-weight:600;">🏆 ' + rankingLink(r, city.name, city.stateCode) + '</div>';
+                });
+              } else if (city.src) {
+                html += '<div style="font-size:0.75rem;color:var(--accent);font-weight:600;">🏆 ' + escapeHtml(city.src) + '</div>';
+              }
+              if (city.why) {
+                html += '<span class="top-city-why">' + escapeHtml(city.why) + '</span>';
+              }
+              html += '</li>';
+            });
+            html += '</ul></div>';
+          }
+        }
+
+        // ── 4. À DÉCOUVRIR (lieux remarquables — inline tags)
+        if (data.lieuxRemarquables) {
+          var lr = data.lieuxRemarquables;
+          var hasLieux = (lr.culture && lr.culture.length) || (lr.parcs && lr.parcs.length) || (lr.nature && lr.nature.length);
+          if (hasLieux) {
+            html += '<div class="panel-block"><div class="panel-section-title">À découvrir</div>';
+            if (lr.culture && lr.culture.length) {
+              html += '<div class="lieux-group"><span class="lieux-label lieux-label-culture">🎭 Culture</span><span class="lieux-tags">';
+              lr.culture.forEach(function (l) { html += '<span>' + escapeHtml(l) + '</span>'; });
+              html += '</span></div>';
+            }
+            if (lr.parcs && lr.parcs.length) {
+              html += '<div class="lieux-group"><span class="lieux-label lieux-label-parcs">🌲 Parcs</span><span class="lieux-tags">';
+              lr.parcs.forEach(function (l) { html += '<span>' + escapeHtml(l) + '</span>'; });
+              html += '</span></div>';
+            }
+            if (lr.nature && lr.nature.length) {
+              html += '<div class="lieux-group"><span class="lieux-label lieux-label-nature">🏔️ Nature</span><span class="lieux-tags">';
+              lr.nature.forEach(function (l) { html += '<span>' + escapeHtml(l) + '</span>'; });
+              html += '</span></div>';
+            }
+            html += '</div>';
+          }
+        }
+
+        // ── 5. CONTRASTE + CONSEIL (side by side callout cards)
+        if (data.contraste || data.conseil) {
+          html += '<div class="panel-block">';
+          var hasBoth = data.contraste && data.conseil;
+          if (hasBoth) html += '<div class="callout-grid">';
+          if (data.contraste) {
+            html += '<div class="callout-card callout-card-contraste"><div class="callout-card-title">Contraste</div>' + escapeHtml(data.contraste) + '</div>';
+          }
+          if (data.conseil) {
+            html += '<div class="callout-card callout-card-conseil"><div class="callout-card-title">Conseil</div>' + escapeHtml(data.conseil) + '</div>';
+          }
+          if (hasBoth) html += '</div>';
+          html += '</div>';
+        }
+
+        // ── 6. POUR QUI (footer)
+        if (data.pourQui) {
+          html += '<div class="panel-block"><p class="panel-pour-qui"><strong>Pour qui ?</strong> ' + escapeHtml(data.pourQui) + '</p></div>';
+        }
+
+        html += '</div>'; // ferme panel-inner
+        html += '</div>'; // ferme panel-wrap
+        return html;
+      }
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        var div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      /** Retourne l'URL officielle d'un classement */
+      function rankingUrl(r, cityName, stateCode) {
+        if (r.indexOf('US News Best Places') >= 0) return 'https://realestate.usnews.com/places/rankings/best-places-to-live';
+        if (r.indexOf('US News') >= 0 && r.indexOf('Quality') >= 0) return 'https://realestate.usnews.com/places/rankings/best-places-to-live-for-quality-of-life';
+        if (r.indexOf('Niche') >= 0) return 'https://www.niche.com/places-to-live/search/best-cities/';
+        if (r.indexOf('Livability') >= 0 && cityName && stateCode) {
+          var slug = cityName.toLowerCase().replace(/[\s.]+/g, '-').replace(/[^a-z0-9-]/g, '');
+          return 'https://livability.com/' + stateCode.toLowerCase() + '/' + slug + '/?top-100=2025';
+        }
+        if (r.indexOf('Livability') >= 0) return 'https://livability.com/best-places/top-100-best-places-to-live-in-the-us/';
+        if (r.indexOf('SmartAsset') >= 0) return 'https://smartasset.com/data-studies/where-americans-are-happiest-2025';
+        return null;
+      }
+
+      /** Génère un lien cliquable pour un classement */
+      function rankingLink(r, cityName, stateCode) {
+        var url = rankingUrl(r, cityName, stateCode);
+        var text = escapeHtml(r);
+        if (url) return '<a href="' + url + '" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;text-underline-offset:2px;">' + text + '</a>';
+        return text;
+      }
+
+      /** Set des villes Livability Top 100 (pour lien #unique) — rempli au chargement */
+      var LIVABILITY_TOP100 = {};
+
+      /** Lien vers la page Livability d'une ville (#unique si Top 100, sinon page de base) */
+      function cityNameLink(cityName, stateCode) {
+        var text = escapeHtml(cityName);
+        var slug = cityName.toLowerCase().replace(/[\s.]+/g, '-').replace(/[^a-z0-9-]/g, '');
+        var base = 'https://livability.com/' + stateCode.toLowerCase() + '/' + slug + '/';
+        var key = cityName + '|' + stateCode;
+        var url = LIVABILITY_TOP100[key] ? base + '?top-100=2025#unique' : base;
+        var title = LIVABILITY_TOP100[key] ? 'Ce qui rend ' + text + ' unique (Livability)' : 'Découvrir ' + text + ' sur Livability';
+        return '<a href="' + url + '" target="_blank" rel="noopener" style="color:var(--text);text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;" title="' + title + '">' + text + '</a>';
+      }
+      function formatUSD(n) {
+        if (n == null) return '—';
+        return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
+      }
+      function fToC(f) { return Math.round((f - 32) * 5 / 9); }
+      function inToCm(inches) { return Math.round(inches * 2.54); }
+      function formatWeatherHtml(liv) {
+        if (!liv) return '';
+        var parts = [];
+        if (liv.avgTempHighF != null && liv.avgTempLowF != null) {
+          parts.push('🌡️ ' + fToC(liv.avgTempLowF) + '°/' + fToC(liv.avgTempHighF) + '°C moy.');
+        }
+        if (liv.annualRainfallIn != null) {
+          parts.push('🌧️ ' + inToCm(liv.annualRainfallIn) + ' cm pluie/an');
+        }
+        if (liv.annualSnowfallIn != null) {
+          parts.push('❄️ ' + inToCm(liv.annualSnowfallIn) + ' cm neige/an');
+        }
+        return parts.length ? parts.join(' · ') : '';
+      }
+      function lerpHex(a, b, t) {
+        t = Math.max(0, Math.min(1, t));
+        var r = Math.round(parseInt(a.slice(1, 3), 16) * (1 - t) + parseInt(b.slice(1, 3), 16) * t);
+        var g = Math.round(parseInt(a.slice(3, 5), 16) * (1 - t) + parseInt(b.slice(3, 5), 16) * t);
+        var bl = Math.round(parseInt(a.slice(5, 7), 16) * (1 - t) + parseInt(b.slice(5, 7), 16) * t);
+        return '#' + [r, g, bl].map(function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
+      }
+      // Échelle coût : 86 → 130 (Hawaï=185 sera clampé rouge, bon contraste)
+      var COST_INDEX_MIN = 86;
+      var COST_INDEX_MAX = 130;
+      // Échelle prix maison SF (Redfin 2025) : 200k → 650k (P50=388k ≈ milieu)
+      var HOME_PRICE_MIN = 200000;
+      var HOME_PRICE_MAX = 650000;
+      // Échelle loyer HUD FMR 3BR 2025 : 1100 → 2200 (P50=1482, P90=2214)
+      var RENT_MIN = 1100;
+      var RENT_MAX = 2200;
+      function getFillForState(code, mode) {
+        if (!stateMap || code == null || code === '') return '#1a2235';
+        var c = stateMap[code];
+        if (!c || !c.costOfLiving) return '#1a2235';
+        var co = c.costOfLiving;
+        if (mode === 'cost' && co.index != null) {
+          var t = (co.index - COST_INDEX_MIN) / (COST_INDEX_MAX - COST_INDEX_MIN);
+          t = Math.max(0, Math.min(1, t));
+          return lerpHex('#22c55e', '#ef4444', t);
+        }
+        if (mode === 'reste' && co.resteScale != null) {
+          return lerpHex('#ef4444', '#22c55e', co.resteScale);
+        }
+        if (mode === 'homePrice' && co.medianHomePrice != null) {
+          var t = (co.medianHomePrice - HOME_PRICE_MIN) / (HOME_PRICE_MAX - HOME_PRICE_MIN);
+          t = Math.max(0, Math.min(1, t));
+          return lerpHex('#22c55e', '#ef4444', t);
+        }
+        if (mode === 'rent' && co.medianRent != null) {
+          var t = (co.medianRent - RENT_MIN) / (RENT_MAX - RENT_MIN);
+          t = Math.max(0, Math.min(1, t));
+          return lerpHex('#22c55e', '#ef4444', t);
+        }
+        return '#1a2235';
+      }
+      function applyColorsToMap(mode) {
+        currentColorMode = mode;
+        var svgObj = document.getElementById('svgMap');
+        if (!svgObj || !svgObj.contentDocument || !stateMap) return;
+        var doc = svgObj.contentDocument;
+        var paths = doc.querySelectorAll('path[id]');
+        paths.forEach(function (path) {
+          var id = path.getAttribute('id');
+          if (!stateMap[id]) return;
+          if (path.classList.contains('active')) return;
+          var fill = getFillForState(id, mode);
+          path.style.fill = fill;
+          path.style.stroke = fill;
+          path.dataset.baseFill = fill;
+        });
+      }
+
+      function showState(code) {
+        const data = stateMap[code];
+        const panelEmpty = document.getElementById('panelEmpty');
+        const panelContent = document.getElementById('panelContent');
+        if (!data) return;
+        panelEmpty.style.display = 'none';
+        panelContent.style.display = 'flex';
+        panelContent.innerHTML = renderPanel(data);
+        if (lastActivePath && lastActiveCode) {
+          lastActivePath.classList.remove('active');
+          var base = getFillForState(lastActiveCode, currentColorMode);
+          lastActivePath.style.fill = base;
+          lastActivePath.style.stroke = base;
+          lastActivePath.dataset.baseFill = base;
+        }
+        lastActiveCode = code;
+        const svgObj = document.getElementById('svgMap');
+        const accentColor = '#00d4aa';
+        if (svgObj && svgObj.contentDocument) {
+          const path = svgObj.contentDocument.getElementById(code);
+          if (path) {
+            path.classList.add('active');
+            path.style.fill = accentColor;
+            path.style.stroke = accentColor;
+            lastActivePath = path;
+            lastActiveCode = code;
+          }
+        }
+        if (d3PathByCode) applyColorsToD3Map();
+      }
+
+      function initLeafletMap(stateData, cityCoords) {
+        if (!window.L) return;
+        var mapEl = document.getElementById('leafletMap');
+        if (!mapEl) return;
+        leafletMarkers.forEach(function (m) { if (m && m.remove) m.remove(); });
+        leafletMarkers = [];
+        sxMarkers.forEach(function (m) { if (m && m.remove) m.remove(); });
+        sxMarkers = [];
+        mtbMarkers.forEach(function (m) { if (m && m.remove) m.remove(); });
+        mtbMarkers = [];
+        bmxMarkers.forEach(function (m) { if (m && m.remove) m.remove(); });
+        bmxMarkers = [];
+        mxMarkers.forEach(function (m) { if (m && m.remove) m.remove(); });
+        mxMarkers = [];
+        if (leafletMap) { leafletMap.remove(); leafletMap = null; }
+        leafletMap = window.L.map('leafletMap').setView([39.5, -98], 4);
+        var osmLayer = window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          maxZoom: 19
+        });
+        var satelliteLayer = window.L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+          attribution: '&copy; <a href="https://www.esri.com/">Esri</a>',
+          maxZoom: 19
+        });
+        osmLayer.addTo(leafletMap);
+        window.L.control.layers(
+          { 'Carte': osmLayer, 'Satellite': satelliteLayer },
+          {},
+          { position: 'topright' }
+        ).addTo(leafletMap);
+        leafletMap.setMaxBounds(window.L.latLngBounds(window.L.latLng(24, -126), window.L.latLng(50, -66)));
+        cityCoords = cityCoords || {};
+        function makeCityIcon(fillColor) {
+          var c = fillColor || '#1a2235';
+          return window.L.divIcon({
+            className: 'city-marker',
+            html: '<span style="background:' + c + ';width:10px;height:10px;border-radius:50%;display:inline-block;border:2px solid #0a0e17;"></span>',
+            iconSize: [14, 14],
+            iconAnchor: [7, 7]
+          });
+        }
+        if (stateData && Object.keys(cityCoords).length) {
+          Object.keys(stateData).forEach(function (code) {
+            var state = stateData[code];
+            var cities = state.topCities || [];
+            var nameFr = state.nameFr || code;
+            var markerColor = getFillForState(code, currentColorMode) || '#1a2235';
+            cities.forEach(function (city) {
+              var key = code + '|' + city.name;
+              var latlng = cityCoords[key];
+              if (!latlng) return;
+              var pop = city.population != null ? new Intl.NumberFormat('fr-FR').format(city.population) : '—';
+              var liv = city.livability || {};
+              var weatherLine = formatWeatherHtml(liv);
+              var tooltipText = escapeHtml(city.name) + ' · ' + escapeHtml(nameFr);
+              if (liv.medianIncome != null) {
+                tooltipText += '<br>💰 Revenu médian · ' + formatUSD(liv.medianIncome);
+              }
+              if (liv.medianHomeValue != null) {
+                tooltipText += '<br>🏠 Maison · ' + formatUSD(liv.medianHomeValue);
+              }
+              if (liv.medianRent != null) {
+                tooltipText += '<br>🏘️ Loyer · ' + formatUSD(liv.medianRent) + '/mois';
+              }
+              if (weatherLine) {
+                tooltipText += '<br>' + weatherLine;
+              }
+              // Build popup with city-level Livability data
+              var popupDetails = '';
+              if (Object.keys(liv).length) {
+                popupDetails += '<div style="margin:0.35rem 0 0.25rem;font-size:0.8rem;line-height:1.6;color:var(--text);">';
+                if (liv.medianIncome != null) popupDetails += '💰 Revenu médian : <b>' + formatUSD(liv.medianIncome) + '</b><br>';
+                if (liv.medianHomeValue != null) popupDetails += '🏠 Prix maison : <b>' + formatUSD(liv.medianHomeValue) + '</b><br>';
+                if (liv.medianRent != null) popupDetails += '🏘️ Loyer : <b>' + formatUSD(liv.medianRent) + '/mois</b><br>';
+                if (liv.medianPropertyTax != null) popupDetails += '🏛️ Taxe foncière : <b>' + formatUSD(liv.medianPropertyTax) + '/an</b><br>';
+                if (liv.avgCommute != null) popupDetails += '🚗 Trajet moyen : <b>' + liv.avgCommute + ' min</b>';
+                popupDetails += '</div>';
+                if (weatherLine) {
+                  popupDetails += '<div style="font-size:0.75rem;color:var(--text-dim);margin:0.15rem 0 0.25rem;line-height:1.5;">' + weatherLine + '</div>';
+                }
+              }
+              var marker = window.L.marker(latlng, { icon: makeCityIcon(markerColor) })
+                .bindTooltip(tooltipText, {
+                  direction: 'top',
+                  opacity: 0.95,
+                  className: 'leaflet-tooltip-dark'
+                })
+                .bindPopup(
+                  '<div class="city-popup-name">' + cityNameLink(city.name, code) + '</div>' +
+                  '<div class="city-popup-state">' + escapeHtml(nameFr) + ' · ' + pop + ' hab.</div>' +
+                  popupDetails +
+                  '<div style="display:flex;gap:0.4rem;margin-top:0.35rem;">' +
+                    '<button type="button" class="city-popup-btn" data-state="' + escapeHtml(code) + '">Voir l\'État</button>' +
+                    '<a href="https://livability.com/' + code.toLowerCase() + '/' + city.name.toLowerCase().replace(/[\s.]+/g, '-').replace(/[^a-z0-9-]/g, '') + '/" target="_blank" rel="noopener" class="city-popup-btn" style="background:var(--border);color:var(--text);text-align:center;text-decoration:none;font-size:0.75rem;">Livability ↗</a>' +
+                  '</div>'
+                )
+                .addTo(leafletMap);
+              marker.on('popupopen', function () {
+                var btn = document.querySelector('.leaflet-popup-content .city-popup-btn');
+                if (btn) btn.addEventListener('click', function () {
+                  showState(btn.getAttribute('data-state'));
+                  if (leafletMap) leafletMap.closePopup();
+                });
+              });
+              marker.stateCode = code;
+              leafletMarkers.push(marker);
+            });
+          });
+        }
+        sxVenuesLayer = window.L.layerGroup();
+        mtbVenuesLayer = window.L.layerGroup();
+        bmxVenuesLayer = window.L.layerGroup();
+        SX_SMX_VENUES.forEach(function (v) {
+          var label = v.type === 'smx' ? 'SMX' : 'SX';
+          var color = v.type === 'smx' ? '#7c3aed' : '#f59e0b';
+          var icon = window.L.divIcon({
+            className: 'sx-marker',
+            html: '<span class="sx-marker-inner" style="background:' + color + ';border-color:rgba(255,255,255,0.9);" title="' + escapeHtml(v.venue) + '">' + label + '</span>',
+            iconSize: [22, 22],
+            iconAnchor: [11, 11]
+          });
+          var title = v.venue + ' — ' + v.city + ', ' + v.stateCode;
+          var m = window.L.marker([v.lat, v.lng], { icon: icon })
+            .bindTooltip(title, { direction: 'top', opacity: 0.95, className: 'leaflet-tooltip-dark' })
+            .bindPopup('<div class="city-popup-name">' + escapeHtml(v.venue) + '</div><div class="city-popup-state">' + escapeHtml(v.city) + ', ' + escapeHtml(v.stateCode) + '</div><div class="sx-popup-type">' + (v.type === 'smx' ? 'Supermotocross (SMX)' : 'Monster Energy Supercross') + '</div>');
+          sxVenuesLayer.addLayer(m);
+          sxMarkers.push(m);
+        });
+        MTB_BIKE_PARKS.forEach(function (v) {
+          var icon = window.L.divIcon({
+            className: 'mtb-marker',
+            html: '<span class="mtb-marker-inner" title="' + escapeHtml(v.name) + '">VTT</span>',
+            iconSize: [24, 24],
+            iconAnchor: [12, 12]
+          });
+          var title = v.name + ' — ' + v.city + ', ' + v.stateCode;
+          var m = window.L.marker([v.lat, v.lng], { icon: icon })
+            .bindTooltip(title, { direction: 'top', opacity: 0.95, className: 'leaflet-tooltip-dark' })
+            .bindPopup('<div class="city-popup-name">' + escapeHtml(v.name) + '</div><div class="city-popup-state">' + escapeHtml(v.city) + ', ' + escapeHtml(v.stateCode) + '</div><div class="sx-popup-type">Bike park VTT / Mountain bike</div>');
+          mtbVenuesLayer.addLayer(m);
+          mtbMarkers.push(m);
+        });
+        BMX_TRACKS.forEach(function (v) {
+          var typeLabel = (v.type === 'pumptrack') ? 'Pump track' : 'BMX Race';
+          var icon = window.L.divIcon({
+            className: 'bmx-marker',
+            html: '<span class="bmx-marker-inner" title="' + escapeHtml(v.name) + '">BMX</span>',
+            iconSize: [24, 24],
+            iconAnchor: [12, 12]
+          });
+          var title = v.name + ' — ' + v.city + ', ' + v.stateCode;
+          var m = window.L.marker([v.lat, v.lng], { icon: icon })
+            .bindTooltip(title, { direction: 'top', opacity: 0.95, className: 'leaflet-tooltip-dark' })
+            .bindPopup('<div class="city-popup-name">' + escapeHtml(v.name) + '</div><div class="city-popup-state">' + escapeHtml(v.city) + ', ' + escapeHtml(v.stateCode) + '</div><div class="sx-popup-type">' + typeLabel + '</div>');
+          bmxVenuesLayer.addLayer(m);
+          bmxMarkers.push(m);
+        });
+        mxVenuesLayer = window.L.layerGroup();
+        MX_TRACKS.forEach(function (v) {
+          var icon = window.L.divIcon({
+            className: 'mx-marker',
+            html: '<span class="mx-marker-inner" title="' + escapeHtml(v.name) + '">MX</span>',
+            iconSize: [24, 24],
+            iconAnchor: [12, 12]
+          });
+          var title = v.name + ' — ' + v.city + ', ' + v.stateCode;
+          var m = window.L.marker([v.lat, v.lng], { icon: icon })
+            .bindTooltip(title, { direction: 'top', opacity: 0.95, className: 'leaflet-tooltip-dark' })
+            .bindPopup('<div class="city-popup-name">' + escapeHtml(v.name) + '</div><div class="city-popup-state">' + escapeHtml(v.city) + ', ' + escapeHtml(v.stateCode) + '</div><div class="sx-popup-type">Motocross (outdoor)</div>');
+          mxVenuesLayer.addLayer(m);
+          mxMarkers.push(m);
+        });
+        bestCitiesLayer = window.L.layerGroup();
+        bestCitiesMarkers = [];
+        BEST_CITIES.forEach(function (c) {
+          var icon = window.L.divIcon({
+            className: 'heart-marker',
+            html: '<span class="heart-marker-wrap" title="#' + c.rank + ' ' + escapeHtml(c.name) + '"><span class="heart-marker-inner">❤</span><span class="heart-rank">' + c.rank + '</span></span>',
+            iconSize: [38, 22],
+            iconAnchor: [13, 11]
+          });
+          var stateName = (stateData && stateData[c.stateCode] && stateData[c.stateCode].nameFr) ? stateData[c.stateCode].nameFr : c.stateCode;
+          // Use livability data directly from _bestCities (scraped), fallback to topCities lookup
+          var bestLiv = c.livability || {};
+          if (!Object.keys(bestLiv).length && stateData && stateData[c.stateCode] && stateData[c.stateCode].topCities) {
+            var match = stateData[c.stateCode].topCities.find(function (tc) { return tc.name === c.name; });
+            if (match && match.livability) bestLiv = match.livability;
+          }
+          var bestWeather = formatWeatherHtml(bestLiv);
+          var housingInfo = '';
+          if (Object.keys(bestLiv).length) {
+            housingInfo += '<div style="font-size:0.8rem;color:var(--text);margin:0.3rem 0 0.2rem;line-height:1.6;">';
+            if (bestLiv.medianIncome != null) housingInfo += '💰 Revenu médian : <b>' + formatUSD(bestLiv.medianIncome) + '</b><br>';
+            if (bestLiv.medianHomeValue != null) housingInfo += '🏠 Prix maison : <b>' + formatUSD(bestLiv.medianHomeValue) + '</b><br>';
+            if (bestLiv.medianRent != null) housingInfo += '🏘️ Loyer : <b>' + formatUSD(bestLiv.medianRent) + '/mois</b><br>';
+            if (bestLiv.medianPropertyTax != null) housingInfo += '🏛️ Taxe foncière : <b>' + formatUSD(bestLiv.medianPropertyTax) + '/an</b><br>';
+            if (bestLiv.avgCommute != null) housingInfo += '🚗 Trajet moyen : <b>' + bestLiv.avgCommute + ' min</b>';
+            housingInfo += '</div>';
+            if (bestWeather) {
+              housingInfo += '<div style="font-size:0.75rem;color:var(--text-dim);margin:0.15rem 0 0.25rem;line-height:1.5;">' + bestWeather + '</div>';
+            }
+          }
+          var rankingsHtml = '';
+          var rankingsTooltip = '';
+          if (c.rankings && c.rankings.length) {
+            rankingsHtml = c.rankings.map(function (r) { return '<div style="font-size:0.75rem;color:var(--accent);font-weight:600;">🏆 ' + rankingLink(r, c.name, c.stateCode) + '</div>'; }).join('');
+            rankingsTooltip = c.rankings.map(function (r) { return '🏆 ' + escapeHtml(r); }).join('<br>');
+          } else if (c.src) {
+            rankingsHtml = '<div style="font-size:0.75rem;color:var(--accent);font-weight:600;">🏆 ' + escapeHtml(c.src) + '</div>';
+            rankingsTooltip = '🏆 ' + escapeHtml(c.src);
+          }
+          var scoreText = c.compositeScore != null ? ' <span style="font-size:0.75rem;color:var(--text-dim);">(' + c.compositeScore + '/100)</span>' : '';
+          var popupHtml = '<div class="city-popup-name">❤ #' + c.rank + ' ' + cityNameLink(c.name, c.stateCode) + scoreText + '</div><div class="city-popup-state">' + escapeHtml(stateName) + '</div>' + '<div style="margin:0.25rem 0;">' + rankingsHtml + '</div>' + (c.why ? '<div style="font-size:0.8rem;color:var(--text);margin:0.3rem 0 0.25rem;line-height:1.4;max-width:240px;">' + escapeHtml(c.why) + '</div>' : '') + housingInfo + '<button type="button" class="city-popup-btn" data-state="' + escapeHtml(c.stateCode) + '">Voir l\'État</button>';
+          var tooltipScore = c.compositeScore != null ? ' (' + c.compositeScore + '/100)' : '';
+          var tooltipText = '❤ #' + c.rank + ' ' + escapeHtml(c.name) + tooltipScore + ' · ' + escapeHtml(stateName) + '<br>' + rankingsTooltip;
+          if (bestLiv.medianIncome != null) {
+            tooltipText += '<br>💰 Revenu · ' + formatUSD(bestLiv.medianIncome);
+          }
+          if (bestLiv.medianHomeValue != null) {
+            tooltipText += '<br>🏠 Maison · ' + formatUSD(bestLiv.medianHomeValue);
+          }
+          if (bestLiv.medianRent != null) {
+            tooltipText += '<br>🏘️ Loyer · ' + formatUSD(bestLiv.medianRent) + '/mois';
+          }
+          if (bestWeather) {
+            tooltipText += '<br>' + bestWeather;
+          }
+          var m = window.L.marker([c.lat, c.lng], { icon: icon })
+            .bindTooltip(tooltipText, {
+              direction: 'top',
+              opacity: 0.95,
+              className: 'leaflet-tooltip-dark'
+            })
+            .bindPopup(popupHtml, { closeButton: true, autoPan: true, maxWidth: 280 });
+          m.on('popupopen', function () {
+            var btn = document.querySelector('.leaflet-popup-content .city-popup-btn');
+            if (btn) btn.addEventListener('click', function () {
+              showState(btn.getAttribute('data-state'));
+              if (leafletMap) leafletMap.closePopup();
+            });
+          });
+          bestCitiesLayer.addLayer(m);
+          bestCitiesMarkers.push(m);
+        });
+        leafletMap.addLayer(bestCitiesLayer);
+        leafletMap.addLayer(sxVenuesLayer);
+        leafletMap.addLayer(mtbVenuesLayer);
+        leafletMap.addLayer(bmxVenuesLayer);
+        leafletMap.addLayer(mxVenuesLayer);
+        applyVenueFilters();
+        setTimeout(function () {
+          if (leafletMap) leafletMap.invalidateSize();
+        }, 100);
+        window.addEventListener('resize', function () {
+          if (leafletMap) leafletMap.invalidateSize();
+        });
+      }
+
+      function fipsToUsps(id) {
+        var n = typeof id === 'string' ? parseInt(id, 10) : id;
+        return FIPS_TO_USPS[n] || null;
+      }
+      function getTooltipHtml(code) {
+        if (!stateMap || !code || !stateMap[code]) return '';
+        var d = stateMap[code];
+        var cost = d.costOfLiving || {};
+        var html = '<div class="tooltip-title">' + escapeHtml(d.nameFr) + '</div>';
+        if (currentColorMode === 'cost' && cost.indexLabel) {
+          html += '<div class="tooltip-line">Coût de la vie : ' + escapeHtml(cost.indexLabel) + '</div>';
+        } else if (currentColorMode === 'reste' && cost.resteALivre != null) {
+          html += '<div class="tooltip-line">Reste à vivre : ' + formatUSD(cost.resteALivre) + '</div>';
+        } else if (currentColorMode === 'homePrice' && cost.medianHomePrice != null) {
+          var homeSizeText = cost.medianHomeSize != null ? ' (' + cost.medianHomeSize + ' m²)' : '';
+          html += '<div class="tooltip-line">🏠 Maison 4ch · ' + formatUSD(cost.medianHomePrice) + homeSizeText + '</div>';
+        } else if (currentColorMode === 'rent' && cost.medianRent != null) {
+          var rentSizeText = cost.medianRentSize != null ? ' (' + cost.medianRentSize + ' m²)' : '';
+          html += '<div class="tooltip-line">🏘️ Appt 3ch · ' + formatUSD(cost.medianRent) + '/mois' + rentSizeText + '</div>';
+        }
+        // Toujours afficher les prix immobiliers si disponibles (sauf si déjà affichés ci-dessus)
+        if (currentColorMode !== 'homePrice' && cost.medianHomePrice != null) {
+          var homeSizeText = cost.medianHomeSize != null ? ' (' + cost.medianHomeSize + ' m²)' : '';
+          html += '<div class="tooltip-line">🏠 Maison 4ch · ' + formatUSD(cost.medianHomePrice) + homeSizeText + '</div>';
+        }
+        if (currentColorMode !== 'rent' && cost.medianRent != null) {
+          var rentSizeText = cost.medianRentSize != null ? ' (' + cost.medianRentSize + ' m²)' : '';
+          html += '<div class="tooltip-line">🏘️ Appt 3ch · ' + formatUSD(cost.medianRent) + '/mois' + rentSizeText + '</div>';
+        }
+        if (d.stats && d.stats.cout) html += '<div class="tooltip-line">Coût ' + escapeHtml(d.stats.cout) + '</div>';
+        return html;
+      }
+      function showTooltip(evt, code) {
+        var el = document.getElementById('mapTooltip');
+        if (!el || !code || !stateMap || !stateMap[code]) return;
+        el.innerHTML = getTooltipHtml(code);
+        el.classList.add('visible');
+        el.setAttribute('aria-hidden', 'false');
+        placeTooltip(el, evt);
+      }
+      function placeTooltip(el, evt) {
+        if (!el || !el.classList.contains('visible')) return;
+        var x = evt.pageX != null ? evt.pageX : evt.clientX + (window.scrollX || 0);
+        var y = evt.pageY != null ? evt.pageY : evt.clientY + (window.scrollY || 0);
+        var offset = 14;
+        var w = el.offsetWidth || 200;
+        var h = el.offsetHeight || 60;
+        var rightEdge = x + offset + w;
+        var leftOk = rightEdge <= window.innerWidth + (window.scrollX || 0);
+        var left = leftOk ? x + offset : x - offset - w;
+        var top = y + offset;
+        if (top + h > window.innerHeight + (window.scrollY || 0)) top = y - offset - h;
+        el.style.left = left + 'px';
+        el.style.top = top + 'px';
+      }
+      function hideTooltip() {
+        var el = document.getElementById('mapTooltip');
+        if (el) {
+          el.classList.remove('visible');
+          el.setAttribute('aria-hidden', 'true');
+        }
+      }
+
+      function applyColorsToD3Map() {
+        if (!d3PathByCode || !stateMap) return;
+        d3PathByCode.each(function () {
+          var code = d3.select(this).attr('data-code');
+          var isActive = code === lastActiveCode;
+          var fill = getFillForState(code, currentColorMode);
+          d3.select(this).attr('fill', fill);
+          if (isActive) {
+            d3.select(this).attr('stroke', '#ffffff').attr('stroke-width', 2.5);
+          } else {
+            d3.select(this).attr('stroke', fill).attr('stroke-width', 0.5);
+          }
+        });
+      }
+      function applyVenueFilters() {
+        if (!leafletMap) return;
+        var showSx = document.getElementById('filterSx');
+        var showMx = document.getElementById('filterMx');
+        var showMtb = document.getElementById('filterMtb');
+        var showBmx = document.getElementById('filterBmx');
+        if (sxVenuesLayer) {
+          if (showSx && showSx.checked) leafletMap.addLayer(sxVenuesLayer);
+          else leafletMap.removeLayer(sxVenuesLayer);
+        }
+        if (mxVenuesLayer) {
+          if (showMx && showMx.checked) leafletMap.addLayer(mxVenuesLayer);
+          else leafletMap.removeLayer(mxVenuesLayer);
+        }
+        if (mtbVenuesLayer) {
+          if (showMtb && showMtb.checked) leafletMap.addLayer(mtbVenuesLayer);
+          else leafletMap.removeLayer(mtbVenuesLayer);
+        }
+        if (bmxVenuesLayer) {
+          if (showBmx && showBmx.checked) leafletMap.addLayer(bmxVenuesLayer);
+          else leafletMap.removeLayer(bmxVenuesLayer);
+        }
+        var showBestCities = document.getElementById('filterBestCities');
+        if (bestCitiesLayer) {
+          if (showBestCities && showBestCities.checked) leafletMap.addLayer(bestCitiesLayer);
+          else leafletMap.removeLayer(bestCitiesLayer);
+        }
+      }
+
+      function updateLeafletMarkerColors() {
+        if (!window.L || !leafletMap) return;
+        leafletMarkers.forEach(function (m) {
+          if (m && m.stateCode && m.setIcon) {
+            var fill = getFillForState(m.stateCode, currentColorMode) || '#1a2235';
+            m.setIcon(window.L.divIcon({
+              className: 'city-marker',
+              html: '<span style="background:' + fill + ';width:10px;height:10px;border-radius:50%;display:inline-block;border:2px solid #0a0e17;"></span>',
+              iconSize: [14, 14],
+              iconAnchor: [7, 7]
+            }));
+          }
+        });
+      }
+
+      function initD3Map(geojson) {
+        if (!window.d3 || !stateMap) return;
+        if (!geojson || !geojson.features || !geojson.features.length) return;
+        var wrap = document.getElementById('d3MapWrap');
+        var svg = document.getElementById('d3MapSvg');
+        if (!wrap || !svg) return;
+        d3.select(svg).selectAll('*').remove();
+        var width = Math.max(1, wrap.clientWidth || 600);
+        var height = Math.max(1, wrap.clientHeight || 480);
+        d3.select(svg).attr('viewBox', [0, 0, width, height]).attr('width', width).attr('height', height);
+        var projection = d3.geoAlbersUsa().fitSize([width, height], geojson);
+        var path = d3.geoPath().projection(projection);
+        var g = d3.select(svg).append('g');
+        var pathSel = g.selectAll('path')
+          .data(geojson.features)
+          .enter().append('path')
+          .attr('d', path)
+          .attr('stroke-width', 0.5)
+          .attr('data-code', function (d) { return fipsToUsps(d.id) || ''; })
+          .attr('fill', function (d) { return getFillForState(fipsToUsps(d.id), currentColorMode) || '#1a2235'; })
+          .attr('stroke', function (d) { return getFillForState(fipsToUsps(d.id), currentColorMode) || '#1e293b'; })
+          .on('click', function (event, d) {
+            var code = fipsToUsps(d.id);
+            if (code && stateMap[code]) showState(code);
+          })
+          .on('mouseenter', function (event, d) {
+            var code = fipsToUsps(d.id);
+            if (!stateMap[code]) return;
+            if (code !== lastActiveCode) {
+              d3.select(this).attr('stroke', '#ffffff').attr('stroke-width', 1.5);
+            }
+            showTooltip(event, code);
+          })
+          .on('mousemove', function (event, d) {
+            var code = fipsToUsps(d.id);
+            if (stateMap[code]) placeTooltip(document.getElementById('mapTooltip'), event);
+          })
+          .on('mouseleave', function (event, d) {
+            var code = fipsToUsps(d.id);
+            if (code !== lastActiveCode) {
+              var fill = getFillForState(code, currentColorMode) || '#1a2235';
+              d3.select(this).attr('stroke', fill).attr('stroke-width', 0.5);
+            }
+            hideTooltip();
+          });
+        d3PathByCode = pathSel;
+        d3.zoom().scaleExtent([1, 8])
+          .on('zoom', function (ev) { g.attr('transform', ev.transform); })(d3.select(svg));
+        d3MapInitialized = true;
+      }
+
+      function bindMap() {
+        const svgObj = document.getElementById('svgMap');
+        if (!svgObj || !stateMap) return;
+        function onLoad() {
+          const doc = svgObj.contentDocument;
+          if (!doc) return;
+          var style = doc.createElementNS('http://www.w3.org/2000/svg', 'style');
+          style.textContent = 'path { fill: #1a2235; stroke: #1e293b; }';
+          doc.documentElement.insertBefore(style, doc.documentElement.firstChild);
+          const paths = doc.querySelectorAll('path[id]');
+          const hoverFill = '#00d4aa';
+          applyColorsToMap('cost');
+          paths.forEach(function (path) {
+            const id = path.getAttribute('id');
+            if (stateMap[id]) {
+              path.addEventListener('click', function () { showState(id); });
+              path.addEventListener('mouseenter', function () {
+                if (!path.classList.contains('active')) {
+                  path.style.fill = hoverFill;
+                  path.style.stroke = hoverFill;
+                }
+              });
+              path.addEventListener('mouseleave', function () {
+                if (!path.classList.contains('active')) {
+                  var base = path.dataset.baseFill || '#1a2235';
+                  path.style.fill = base;
+                  path.style.stroke = base;
+                }
+              });
+            }
+          });
+        }
+        if (svgObj.contentDocument) onLoad();
+        else svgObj.addEventListener('load', onLoad);
+      }
+
+      fetch('state-map.json')
+        .then(function (r) {
+          if (!r.ok) throw new Error(r.statusText);
+          return r.json();
+        })
+        .then(function (data) {
+          // Extraire _bestCities puis le retirer de stateMap (pour ne pas polluer les états)
+          if (data._bestCities && Array.isArray(data._bestCities)) {
+            BEST_CITIES = data._bestCities;
+            delete data._bestCities;
+          }
+          // Construire le set Livability Top 100 pour les liens #unique
+          if (data._livabilityCities && Array.isArray(data._livabilityCities)) {
+            data._livabilityCities.forEach(function (lc) {
+              LIVABILITY_TOP100[lc.name + '|' + lc.state] = true;
+            });
+            delete data._livabilityCities;
+          }
+          stateMap = data;
+          bindMap();
+          document.getElementById('btnCost').addEventListener('click', function () {
+            document.getElementById('btnCost').classList.add('active');
+            document.getElementById('btnReste').classList.remove('active');
+            document.getElementById('btnHomePrice').classList.remove('active');
+            document.getElementById('btnRent').classList.remove('active');
+            document.getElementById('scaleCost').style.display = 'flex';
+            document.getElementById('scaleReste').style.display = 'none';
+            document.getElementById('scaleHomePrice').style.display = 'none';
+            document.getElementById('scaleRent').style.display = 'none';
+            currentColorMode = 'cost';
+            applyColorsToMap('cost');
+            applyColorsToD3Map();
+            updateLeafletMarkerColors();
+          });
+          document.getElementById('btnReste').addEventListener('click', function () {
+            document.getElementById('btnReste').classList.add('active');
+            document.getElementById('btnCost').classList.remove('active');
+            document.getElementById('btnHomePrice').classList.remove('active');
+            document.getElementById('btnRent').classList.remove('active');
+            document.getElementById('scaleReste').style.display = 'flex';
+            document.getElementById('scaleCost').style.display = 'none';
+            document.getElementById('scaleHomePrice').style.display = 'none';
+            document.getElementById('scaleRent').style.display = 'none';
+            currentColorMode = 'reste';
+            applyColorsToMap('reste');
+            applyColorsToD3Map();
+            updateLeafletMarkerColors();
+          });
+          document.getElementById('btnHomePrice').addEventListener('click', function () {
+            document.getElementById('btnHomePrice').classList.add('active');
+            document.getElementById('btnCost').classList.remove('active');
+            document.getElementById('btnReste').classList.remove('active');
+            document.getElementById('btnRent').classList.remove('active');
+            document.getElementById('scaleHomePrice').style.display = 'flex';
+            document.getElementById('scaleCost').style.display = 'none';
+            document.getElementById('scaleReste').style.display = 'none';
+            document.getElementById('scaleRent').style.display = 'none';
+            currentColorMode = 'homePrice';
+            applyColorsToMap('homePrice');
+            applyColorsToD3Map();
+            updateLeafletMarkerColors();
+          });
+          document.getElementById('btnRent').addEventListener('click', function () {
+            document.getElementById('btnRent').classList.add('active');
+            document.getElementById('btnCost').classList.remove('active');
+            document.getElementById('btnReste').classList.remove('active');
+            document.getElementById('btnHomePrice').classList.remove('active');
+            document.getElementById('scaleRent').style.display = 'flex';
+            document.getElementById('scaleCost').style.display = 'none';
+            document.getElementById('scaleReste').style.display = 'none';
+            document.getElementById('scaleHomePrice').style.display = 'none';
+            currentColorMode = 'rent';
+            applyColorsToMap('rent');
+            applyColorsToD3Map();
+            updateLeafletMarkerColors();
+          });
+          return Promise.all([
+            fetch('city-coordinates.json').then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; }),
+            fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
+            fetch('venues-map.json').then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; })
+          ]);
+        })
+        .then(function (results) {
+          var cityCoords = results[0] || {};
+          var usTopo = results[1];
+          var venues = results[2] || {};
+          if (venues.sxSmxVenues) SX_SMX_VENUES = venues.sxSmxVenues;
+          if (venues.mtbBikeParks) MTB_BIKE_PARKS = venues.mtbBikeParks;
+          if (venues.bmxTracks) BMX_TRACKS = venues.bmxTracks;
+          if (venues.mxTracks) MX_TRACKS = venues.mxTracks;
+          if (stateMap && window.L) {
+            setTimeout(function () {
+              try { initLeafletMap(stateMap, cityCoords); } catch (e) { console.error('Leaflet init:', e); }
+            }, 50);
+          }
+          if (stateMap && usTopo && window.topojson && typeof window.topojson.feature === 'function' && usTopo.objects && usTopo.objects.states) {
+            try {
+              var geojson = window.topojson.feature(usTopo, usTopo.objects.states);
+              setTimeout(function () {
+                try { initD3Map(geojson); } catch (e) { console.error('D3 map init:', e); }
+              }, 100);
+            } catch (e) { console.error('TopoJSON convert:', e); }
+          }
+        })
+        .then(function () {
+          var wrap = document.querySelector('.map-wrap');
+          var btnDynamic = document.getElementById('btnViewDynamic');
+          var btnStates = document.getElementById('btnViewStates');
+          if (wrap && btnDynamic && btnStates) {
+            wrap.classList.add('view-states');
+            btnDynamic.addEventListener('click', function () {
+              wrap.classList.remove('view-states');
+              wrap.classList.add('view-dynamic');
+              btnDynamic.classList.add('active');
+              btnStates.classList.remove('active');
+              if (leafletMap) { leafletMap.invalidateSize(); }
+            });
+            btnStates.addEventListener('click', function () {
+              wrap.classList.remove('view-dynamic');
+              wrap.classList.add('view-states');
+              btnStates.classList.add('active');
+              btnDynamic.classList.remove('active');
+            });
+            var filterSx = document.getElementById('filterSx');
+            var filterMx = document.getElementById('filterMx');
+            var filterMtb = document.getElementById('filterMtb');
+            var filterBmx = document.getElementById('filterBmx');
+            if (filterSx) filterSx.addEventListener('change', applyVenueFilters);
+            if (filterMx) filterMx.addEventListener('change', applyVenueFilters);
+            if (filterMtb) filterMtb.addEventListener('change', applyVenueFilters);
+            if (filterBmx) filterBmx.addEventListener('change', applyVenueFilters);
+            var filterBestCities = document.getElementById('filterBestCities');
+            if (filterBestCities) filterBestCities.addEventListener('change', applyVenueFilters);
+          }
+        })
+        .catch(function (err) {
+          showLoadErr();
+          console.error(err);
+        });
+    })();
+  </script>
+</body>
+</html>
