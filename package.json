@@ -7,7 +7,9 @@
     "scrape": "node scripts/scrape-livability-cities.js",
     "build": "node scripts/merge-json.js",
     "book": "node scripts/generate-travel-hero-usa.js",
-    "book:pdf": "python scripts/docx-to-pdf.py"
+    "book:pdf": "python scripts/docx-to-pdf.py",
+    "book:ville-ideale": "node scripts/generate-livre-usa-famille.js",
+    "book:ville-ideale:pdf": "python -c \"from docx2pdf import convert; convert('book/Livre_Heros_USA_Ville_Ideale.docx', 'book/Livre_Heros_USA_Ville_Ideale.pdf'); print('PDF créé.')\""
   },
   "keywords": ["usa", "map", "leaflet", "livability"],
   "author": "Nicolas Marchand",
