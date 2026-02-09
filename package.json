@@ -3,8 +3,9 @@
   "version": "2.0.0",
   "description": "Carte interactive des 50 États US + guide « dont vous êtes le héros »",
   "scripts": {
-    "start": "npx serve .",
-    "scrape": "node scripts/scrape-livability-cities.js"
+    "start": "npx serve public",
+    "scrape": "node scripts/scrape-livability-cities.js",
+    "build": "node scripts/merge-json.js"
   },
   "keywords": ["usa", "map", "leaflet", "livability"],
   "author": "Nicolas Marchand",

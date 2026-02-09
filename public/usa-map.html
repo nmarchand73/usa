@@ -2778,12 +2778,17 @@
         }
       });
 
-      fetch('state-map.json')
-        .then(function (r) {
+      Promise.all([
+        fetch('app-data.json').then(function (r) {
           if (!r.ok) throw new Error(r.statusText);
           return r.json();
-        })
-        .then(function (data) {
+        }),
+        fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+      ])
+        .then(function (pair) {
+          var appData = pair[0];
+          var usTopo = pair[1];
+          var data = appData.stateMap || {};
           // Extraire _bestCities puis le retirer de stateMap (pour ne pas polluer les états)
           if (data._bestCities && Array.isArray(data._bestCities)) {
             BEST_CITIES = data._bestCities;
@@ -2857,20 +2862,10 @@
             applyColorsToD3Map();
             updateLeafletMarkerColors();
           });
-          return Promise.all([
-            fetch('city-coordinates.json').then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; }),
-            fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
-            fetch('venues-map.json').then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; }),
-            fetch('airports.json').then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; }),
-            fetch('livability-details.json').then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; })
-          ]);
-        })
-        .then(function (results) {
-          var cityCoords = results[0] || {};
-          var usTopo = results[1];
-          var venues = results[2] || {};
-          if (Array.isArray(results[3]) && results[3].length) US_AIRPORTS = results[3];
-          LIVABILITY_DETAILS = results[4] || {};
+          var cityCoords = appData.cityCoordinates || {};
+          var venues = appData.venues || {};
+          if (Array.isArray(appData.airports) && appData.airports.length) US_AIRPORTS = appData.airports;
+          LIVABILITY_DETAILS = appData.livabilityDetails || {};
           if (venues.sxSmxVenues) SX_SMX_VENUES = venues.sxSmxVenues;
           if (venues.mtbBikeParks) MTB_BIKE_PARKS = venues.mtbBikeParks;
           if (venues.bmxTracks) BMX_TRACKS = venues.bmxTracks;

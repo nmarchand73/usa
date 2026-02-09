@@ -17,8 +17,8 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
-const stateMapPath = path.join(__dirname, '..', 'state-map.json');
-const cityCoordsPath = path.join(__dirname, '..', 'city-coordinates.json');
+const stateMapPath = path.join(__dirname, '..', 'map-data', 'state-map.json');
+const cityCoordsPath = path.join(__dirname, '..', 'map-data', 'city-coordinates.json');
 
 const stateMap = JSON.parse(fs.readFileSync(stateMapPath, 'utf8'));
 const cityCoords = JSON.parse(fs.readFileSync(cityCoordsPath, 'utf8'));

@@ -17,9 +17,10 @@ const fs = require('fs');
 const path = require('path');
 
 const BASE = path.join(__dirname, '..');
-const HTML_DIR = path.join(BASE, 'html-pages');
-const OUT_FILE = path.join(BASE, 'livability-details.json');
-const STATE_MAP_FILE = path.join(BASE, 'state-map.json');
+const MAP_DATA = path.join(BASE, 'map-data');
+const HTML_DIR = path.join(MAP_DATA, 'html-pages');
+const OUT_FILE = path.join(MAP_DATA, 'livability-details.json');
+const STATE_MAP_FILE = path.join(MAP_DATA, 'state-map.json');
 
 // ── Helpers ──────────────────────────────────────────────
 

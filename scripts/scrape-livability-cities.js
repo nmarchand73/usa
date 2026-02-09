@@ -26,9 +26,9 @@ const path = require('path');
 const https = require('https');
 const http = require('http');
 
-const cityCoordsPath = path.join(__dirname, '..', 'city-coordinates.json');
-const stateMapPath = path.join(__dirname, '..', 'state-map.json');
-const htmlPagesDir = path.join(__dirname, '..', 'html-pages');
+const cityCoordsPath = path.join(__dirname, '..', 'map-data', 'city-coordinates.json');
+const stateMapPath = path.join(__dirname, '..', 'map-data', 'state-map.json');
+const htmlPagesDir = path.join(__dirname, '..', 'map-data', 'html-pages');
 
 const cityCoords = JSON.parse(fs.readFileSync(cityCoordsPath, 'utf8'));
 const stateMap = JSON.parse(fs.readFileSync(stateMapPath, 'utf8'));

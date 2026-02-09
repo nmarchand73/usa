@@ -6,30 +6,40 @@ Carte interactive des **50 États US + Washington DC** avec données socio-écon
 
 ```
 /
-├── usa-map.html             # Carte interactive (app principale)
-├── usa-states.svg           # Carte SVG des États
-├── state-map.json           # Données: États, villes, Livability, classements
-├── city-coordinates.json    # Coordonnées GPS des villes
-├── venues-map.json          # Données: venues SX/VTT/BMX
-├── tracks-by-state.json     # Données: circuits motorsport par État
+├── public/                  # Racine du serveur (npm start)
+│   ├── usa-map.html        # Carte interactive (app principale)
+│   ├── usa-states.svg      # Carte SVG des États
+│   └── app-data.json       # Données fusionnées (généré par npm run build)
+│
+├── map-data/                # Données sources carte (scripts lisent/écrivent ici)
+│   ├── state-map.json      # États, villes, Livability, classements
+│   ├── city-coordinates.json
+│   ├── venues-map.json     # SX/VTT/BMX/MX/Ski
+│   ├── airports.json
+│   ├── livability-details.json
+│   ├── tracks-by-state.json
+│   └── html-pages/         # Pages HTML scrapées (Livability)
 │
 ├── book/                    # Livre généré (DOCX + PDF)
 │   ├── Livre_Heros_USA_50_Etats.docx
 │   └── Livre_Heros_USA_50_Etats.pdf
 │
-├── data/                    # Données sources (enrichissement)
-│   ├── paragraphs-usa.js    # Textes du livre par État
-│   ├── state-codes.js       # Codes ISO des États
-│   ├── state-cities.js      # Villes par État
-│   ├── state-urls.js        # URLs officielles
-│   ├── state-french-data.js # Données francophones
-│   └── criteria-data.js     # Critères de comparaison
+├── data/                    # Données sources livre (enrichissement)
+│   ├── paragraphs-usa.js
+│   ├── state-codes.js
+│   ├── state-cities.js
+│   ├── state-urls.js
+│   ├── state-french-data.js
+│   └── criteria-data.js
 │
-├── scripts/                 # Scripts de maintenance
-│   └── scrape-livability-cities.js  # Scraping Livability.com
+├── scripts/
+│   ├── merge-json.js       # Fusionne map-data/*.json → public/app-data.json
+│   ├── scrape-livability-cities.js
+│   ├── compute-airport-distances.js
+│   └── extract-livability-details.js
 │
 ├── package.json
-├── launch-site.bat          # Lancement rapide (Windows)
+├── launch-site.bat
 └── .gitignore
 ```
 
@@ -46,10 +56,10 @@ La carte `usa-map.html` affiche :
 ```powershell
 npm start
 # ou
-npx serve .
+npx serve public
 ```
 
-Puis ouvrir [http://localhost:3000/usa-map.html](http://localhost:3000/usa-map.html)
+Puis ouvrir [http://localhost:3000/usa-map.html](http://localhost:3000/usa-map.html) (le serveur a pour racine le dossier `public/`).
 
 > Sous Windows : double-cliquer `launch-site.bat`
 
@@ -60,6 +70,14 @@ npm run scrape
 ```
 
 Scrape les Quick Facts et données météo depuis Livability.com pour toutes les villes du projet.
+
+### Régénérer les données fusionnées (app-data.json)
+
+La carte charge un seul fichier `app-data.json` (fusion des JSON dans `map-data/`). Après avoir modifié l’un des JSON sources, régénérer le bundle :
+
+```powershell
+npm run build
+```
 
 ## Livre « dont vous êtes le héros »
 
