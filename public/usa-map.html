@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Carte USA — Stats et histoires par État</title>
+  <title>USA Map — stats and stories by state</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -74,6 +74,23 @@
       max-width: 1400px;
       margin: 0 auto;
       width: 100%;
+    }
+    .language-switch {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.85rem;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+    }
+    .language-switch select {
+      background: var(--bg2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.3rem 0.55rem;
+      font-size: 0.8rem;
     }
     .map-legend {
       display: flex;
@@ -941,8 +958,15 @@
 <body>
   <div class="app">
     <header class="hero">
-      <h1>Carte USA — Stats et histoires</h1>
-      <p>Cliquez sur un État pour découvrir le contenu du Livre Héros (50 États + DC)</p>
+      <h1 id="heroTitle">Carte USA — Stats et histoires</h1>
+      <p id="heroSubtitle">Cliquez sur un État pour découvrir le contenu du Livre Héros (50 États + DC)</p>
+      <div class="language-switch">
+        <label for="langSelect" id="langLabel">Langue :</label>
+        <select id="langSelect" aria-label="Language selector">
+          <option value="fr">Français</option>
+          <option value="en">English</option>
+        </select>
+      </div>
       <div class="hero-line"></div>
     </header>
     <nav class="tab-bar">
@@ -950,14 +974,14 @@
       <button type="button" id="tabLivability">📊 Livability Top 100</button>
     </nav>
     <div id="loadErr" class="load-err" style="display: none;">
-      <h4>Données non chargées</h4>
-      <p>Ouvrez cette page via un serveur local pour charger les fichiers JSON. Par exemple&nbsp;: <code>npm start</code> ou <code>npx serve .</code> dans le dossier du projet.</p>
+      <h4 id="loadErrTitle">Données non chargées</h4>
+      <p id="loadErrText">Ouvrez cette page via un serveur local pour charger les fichiers JSON. Par exemple&nbsp;: <code>npm start</code> ou <code>npx serve .</code> dans le dossier du projet.</p>
     </div>
     <div id="tabMapContent" class="tab-content active">
     <main class="main">
       <div class="map-wrap view-dynamic">
         <div class="map-legend">
-          <label>Colorer par :</label>
+          <label id="legendColorBy">Colorer par :</label>
           <div class="toggle">
             <button type="button" id="btnCost" class="active">Coût de la vie</button>
             <button type="button" id="btnReste">Reste à vivre</button>
@@ -1004,23 +1028,23 @@
             <option value="attractiviteImmobiliere">Attractivité immobilière</option>
           </select>
           <div class="map-view-toggle">
-            <label style="color: var(--text-dim); font-size: 0.85rem;">Vue :</label>
+            <label id="viewLabel" style="color: var(--text-dim); font-size: 0.85rem;">Vue :</label>
             <button type="button" id="btnViewDynamic" class="active">Carte dynamique (zoom + villes)</button>
             <button type="button" id="btnViewStates">Carte par États (couleurs)</button>
             <button type="button" id="btnFullscreen" class="btn-fullscreen" title="Plein écran (Esc pour quitter)">⛶</button>
           </div>
           <div class="venue-filters" id="venueFilters">
-            <div class="venue-filters-title">Lieux (carte dynamique)</div>
+            <div class="venue-filters-title" id="venueFiltersTitle">Lieux (carte dynamique)</div>
             <div class="venue-filters-row">
-              <label style="color:#e11d48;"><input type="checkbox" id="filterBestCities" checked> ❤ Top villes US</label>
-              <label style="color:#6ee7b7;"><input type="checkbox" id="filterLiv100" checked> 🏆 Livability Top 100</label>
-              <label><input type="checkbox" id="filterStateCities"> Points villes (États)</label>
-              <label style="color:#7dd3fc;"><input type="checkbox" id="filterAirports"> ✈ Aéroports intl.</label>
-              <label><input type="checkbox" id="filterSx"> SX / SMX</label>
-              <label><input type="checkbox" id="filterMx"> MX</label>
-              <label><input type="checkbox" id="filterMtb"> VTT</label>
-              <label><input type="checkbox" id="filterBmx"> BMX</label>
-              <label style="color:#7dd3fc;"><input type="checkbox" id="filterSki"> ⛷ Ski</label>
+              <label style="color:#e11d48;" id="filterBestCitiesLabel"><input type="checkbox" id="filterBestCities" checked> ❤ Top villes US</label>
+              <label style="color:#6ee7b7;" id="filterLiv100Label"><input type="checkbox" id="filterLiv100" checked> 🏆 Livability Top 100</label>
+              <label id="filterStateCitiesLabel"><input type="checkbox" id="filterStateCities"> Points villes (États)</label>
+              <label style="color:#7dd3fc;" id="filterAirportsLabel"><input type="checkbox" id="filterAirports"> ✈ Aéroports intl.</label>
+              <label id="filterSxLabel"><input type="checkbox" id="filterSx"> SX / SMX</label>
+              <label id="filterMxLabel"><input type="checkbox" id="filterMx"> MX</label>
+              <label id="filterMtbLabel"><input type="checkbox" id="filterMtb"> VTT</label>
+              <label id="filterBmxLabel"><input type="checkbox" id="filterBmx"> BMX</label>
+              <label style="color:#7dd3fc;" id="filterSkiLabel"><input type="checkbox" id="filterSki"> ⛷ Ski</label>
             </div>
           </div>
         </div>
@@ -1047,27 +1071,27 @@
               <thead>
                 <tr>
                   <th data-col="rank" class="sort-active"># <span class="sort-arrow">▲</span></th>
-                  <th data-col="name">Ville <span class="sort-arrow">▲</span></th>
-                  <th data-col="state">État <span class="sort-arrow">▲</span></th>
+                  <th data-col="name" id="thCity">Ville <span class="sort-arrow">▲</span></th>
+                  <th data-col="state" id="thState">État <span class="sort-arrow">▲</span></th>
                   <th data-col="livScore" class="text-right">LivScore <span class="sort-arrow">▲</span></th>
-                  <th data-col="population" class="text-right">Population <span class="sort-arrow">▲</span></th>
-                  <th data-col="medianIncome" class="text-right">Revenu médian <span class="sort-arrow">▲</span></th>
-                  <th data-col="medianHomeValue" class="text-right">Prix maison <span class="sort-arrow">▲</span></th>
-                  <th data-col="medianRent" class="text-right">Loyer <span class="sort-arrow">▲</span></th>
-                  <th data-col="medianPropertyTax" class="text-right">Taxe fonc. <span class="sort-arrow">▲</span></th>
-                  <th data-col="avgCommute" class="text-right">Trajet <span class="sort-arrow">▲</span></th>
-                  <th data-col="airportDistKm" class="text-right">Aeroport <span class="sort-arrow">▲</span></th>
-                  <th data-col="avgTempHighF" class="text-right">Temp. <span class="sort-arrow">▲</span></th>
-                  <th data-col="annualRainfallIn" class="text-right">Pluie <span class="sort-arrow">▲</span></th>
-                  <th data-col="annualSnowfallIn" class="text-right">Neige <span class="sort-arrow">▲</span></th>
-                  <th data-col="catAmenities" class="text-right">Amen. <span class="sort-arrow">▲</span></th>
-                  <th data-col="catEconomy" class="text-right">Écon. <span class="sort-arrow">▲</span></th>
-                  <th data-col="catEducation" class="text-right">Éduc. <span class="sort-arrow">▲</span></th>
-                  <th data-col="catEnvironment" class="text-right">Envir. <span class="sort-arrow">▲</span></th>
-                  <th data-col="catHealth" class="text-right">Santé <span class="sort-arrow">▲</span></th>
-                  <th data-col="catHousing" class="text-right">Logem. <span class="sort-arrow">▲</span></th>
-                  <th data-col="catSafety" class="text-right">Sécur. <span class="sort-arrow">▲</span></th>
-                  <th data-col="catTransportation" class="text-right">Transp. <span class="sort-arrow">▲</span></th>
+                  <th data-col="population" class="text-right" id="thPopulation">Population <span class="sort-arrow">▲</span></th>
+                  <th data-col="medianIncome" class="text-right" id="thMedianIncome">Revenu médian <span class="sort-arrow">▲</span></th>
+                  <th data-col="medianHomeValue" class="text-right" id="thHomePrice">Prix maison <span class="sort-arrow">▲</span></th>
+                  <th data-col="medianRent" class="text-right" id="thRent">Loyer <span class="sort-arrow">▲</span></th>
+                  <th data-col="medianPropertyTax" class="text-right" id="thPropertyTax">Taxe fonc. <span class="sort-arrow">▲</span></th>
+                  <th data-col="avgCommute" class="text-right" id="thCommute">Trajet <span class="sort-arrow">▲</span></th>
+                  <th data-col="airportDistKm" class="text-right" id="thAirport">Aeroport <span class="sort-arrow">▲</span></th>
+                  <th data-col="avgTempHighF" class="text-right" id="thTemp">Temp. <span class="sort-arrow">▲</span></th>
+                  <th data-col="annualRainfallIn" class="text-right" id="thRain">Pluie <span class="sort-arrow">▲</span></th>
+                  <th data-col="annualSnowfallIn" class="text-right" id="thSnow">Neige <span class="sort-arrow">▲</span></th>
+                  <th data-col="catAmenities" class="text-right" id="thAmenities">Amen. <span class="sort-arrow">▲</span></th>
+                  <th data-col="catEconomy" class="text-right" id="thEconomy">Écon. <span class="sort-arrow">▲</span></th>
+                  <th data-col="catEducation" class="text-right" id="thEducation">Éduc. <span class="sort-arrow">▲</span></th>
+                  <th data-col="catEnvironment" class="text-right" id="thEnvironment">Envir. <span class="sort-arrow">▲</span></th>
+                  <th data-col="catHealth" class="text-right" id="thHealth">Santé <span class="sort-arrow">▲</span></th>
+                  <th data-col="catHousing" class="text-right" id="thHousing">Logem. <span class="sort-arrow">▲</span></th>
+                  <th data-col="catSafety" class="text-right" id="thSafety">Sécur. <span class="sort-arrow">▲</span></th>
+                  <th data-col="catTransportation" class="text-right" id="thTransportation">Transp. <span class="sort-arrow">▲</span></th>
                 </tr>
               </thead>
               <tbody id="livabilityTableBody"></tbody>
@@ -1076,7 +1100,7 @@
         </div>
       </section>
     </div><!-- /tabLivabilityContent -->
-    <footer>
+    <footer id="appFooter">
       Données issues du Livre Héros USA 50 États. Carte dynamique&nbsp;: <a href="https://leafletjs.com/" target="_blank" rel="noopener" style="color: var(--accent);">Leaflet</a> + CARTO. Carte par États&nbsp;: <a href="https://simplemaps.com/resources/svg-us" target="_blank" rel="noopener" style="color: var(--accent);">SimpleMaps</a>.
     </footer>
   </div>
@@ -1122,6 +1146,271 @@
       let liv100Layer = null;
       let liv100Markers = [];
       var FIPS_TO_USPS = { 1: 'AL', 2: 'AK', 4: 'AZ', 5: 'AR', 6: 'CA', 8: 'CO', 9: 'CT', 10: 'DE', 11: 'DC', 12: 'FL', 13: 'GA', 15: 'HI', 16: 'ID', 17: 'IL', 18: 'IN', 19: 'IA', 20: 'KS', 21: 'KY', 22: 'LA', 23: 'ME', 24: 'MD', 25: 'MA', 26: 'MI', 27: 'MN', 28: 'MS', 29: 'MO', 30: 'MT', 31: 'NE', 32: 'NV', 33: 'NH', 34: 'NJ', 35: 'NM', 36: 'NY', 37: 'NC', 38: 'ND', 39: 'OH', 40: 'OK', 41: 'OR', 42: 'PA', 44: 'RI', 45: 'SC', 46: 'SD', 47: 'TN', 48: 'TX', 49: 'UT', 50: 'VT', 51: 'VA', 53: 'WA', 54: 'WV', 55: 'WI', 56: 'WY' };
+      var I18N = {
+        fr: {
+          pageTitle: 'Carte USA — Stats et histoires par Etat',
+          heroTitle: 'Carte USA — Stats et histoires',
+          heroSubtitle: 'Cliquez sur un Etat pour decouvrir le contenu du Livre Heros (50 Etats + DC)',
+          langLabel: 'Langue :',
+          tabMap: '🗺️ Carte interactive',
+          tabLivability: '📊 Livability Top 100',
+          loadErrTitle: 'Donnees non chargees',
+          loadErrText: 'Ouvrez cette page via un serveur local pour charger les fichiers JSON. Par exemple : npm start ou npx serve . dans le dossier du projet.',
+          legendColorBy: 'Colorer par :',
+          btnCost: 'Cout de la vie',
+          btnReste: 'Reste a vivre',
+          btnHomePrice: 'Maison 4ch',
+          btnRent: 'Loyer 3ch',
+          viewLabel: 'Vue :',
+          btnViewDynamic: 'Carte dynamique (zoom + villes)',
+          btnViewStates: 'Carte par Etats (couleurs)',
+          venueFiltersTitle: 'Lieux (carte dynamique)',
+          filterBestCities: '❤ Top villes US',
+          filterLiv100: '🏆 Livability Top 100',
+          filterStateCities: 'Points villes (Etats)',
+          filterAirports: '✈ Aeroports intl.',
+          filterSx: 'SX / SMX',
+          filterMx: 'MX',
+          filterMtb: 'VTT',
+          filterBmx: 'BMX',
+          filterSki: '⛷ Ski',
+          panelEmpty: 'Cliquez sur un Etat pour afficher les stats et l histoire.',
+          searchPlaceholder: 'Rechercher une ville ou un Etat...',
+          criteriaPlaceholder: 'Critere...',
+          criteriaQuality: 'Qualite de vie',
+          criteriaSafety: 'Securite',
+          criteriaHealth: 'Sante',
+          criteriaTransport: 'Transports',
+          criteriaCommerce: 'Commerces et services',
+          criteriaEducation: 'Education',
+          criteriaEnvironment: 'Environnement',
+          criteriaFinance: 'Finances et impots',
+          criteriaSolidarity: 'Solidarite',
+          criteriaSports: 'Sports et loisirs',
+          criteriaRealEstate: 'Attractivite immobiliere',
+          thCity: 'Ville',
+          thState: 'Etat',
+          thPopulation: 'Population',
+          thMedianIncome: 'Revenu median',
+          thHomePrice: 'Prix maison',
+          thRent: 'Loyer',
+          thPropertyTax: 'Taxe fonc.',
+          thCommute: 'Trajet',
+          thAirport: 'Aeroport',
+          thTemp: 'Temp.',
+          thRain: 'Pluie',
+          thSnow: 'Neige',
+          thAmenities: 'Amen.',
+          thEconomy: 'Econ.',
+          thEducation: 'Educ.',
+          thEnvironment: 'Envir.',
+          thHealth: 'Sante',
+          thHousing: 'Logem.',
+          thSafety: 'Secur.',
+          thTransportation: 'Transp.',
+          footerHtml: 'Donnees issues du Livre Heros USA 50 Etats. Carte dynamique&nbsp;: <a href="https://leafletjs.com/" target="_blank" rel="noopener" style="color: var(--accent);">Leaflet</a> + CARTO. Carte par Etats&nbsp;: <a href="https://simplemaps.com/resources/svg-us" target="_blank" rel="noopener" style="color: var(--accent);">SimpleMaps</a>.',
+          countSingular: 'ville',
+          countPlural: 'villes',
+          peopleSuffix: 'hab.',
+          perMonthShort: '/mois',
+          perYearShort: '/an',
+          closeTitle: 'Fermer',
+          closeFsTitle: 'Quitter le plein ecran (Esc)',
+          openFsTitle: 'Plein ecran (Esc pour quitter)',
+          detailLink: 'Voir sur Livability.com ->'
+        },
+        en: {
+          pageTitle: 'USA map — stats and stories by state',
+          heroTitle: 'USA map — stats and stories',
+          heroSubtitle: 'Click a state to explore Hero Book content (50 states + DC)',
+          langLabel: 'Language:',
+          tabMap: '🗺️ Interactive map',
+          tabLivability: '📊 Livability Top 100',
+          loadErrTitle: 'Data not loaded',
+          loadErrText: 'Open this page from a local server to load JSON files. Example: npm start or npx serve . in the project folder.',
+          legendColorBy: 'Color by:',
+          btnCost: 'Cost of living',
+          btnReste: 'Leftover income',
+          btnHomePrice: '4BR house',
+          btnRent: '3BR rent',
+          viewLabel: 'View:',
+          btnViewDynamic: 'Dynamic map (zoom + cities)',
+          btnViewStates: 'State map (colors)',
+          venueFiltersTitle: 'Places (dynamic map)',
+          filterBestCities: '❤ Top US cities',
+          filterLiv100: '🏆 Livability Top 100',
+          filterStateCities: 'State city points',
+          filterAirports: '✈ Intl airports',
+          filterSx: 'SX / SMX',
+          filterMx: 'MX',
+          filterMtb: 'MTB',
+          filterBmx: 'BMX',
+          filterSki: '⛷ Ski',
+          panelEmpty: 'Click a state to show stats and story.',
+          searchPlaceholder: 'Search a city or a state...',
+          criteriaPlaceholder: 'Criterion...',
+          criteriaQuality: 'Quality of life',
+          criteriaSafety: 'Safety',
+          criteriaHealth: 'Health',
+          criteriaTransport: 'Transportation',
+          criteriaCommerce: 'Shops and services',
+          criteriaEducation: 'Education',
+          criteriaEnvironment: 'Environment',
+          criteriaFinance: 'Finance and local taxes',
+          criteriaSolidarity: 'Community',
+          criteriaSports: 'Sports and leisure',
+          criteriaRealEstate: 'Real estate attractiveness',
+          thCity: 'City',
+          thState: 'State',
+          thPopulation: 'Population',
+          thMedianIncome: 'Median income',
+          thHomePrice: 'Home price',
+          thRent: 'Rent',
+          thPropertyTax: 'Property tax',
+          thCommute: 'Commute',
+          thAirport: 'Airport',
+          thTemp: 'Temp.',
+          thRain: 'Rain',
+          thSnow: 'Snow',
+          thAmenities: 'Amen.',
+          thEconomy: 'Econ.',
+          thEducation: 'Educ.',
+          thEnvironment: 'Env.',
+          thHealth: 'Health',
+          thHousing: 'Housing',
+          thSafety: 'Safety',
+          thTransportation: 'Transp.',
+          footerHtml: 'Data from the USA Hero Book (50 states). Dynamic map&nbsp;: <a href="https://leafletjs.com/" target="_blank" rel="noopener" style="color: var(--accent);">Leaflet</a> + CARTO. State map&nbsp;: <a href="https://simplemaps.com/resources/svg-us" target="_blank" rel="noopener" style="color: var(--accent);">SimpleMaps</a>.',
+          countSingular: 'city',
+          countPlural: 'cities',
+          peopleSuffix: 'people',
+          perMonthShort: '/mo',
+          perYearShort: '/yr',
+          closeTitle: 'Close',
+          closeFsTitle: 'Exit fullscreen (Esc)',
+          openFsTitle: 'Fullscreen (Esc to exit)',
+          detailLink: 'View on Livability.com ->'
+        }
+      };
+      var currentLang = 'fr';
+
+      function t(key) {
+        var table = I18N[currentLang] || I18N.fr;
+        return table[key] || (I18N.fr[key] || key);
+      }
+
+      function numberLocale() { return currentLang === 'en' ? 'en-US' : 'fr-FR'; }
+
+      function applyTranslations() {
+        document.documentElement.lang = currentLang;
+        document.title = t('pageTitle');
+        var map = {
+          heroTitle: 'heroTitle',
+          heroSubtitle: 'heroSubtitle',
+          langLabel: 'langLabel',
+          loadErrTitle: 'loadErrTitle',
+          legendColorBy: 'legendColorBy',
+          viewLabel: 'viewLabel',
+          panelEmpty: 'panelEmpty'
+        };
+        Object.keys(map).forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.textContent = t(map[id]);
+        });
+        var errText = document.getElementById('loadErrText');
+        if (errText) {
+          if (currentLang === 'en') {
+            errText.innerHTML = 'Open this page from a local server to load JSON files. Example: <code>npm start</code> or <code>npx serve .</code> in the project folder.';
+          } else {
+            errText.innerHTML = 'Ouvrez cette page via un serveur local pour charger les fichiers JSON. Par exemple&nbsp;: <code>npm start</code> ou <code>npx serve .</code> dans le dossier du projet.';
+          }
+        }
+        var tabMapBtn = document.getElementById('tabMap');
+        if (tabMapBtn) tabMapBtn.textContent = t('tabMap');
+        var tabLivBtn = document.getElementById('tabLivability');
+        if (tabLivBtn) tabLivBtn.textContent = t('tabLivability');
+        var btnCost = document.getElementById('btnCost');
+        if (btnCost) btnCost.textContent = t('btnCost');
+        var btnReste = document.getElementById('btnReste');
+        if (btnReste) btnReste.textContent = t('btnReste');
+        var btnHomePrice = document.getElementById('btnHomePrice');
+        if (btnHomePrice) btnHomePrice.textContent = t('btnHomePrice');
+        var btnRent = document.getElementById('btnRent');
+        if (btnRent) btnRent.textContent = t('btnRent');
+        var btnDyn = document.getElementById('btnViewDynamic');
+        if (btnDyn) btnDyn.textContent = t('btnViewDynamic');
+        var btnStates = document.getElementById('btnViewStates');
+        if (btnStates) btnStates.textContent = t('btnViewStates');
+        var btnFullscreen = document.getElementById('btnFullscreen');
+        if (btnFullscreen && btnFullscreen.textContent === '⛶') btnFullscreen.title = t('openFsTitle');
+        var venueFiltersTitle = document.getElementById('venueFiltersTitle');
+        if (venueFiltersTitle) venueFiltersTitle.textContent = t('venueFiltersTitle');
+        var setFilterLabel = function (id, text) {
+          var el = document.getElementById(id);
+          if (!el) return;
+          var input = el.querySelector('input');
+          el.textContent = text;
+          if (input) el.prepend(input, ' ');
+        };
+        setFilterLabel('filterBestCitiesLabel', t('filterBestCities'));
+        setFilterLabel('filterLiv100Label', t('filterLiv100'));
+        setFilterLabel('filterStateCitiesLabel', t('filterStateCities'));
+        setFilterLabel('filterAirportsLabel', t('filterAirports'));
+        setFilterLabel('filterSxLabel', t('filterSx'));
+        setFilterLabel('filterMxLabel', t('filterMx'));
+        setFilterLabel('filterMtbLabel', t('filterMtb'));
+        setFilterLabel('filterBmxLabel', t('filterBmx'));
+        setFilterLabel('filterSkiLabel', t('filterSki'));
+        var searchBox = document.getElementById('livSearchBox');
+        if (searchBox) searchBox.placeholder = t('searchPlaceholder');
+        var criteriaSelect = document.getElementById('selectCriteria');
+        if (criteriaSelect && criteriaSelect.options.length) {
+          criteriaSelect.options[0].textContent = t('criteriaPlaceholder');
+          criteriaSelect.options[1].textContent = t('criteriaQuality');
+          criteriaSelect.options[2].textContent = t('criteriaSafety');
+          criteriaSelect.options[3].textContent = t('criteriaHealth');
+          criteriaSelect.options[4].textContent = t('criteriaTransport');
+          criteriaSelect.options[5].textContent = t('criteriaCommerce');
+          criteriaSelect.options[6].textContent = t('criteriaEducation');
+          criteriaSelect.options[7].textContent = t('criteriaEnvironment');
+          criteriaSelect.options[8].textContent = t('criteriaFinance');
+          criteriaSelect.options[9].textContent = t('criteriaSolidarity');
+          criteriaSelect.options[10].textContent = t('criteriaSports');
+          criteriaSelect.options[11].textContent = t('criteriaRealEstate');
+          criteriaSelect.title = t('criteriaPlaceholder');
+        }
+        var headerMap = {
+          thCity: 'thCity',
+          thState: 'thState',
+          thPopulation: 'thPopulation',
+          thMedianIncome: 'thMedianIncome',
+          thHomePrice: 'thHomePrice',
+          thRent: 'thRent',
+          thPropertyTax: 'thPropertyTax',
+          thCommute: 'thCommute',
+          thAirport: 'thAirport',
+          thTemp: 'thTemp',
+          thRain: 'thRain',
+          thSnow: 'thSnow',
+          thAmenities: 'thAmenities',
+          thEconomy: 'thEconomy',
+          thEducation: 'thEducation',
+          thEnvironment: 'thEnvironment',
+          thHealth: 'thHealth',
+          thHousing: 'thHousing',
+          thSafety: 'thSafety',
+          thTransportation: 'thTransportation'
+        };
+        Object.keys(headerMap).forEach(function (id) {
+          var th = document.getElementById(id);
+          if (!th) return;
+          var arrow = th.querySelector('.sort-arrow');
+          th.textContent = t(headerMap[id]) + ' ';
+          if (arrow) th.appendChild(arrow);
+        });
+        var footer = document.getElementById('appFooter');
+        if (footer) footer.innerHTML = t('footerHtml');
+      }
 
       // ── Fullscreen toggle (runs immediately, DOM is ready since script is at end of body) ──
       (function initFullscreen() {
@@ -1133,7 +1422,7 @@
           fsWrap.classList.remove('fullscreen');
           document.body.style.overflow = '';
           btnFs.textContent = '⛶';
-          btnFs.title = 'Plein écran (Esc pour quitter)';
+          btnFs.title = t('openFsTitle');
           setTimeout(function () { if (leafletMap) leafletMap.invalidateSize(); }, 100);
           setTimeout(function () { if (leafletMap) leafletMap.invalidateSize(); }, 300);
         }
@@ -1142,7 +1431,7 @@
           fsWrap.classList.add('fullscreen');
           document.body.style.overflow = 'hidden';
           btnFs.textContent = '✕';
-          btnFs.title = 'Quitter le plein écran (Esc)';
+          btnFs.title = t('closeFsTitle');
           setTimeout(function () { if (leafletMap) leafletMap.invalidateSize(); }, 100);
           setTimeout(function () { if (leafletMap) leafletMap.invalidateSize(); }, 300);
         }
@@ -1161,6 +1450,24 @@
 
         // Expose for other code (e.g. states button)
         window._exitMapFullscreen = exitFs;
+      })();
+
+      (function initLanguage() {
+        var select = document.getElementById('langSelect');
+        var saved = null;
+        try { saved = localStorage.getItem('usa_lang'); } catch (e) { saved = null; }
+        if (saved === 'fr' || saved === 'en') currentLang = saved;
+        else if ((navigator.language || '').toLowerCase().indexOf('en') === 0) currentLang = 'en';
+        if (select) {
+          select.value = currentLang;
+          select.addEventListener('change', function () {
+            currentLang = select.value === 'en' ? 'en' : 'fr';
+            try { localStorage.setItem('usa_lang', currentLang); } catch (e) {}
+            applyTranslations();
+            renderLivTable();
+          });
+        }
+        applyTranslations();
       })();
 
       function showLoadErr() {
@@ -1208,7 +1515,7 @@
         html += '<span class="section-label">' + escapeHtml(data.sectionLabel) + '</span>';
         if (statePop > 0) {
           html += '<span class="header-sep">·</span>';
-          html += '<span class="section-label" style="font-weight:600;">👥 ' + new Intl.NumberFormat('fr-FR').format(statePop) + ' hab.</span>';
+          html += '<span class="section-label" style="font-weight:600;">👥 ' + new Intl.NumberFormat(numberLocale()).format(statePop) + ' ' + t('peopleSuffix') + '</span>';
         }
         html += '<div class="badge-row">';
         if (s.cout) html += '<span class="badge ' + coutClass + '">Coût ' + escapeHtml(s.cout) + '</span>';
@@ -1230,7 +1537,7 @@
         }
         html += '</div>';  // ferme panel-header-left
         if (data.stateUrl) {
-          html += '<div class="panel-header-right"><a class="state-link" href="' + escapeHtml(data.stateUrl) + '" target="_blank" rel="noopener" title="' + escapeHtml(data.stateUrl) + '">Site officiel</a></div>';
+          html += '<div class="panel-header-right"><a class="state-link" href="' + escapeHtml(data.stateUrl) + '" target="_blank" rel="noopener" title="' + escapeHtml(data.stateUrl) + '">' + (currentLang === 'en' ? 'Official site' : 'Site officiel') + '</a></div>';
         }
         html += '</div>';  // ferme panel-header
 
@@ -1244,12 +1551,12 @@
           html += '<div class="panel-block panel-aime-deteste">';
           html += '<div class="panel-aime-deteste-grid">';
           if (onAime.length) {
-            html += '<div class="panel-aime-deteste-block panel-aime"><span class="panel-header-block-label">On aime</span><ul class="panel-header-list">';
+            html += '<div class="panel-aime-deteste-block panel-aime"><span class="panel-header-block-label">' + (currentLang === 'en' ? 'Pros' : 'On aime') + '</span><ul class="panel-header-list">';
             onAime.slice(0, 4).forEach(function (item) { html += '<li>' + escapeHtml(item) + '</li>'; });
             html += '</ul></div>';
           }
           if (onDeteste.length) {
-            html += '<div class="panel-aime-deteste-block panel-deteste"><span class="panel-header-block-label">On déteste</span><ul class="panel-header-list">';
+            html += '<div class="panel-aime-deteste-block panel-deteste"><span class="panel-header-block-label">' + (currentLang === 'en' ? 'Cons' : 'On deteste') + '</span><ul class="panel-header-list">';
             onDeteste.slice(0, 4).forEach(function (item) { html += '<li>' + escapeHtml(item) + '</li>'; });
             html += '</ul></div>';
           }
@@ -1258,22 +1565,22 @@
 
         // ── 2. CHIFFRES CLÉS
         if (hasBudget || hasContexte) {
-          html += '<div class="panel-block"><div class="panel-section-title">Chiffres clés</div>';
+          html += '<div class="panel-block"><div class="panel-section-title">' + (currentLang === 'en' ? 'Key figures' : 'Chiffres cles') + '</div>';
           html += '<div class="identity-sheet">';
           if (cost.index != null) {
-            html += '<div class="identity-row identity-row-highlight"><span class="identity-label">Indice coût de la vie</span><span class="identity-value">' + escapeHtml(cost.indexLabel) + '</span></div>';
+            html += '<div class="identity-row identity-row-highlight"><span class="identity-label">' + (currentLang === 'en' ? 'Cost of living index' : 'Indice cout de la vie') + '</span><span class="identity-value">' + escapeHtml(cost.indexLabel) + '</span></div>';
           }
           if (cost.medianIncomeFamily4 != null) {
-            html += '<div class="identity-row"><span class="identity-label">Revenu médian (fam. 4)</span><span class="identity-value">' + formatUSD(cost.medianIncomeFamily4) + '</span></div>';
+            html += '<div class="identity-row"><span class="identity-label">' + (currentLang === 'en' ? 'Median income (family of 4)' : 'Revenu median (fam. 4)') + '</span><span class="identity-value">' + formatUSD(cost.medianIncomeFamily4) + '</span></div>';
           }
           if (cost.livingWageFamily4 != null) {
-            html += '<div class="identity-row"><span class="identity-label">Salaire vital (fam. 4)</span><span class="identity-value">' + formatUSD(cost.livingWageFamily4) + '</span></div>';
+            html += '<div class="identity-row"><span class="identity-label">' + (currentLang === 'en' ? 'Living wage (family of 4)' : 'Salaire vital (fam. 4)') + '</span><span class="identity-value">' + formatUSD(cost.livingWageFamily4) + '</span></div>';
           }
           if (cost.resteALivre != null) {
             // Rouge si négatif ou faible (< 10000$ par an pour une famille de 4)
             var isLow = cost.resteALivre < 10000;
             var valueColor = isLow ? ' style="color: var(--red);"' : ' style="color: var(--green);"';
-            html += '<div class="identity-row identity-row-reste ' + restClass + '"><span class="identity-label">Reste à vivre</span><span class="identity-value"' + valueColor + '>' + formatUSD(cost.resteALivre) + '</span></div>';
+            html += '<div class="identity-row identity-row-reste ' + restClass + '"><span class="identity-label">' + (currentLang === 'en' ? 'Leftover income' : 'Reste a vivre') + '</span><span class="identity-value"' + valueColor + '>' + formatUSD(cost.resteALivre) + '</span></div>';
           }
           // Variables URL pour les liens de référence
           var stCode = data.code.toLowerCase();
@@ -1291,7 +1598,7 @@
               homePriceColor = 'color: var(--red);';
             }
             var homeSizeText = cost.medianHomeSize != null ? ' <span style="color: var(--text-dim); font-size: 0.85em;">(' + cost.medianHomeSize + ' m²)</span>' : '';
-            html += '<div class="identity-row"><span class="identity-label">🏠 Maison 4 chambres</span><span class="identity-value" style="' + homePriceColor + '">' + formatUSD(cost.medianHomePrice) + homeSizeText + '</span></div>';
+            html += '<div class="identity-row"><span class="identity-label">🏠 ' + (currentLang === 'en' ? '4-bedroom house' : 'Maison 4 chambres') + '</span><span class="identity-value" style="' + homePriceColor + '">' + formatUSD(cost.medianHomePrice) + homeSizeText + '</span></div>';
             html += '<div class="identity-row-legend"><span class="identity-legend">Prix médian Single-Family (Redfin Mars 2025)' + (cost.medianHomeSize != null ? '<br>Hypothèse : ~' + cost.medianHomeSize + ' m², maison individuelle' : '') + '<br>🔗 <a href="https://www.zillow.com/browse/homes/' + stCode + '/" target="_blank" rel="noopener" style="color:var(--accent);">Zillow</a> · <a href="https://www.realtor.com/realestateandhomes-search/' + encodeURIComponent(nameSlug) + '" target="_blank" rel="noopener" style="color:var(--accent);">Realtor.com</a> · <a href="https://www.redfin.com/state/' + titleSlug + '" target="_blank" rel="noopener" style="color:var(--accent);">Redfin</a></span></div>';
           }
           if (cost.medianRent != null) {
@@ -1305,29 +1612,29 @@
               rentColor = 'color: var(--red);';
             }
             var rentSizeText = cost.medianRentSize != null ? ' <span style="color: var(--text-dim); font-size: 0.85em;">(' + cost.medianRentSize + ' m²)</span>' : '';
-            html += '<div class="identity-row"><span class="identity-label">🏘️ Appt 3 chambres</span><span class="identity-value" style="' + rentColor + '">' + formatUSD(cost.medianRent) + '/mois' + rentSizeText + '</span></div>';
+            html += '<div class="identity-row"><span class="identity-label">🏘️ ' + (currentLang === 'en' ? '3-bedroom apartment' : 'Appt 3 chambres') + '</span><span class="identity-value" style="' + rentColor + '">' + formatUSD(cost.medianRent) + t('perMonthShort') + rentSizeText + '</span></div>';
             html += '<div class="identity-row-legend"><span class="identity-legend">Loyer 3 chambres (HUD FMR 3BR 2025)' + (cost.medianRentSize != null ? '<br>Hypothèse : ~' + cost.medianRentSize + ' m², appartement 3 chambres' : '') + '<br>🔗 <a href="https://www.rentdata.org/states/' + rentSlug + '/2025" target="_blank" rel="noopener" style="color:var(--accent);">RentData.org</a> · <a href="https://www.apartments.com/' + stCode + '/" target="_blank" rel="noopener" style="color:var(--accent);">Apartments.com</a> · <a href="https://www.zillow.com/rental-manager/market-trends/' + stCode + '/" target="_blank" rel="noopener" style="color:var(--accent);">Zillow Rentals</a></span></div>';
           }
           if (s.climat) {
-            html += '<div class="identity-row"><span class="identity-label">Climat</span><span class="identity-value">' + escapeHtml(s.climat) + '</span></div>';
+            html += '<div class="identity-row"><span class="identity-label">' + (currentLang === 'en' ? 'Climate' : 'Climat') + '</span><span class="identity-value">' + escapeHtml(s.climat) + '</span></div>';
           }
           if (data.politique) {
             var polColor = data.politique === 'Démocrate' ? 'color:#60a5fa;' : data.politique === 'Républicain' ? 'color:#f87171;' : 'color:#c084fc;';
-            html += '<div class="identity-row"><span class="identity-label">Bord politique</span><span class="identity-value" style="' + polColor + '">' + escapeHtml(data.politique) + '</span></div>';
+            html += '<div class="identity-row"><span class="identity-label">' + (currentLang === 'en' ? 'Political leaning' : 'Bord politique') + '</span><span class="identity-value" style="' + polColor + '">' + escapeHtml(data.politique) + '</span></div>';
           }
           if (data.frenchCount != null) {
-            var pct = data.frenchPercent != null ? ' (' + data.frenchPercent.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' %)' : '';
-            html += '<div class="identity-row"><span class="identity-label">Origine française</span><span class="identity-value">' + new Intl.NumberFormat('fr-FR').format(data.frenchCount) + pct + '</span></div>';
+            var pct = data.frenchPercent != null ? ' (' + data.frenchPercent.toLocaleString(numberLocale(), { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' %)' : '';
+            html += '<div class="identity-row"><span class="identity-label">' + (currentLang === 'en' ? 'French ancestry' : 'Origine francaise') + '</span><span class="identity-value">' + new Intl.NumberFormat(numberLocale()).format(data.frenchCount) + pct + '</span></div>';
           }
           html += '</div></div>';
         }
 
         // ── 3. VILLES PRINCIPALES (compact 2-col grid, max 5)
         if (data.topCities && data.topCities.length) {
-          html += '<div class="panel-block"><div class="panel-section-title">Villes principales</div>';
+          html += '<div class="panel-block"><div class="panel-section-title">' + (currentLang === 'en' ? 'Main cities' : 'Villes principales') + '</div>';
           html += '<ul class="cities-compact">';
           data.topCities.slice(0, 5).forEach(function (city) {
-            var pop = city.population != null ? new Intl.NumberFormat('fr-FR').format(city.population) : '—';
+            var pop = city.population != null ? new Intl.NumberFormat(numberLocale()).format(city.population) : '—';
             html += '<li><span class="city-name">' + escapeHtml(city.name) + googleMapsIcon(city.name, data.code) + '</span><span class="city-pop">' + pop + '</span></li>';
           });
           html += '</ul></div>';
@@ -1337,7 +1644,7 @@
         if (BEST_CITIES && BEST_CITIES.length) {
           var topCitiesInState = BEST_CITIES.filter(function (c) { return c.stateCode === data.code; });
           if (topCitiesInState.length > 0) {
-            html += '<div class="panel-block"><div class="panel-section-title">❤ Top villes US</div>';
+            html += '<div class="panel-block"><div class="panel-section-title">' + (currentLang === 'en' ? '❤ Top US cities' : '❤ Top villes US') + '</div>';
             html += '<div style="font-size:0.7rem;color:var(--text-dim);margin-bottom:0.4rem;line-height:1.3;">Score composite : moyenne pondérée des positions dans US News, Niche, Livability.com, SmartAsset + bonus multi-source</div>';
             html += '<ul class="top-cities-list">';
             topCitiesInState.forEach(function (city) {
@@ -1370,7 +1677,7 @@
           var lr = data.lieuxRemarquables;
           var hasLieux = (lr.culture && lr.culture.length) || (lr.parcs && lr.parcs.length) || (lr.nature && lr.nature.length);
           if (hasLieux) {
-            html += '<div class="panel-block"><div class="panel-section-title">À découvrir</div>';
+            html += '<div class="panel-block"><div class="panel-section-title">' + (currentLang === 'en' ? 'To discover' : 'A decouvrir') + '</div>';
             if (lr.culture && lr.culture.length) {
               html += '<div class="lieux-group"><span class="lieux-label lieux-label-culture">🎭 Culture</span><span class="lieux-tags">';
               lr.culture.forEach(function (l) { html += '<span>' + escapeHtml(l) + '</span>'; });
@@ -1396,10 +1703,10 @@
           var hasBoth = data.contraste && data.conseil;
           if (hasBoth) html += '<div class="callout-grid">';
           if (data.contraste) {
-            html += '<div class="callout-card callout-card-contraste"><div class="callout-card-title">Contraste</div>' + escapeHtml(data.contraste) + '</div>';
+            html += '<div class="callout-card callout-card-contraste"><div class="callout-card-title">' + (currentLang === 'en' ? 'Contrast' : 'Contraste') + '</div>' + escapeHtml(data.contraste) + '</div>';
           }
           if (data.conseil) {
-            html += '<div class="callout-card callout-card-conseil"><div class="callout-card-title">Conseil</div>' + escapeHtml(data.conseil) + '</div>';
+            html += '<div class="callout-card callout-card-conseil"><div class="callout-card-title">' + (currentLang === 'en' ? 'Advice' : 'Conseil') + '</div>' + escapeHtml(data.conseil) + '</div>';
           }
           if (hasBoth) html += '</div>';
           html += '</div>';
@@ -1407,7 +1714,7 @@
 
         // ── 6. POUR QUI (footer)
         if (data.pourQui) {
-          html += '<div class="panel-block"><p class="panel-pour-qui"><strong>Pour qui ?</strong> ' + escapeHtml(data.pourQui) + '</p></div>';
+          html += '<div class="panel-block"><p class="panel-pour-qui"><strong>' + (currentLang === 'en' ? 'Best for?' : 'Pour qui ?') + '</strong> ' + escapeHtml(data.pourQui) + '</p></div>';
         }
 
         html += '</div>'; // ferme panel-inner
@@ -1454,7 +1761,9 @@
         var base = 'https://livability.com/' + stateCode.toLowerCase() + '/' + slug + '/';
         var key = cityName + '|' + stateCode;
         var url = LIVABILITY_TOP100[key] ? base + '?top-100=2025#unique' : base;
-        var title = LIVABILITY_TOP100[key] ? 'Ce qui rend ' + text + ' unique (Livability)' : 'Découvrir ' + text + ' sur Livability';
+        var title = LIVABILITY_TOP100[key]
+          ? (currentLang === 'en' ? 'What makes ' + text + ' unique (Livability)' : 'Ce qui rend ' + text + ' unique (Livability)')
+          : (currentLang === 'en' ? 'Explore ' + text + ' on Livability' : 'Decouvrir ' + text + ' sur Livability');
         return '<a href="' + url + '" target="_blank" rel="noopener" style="color:var(--text);text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;" title="' + title + '">' + text + '</a>';
       }
       /** Google Maps link for a city with traffic layer enabled */
@@ -1465,15 +1774,15 @@
         } else {
           url = 'https://www.google.com/maps/search/' + encodeURIComponent(cityName + ', ' + stateCode) + '/data=!5m1!1e1';
         }
-        return '<a href="' + url + '" target="_blank" rel="noopener" class="city-popup-btn" style="background:var(--border);color:var(--text);text-align:center;text-decoration:none;font-size:0.75rem;" title="Voir sur Google Maps (trafic)">🚗 Maps ↗</a>';
+        return '<a href="' + url + '" target="_blank" rel="noopener" class="city-popup-btn" style="background:var(--border);color:var(--text);text-align:center;text-decoration:none;font-size:0.75rem;" title="' + (currentLang === 'en' ? 'Open in Google Maps (traffic)' : 'Voir sur Google Maps (trafic)') + '">🚗 Maps ↗</a>';
       }
       function googleMapsIcon(cityName, stateCode) {
         var url = 'https://www.google.com/maps/search/' + encodeURIComponent(cityName + ', ' + stateCode) + '/data=!5m1!1e1';
-        return '<a href="' + url + '" target="_blank" rel="noopener" title="Voir sur Google Maps (trafic)" style="color:var(--text-dim);text-decoration:none;font-size:0.85rem;margin-left:0.3rem;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.7">🚗</a>';
+        return '<a href="' + url + '" target="_blank" rel="noopener" title="' + (currentLang === 'en' ? 'Open in Google Maps (traffic)' : 'Voir sur Google Maps (trafic)') + '" style="color:var(--text-dim);text-decoration:none;font-size:0.85rem;margin-left:0.3rem;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.7">🚗</a>';
       }
       function formatUSD(n) {
         if (n == null) return '—';
-        return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
+        return new Intl.NumberFormat(numberLocale(), { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
       }
       function fToC(f) { return Math.round((f - 32) * 5 / 9); }
       function inToCm(inches) { return Math.round(inches * 2.54); }
@@ -2435,7 +2744,7 @@
         });
         // Update count
         var countEl = document.getElementById('livResultCount');
-        if (countEl) countEl.textContent = filtered.length + ' ville' + (filtered.length > 1 ? 's' : '');
+        if (countEl) countEl.textContent = filtered.length + ' ' + (filtered.length > 1 ? t('countPlural') : t('countSingular'));
         // Update header sort arrows
         var ths = document.querySelectorAll('#livabilityTable thead th');
         ths.forEach(function (th) {
@@ -2457,22 +2766,22 @@
           html += '<tr>';
           html += '<td class="rank-col">' + r.rank + '</td>';
           var badges = '';
-          if (r.isLove) badges += '<span class="city-badge city-badge-love" title="❤ Top ville US #' + r.loveRank + '">❤ #' + r.loveRank + '</span>';
+          if (r.isLove) badges += '<span class="city-badge city-badge-love" title="' + (currentLang === 'en' ? '❤ Top US city #' : '❤ Top ville US #') + r.loveRank + '">❤ #' + r.loveRank + '</span>';
           if (r.isSx) badges += '<span class="city-badge city-badge-sx" title="Supercross">SX</span>';
           if (r.isSmx) badges += '<span class="city-badge city-badge-smx" title="SuperMotocross">SMX</span>';
-          if (r.isMx) badges += '<span class="city-badge city-badge-mx" title="Motocross outdoor">MX</span>';
+          if (r.isMx) badges += '<span class="city-badge city-badge-mx" title="' + (currentLang === 'en' ? 'Outdoor motocross' : 'Motocross outdoor') + '">MX</span>';
           if (r.isVtt) badges += '<span class="city-badge city-badge-vtt" title="VTT / Bike Park">VTT</span>';
           if (r.isBmx) badges += '<span class="city-badge city-badge-bmx" title="BMX">BMX</span>';
-          if (r.isSki) badges += '<span class="city-badge city-badge-ski" title="Station de ski">⛷ Ski</span>';
+          if (r.isSki) badges += '<span class="city-badge city-badge-ski" title="' + (currentLang === 'en' ? 'Ski resort' : 'Station de ski') + '">⛷ Ski</span>';
           var badgesHtml = badges ? '<span class="city-badges">' + badges + '</span>' : '';
-          html += '<td class="city-col"><a href="#" class="city-detail-link" data-slug="' + r.state + '-' + slug + '" title="Voir le détail">' + escapeHtml(r.name) + '</a>' + badgesHtml + '</td>';
+          html += '<td class="city-col"><a href="#" class="city-detail-link" data-slug="' + r.state + '-' + slug + '" title="' + (currentLang === 'en' ? 'View details' : 'Voir le detail') + '">' + escapeHtml(r.name) + '</a>' + badgesHtml + '</td>';
           html += '<td>' + escapeHtml(r.stateName) + ' <span style="color:var(--text-dim);font-size:0.72rem;">(' + r.state + ')</span></td>';
           html += '<td class="text-right"><div class="liv-bar-wrap"><span class="score-col ' + scoreColor(r.livScore) + '">' + (r.livScore || '—') + '</span><div class="liv-bar"><div class="liv-bar-fill" style="width:' + scoreBarPct + '%;background:' + (r.livScore >= 800 ? 'var(--green)' : r.livScore >= 700 ? 'var(--yellow)' : 'var(--accent)') + ';"></div></div></div></td>';
-          html += '<td class="text-right">' + (r.population ? new Intl.NumberFormat('fr-FR').format(r.population) : '—') + '</td>';
+          html += '<td class="text-right">' + (r.population ? new Intl.NumberFormat(numberLocale()).format(r.population) : '—') + '</td>';
           html += '<td class="text-right ' + priceColor(r.medianIncome, 100000, 70000) + '">' + (r.medianIncome ? formatUSD(r.medianIncome) : '—') + '</td>';
           html += '<td class="text-right ' + priceColor(r.medianHomeValue, 300000, 500000) + '">' + (r.medianHomeValue ? formatUSD(r.medianHomeValue) : '—') + '</td>';
-          html += '<td class="text-right ' + priceColor(r.medianRent, 1350, 1900) + '">' + (r.medianRent ? formatUSD(r.medianRent) + '/m' : '—') + '</td>';
-          html += '<td class="text-right">' + (r.medianPropertyTax ? formatUSD(r.medianPropertyTax) + '/an' : '—') + '</td>';
+          html += '<td class="text-right ' + priceColor(r.medianRent, 1350, 1900) + '">' + (r.medianRent ? formatUSD(r.medianRent) + t('perMonthShort') : '—') + '</td>';
+          html += '<td class="text-right">' + (r.medianPropertyTax ? formatUSD(r.medianPropertyTax) + t('perYearShort') : '—') + '</td>';
           html += '<td class="text-right">' + (r.avgCommute ? r.avgCommute + ' min' : '—') + '</td>';
           var apColor = r.airportDistKm != null ? (r.airportDistKm <= 30 ? 'val-green' : r.airportDistKm <= 80 ? 'val-yellow' : 'val-red') : '';
           html += '<td class="text-right ' + apColor + '" title="' + (r.airportName ? escapeHtml(r.airportName) : '') + '">' + (r.airportCode ? r.airportCode + ' · ' + r.airportDistKm + ' km' : '—') + '</td>';
@@ -2674,12 +2983,14 @@
           var overlay = document.createElement('div');
           overlay.className = 'city-detail-overlay';
           overlay.innerHTML = '<div class="city-detail-panel">' +
-            '<button class="city-detail-close" title="Fermer">&times;</button>' +
+            '<button class="city-detail-close" title="' + t('closeTitle') + '">&times;</button>' +
             '<div class="city-detail-hero-placeholder"></div>' +
             '<div class="city-detail-body">' +
               '<div class="city-detail-title">' + (rank ? '#' + rank + ' ' : '') + escapeHtml(cityName) + ', ' + escapeHtml(stateName) + '</div>' +
-              '<p class="city-detail-description" style="color:var(--text-dim);">Les données détaillées (catégories, FAQ, sections) n’ont pas pu être chargées. Vérifiez que <code>livability-details.json</code> est bien présent et que la page est ouverte via un serveur HTTP (pas file://).</p>' +
-              '<a href="' + livUrl + '" target="_blank" rel="noopener" class="detail-link">Voir sur Livability.com →</a>' +
+              '<p class="city-detail-description" style="color:var(--text-dim);">' + (currentLang === 'en'
+                ? 'Detailed data (categories, FAQ, sections) could not be loaded. Check that <code>livability-details.json</code> is present and that this page is opened via an HTTP server (not file://).'
+                : 'Les donnees detaillees (categories, FAQ, sections) n ont pas pu etre chargees. Verifiez que <code>livability-details.json</code> est bien present et que la page est ouverte via un serveur HTTP (pas file://).') + '</p>' +
+              '<a href="' + livUrl + '" target="_blank" rel="noopener" class="detail-link">' + t('detailLink') + '</a>' +
             '</div></div>';
           document.body.appendChild(overlay);
           overlay.querySelector('.city-detail-close').addEventListener('click', function () { overlay.remove(); });
@@ -2704,7 +3015,9 @@
         var catSummary = '';
         if (d.categories) {
           catSummary = '<div style="display:flex;flex-wrap:wrap;gap:0.5rem 1rem;margin-bottom:1.2rem;">';
-          var catLabels = {amenities:'Amenities',economy:'Economy',education:'Education',environment:'Environment',health:'Health',housing:'Housing',safety:'Safety',transportation:'Transport'};
+          var catLabels = currentLang === 'en'
+            ? {amenities:'Amenities',economy:'Economy',education:'Education',environment:'Environment',health:'Health',housing:'Housing',safety:'Safety',transportation:'Transport'}
+            : {amenities:'Amenites',economy:'Economie',education:'Education',environment:'Environnement',health:'Sante',housing:'Logement',safety:'Securite',transportation:'Transport'};
           Object.keys(catLabels).forEach(function (k) {
             var v = d.categories[k];
             if (v == null) return;
@@ -2714,7 +3027,9 @@
           catSummary += '</div>';
         }
         // Sections
-        var sectionLabels = { location: 'Location', economy: 'Economy & Jobs', thingsToDo: 'Things to Do', outdoors: 'Outdoor Activities', restaurants: 'Restaurants', education: 'Education' };
+        var sectionLabels = currentLang === 'en'
+          ? { location: 'Location', economy: 'Economy & Jobs', thingsToDo: 'Things to Do', outdoors: 'Outdoor Activities', restaurants: 'Restaurants', education: 'Education' }
+          : { location: 'Localisation', economy: 'Economie et emplois', thingsToDo: 'A faire', outdoors: 'Activites exterieures', restaurants: 'Restaurants', education: 'Education' };
         var sectionsHtml = '';
         Object.keys(sectionLabels).forEach(function (sk) {
           if (!d.sections || !d.sections[sk]) return;
@@ -2723,7 +3038,7 @@
         // FAQs
         var faqsHtml = '';
         if (d.faqs && d.faqs.length) {
-          faqsHtml = '<div style="margin-top:1rem;"><h4 style="color:var(--accent);font-size:0.85rem;margin-bottom:0.5rem;">Questions fréquentes</h4>';
+          faqsHtml = '<div style="margin-top:1rem;"><h4 style="color:var(--accent);font-size:0.85rem;margin-bottom:0.5rem;">' + (currentLang === 'en' ? 'Frequently asked questions' : 'Questions frequentes') + '</h4>';
           d.faqs.forEach(function (faq, fi) {
             faqsHtml += '<div class="faq-item"><button class="faq-q" data-faq="' + fi + '">' + escapeHtml(faq.q) + ' <span class="chevron">▼</span></button><div class="faq-a" data-faq-a="' + fi + '">' + escapeHtml(faq.a) + '</div></div>';
           });
@@ -2733,13 +3048,13 @@
         var overlay = document.createElement('div');
         overlay.className = 'city-detail-overlay';
         overlay.innerHTML = '<div class="city-detail-panel">' +
-          '<button class="city-detail-close" title="Fermer">&times;</button>' +
+          '<button class="city-detail-close" title="' + t('closeTitle') + '">&times;</button>' +
           heroHtml +
           '<div class="city-detail-body">' +
             '<div class="city-detail-title">' + (rank ? '#' + rank + ' ' : '') + escapeHtml(d.city) + ', ' + escapeHtml(d.state) + (livScore ? ' <span style="color:var(--accent);font-size:1rem;">(' + livScore + ')</span>' : '') + '</div>' +
             (d.description ? '<div class="city-detail-description">' + escapeHtml(d.description) + '</div>' : '') +
             topCatsHtml + radarHtml + catSummary + sectionsHtml + faqsHtml +
-            '<a href="' + livUrl + '" target="_blank" rel="noopener" class="detail-link">Voir sur Livability.com →</a>' +
+            '<a href="' + livUrl + '" target="_blank" rel="noopener" class="detail-link">' + t('detailLink') + '</a>' +
           '</div></div>';
         document.body.appendChild(overlay);
         // Close handlers
@@ -2916,7 +3231,7 @@
                 wrap.classList.remove('fullscreen');
                 document.body.style.overflow = '';
                 var fs = document.getElementById('btnFullscreen');
-                if (fs) { fs.textContent = '⛶'; fs.title = 'Plein écran (Esc pour quitter)'; }
+                if (fs) { fs.textContent = '⛶'; fs.title = t('openFsTitle'); }
               }
               wrap.classList.remove('view-dynamic');
               wrap.classList.add('view-states');
