@@ -27,6 +27,9 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Use usa-map as root index (no redirect)
+        run: cp public/usa-map.html public/index.html
+
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:

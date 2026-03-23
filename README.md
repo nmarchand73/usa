@@ -7,7 +7,7 @@ Carte interactive des **50 États US + Washington DC** avec données socio-écon
 ```
 /
 ├── public/                  # Racine du serveur (npm start)
-│   ├── usa-map.html        # Carte interactive (app principale)
+│   ├── usa-map.html        # Carte interactive (source principale)
 │   ├── usa-states.svg      # Carte SVG des États
 │   └── app-data.json       # Données fusionnées (généré par npm run build)
 │
@@ -75,8 +75,11 @@ Le dépôt est configuré pour publier automatiquement `public/` via GitHub Page
 2. Dans **Build and deployment**, choisir **Source: GitHub Actions**.
 3. Pousser sur `master` (ou lancer le workflow manuellement).
 
+Le workflow copie automatiquement `public/usa-map.html` vers `public/index.html` **au moment du déploiement** (sans redirection), ce qui rend l'application accessible à la racine du site Pages.
+
 URL attendue :
-- `https://<votre-user>.github.io/<nom-du-repo>/usa-map.html`
+- `https://<votre-user>.github.io/<nom-du-repo>/`
+- (l’URL `.../usa-map.html` reste aussi valide)
 
 Si vous utilisez un domaine custom, pointez-le ensuite depuis la page **Settings > Pages**.
 
