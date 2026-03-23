@@ -65,6 +65,21 @@ Puis ouvrir [http://localhost:3000/usa-map.html](http://localhost:3000/usa-map.h
 
 > Sous Windows : double-cliquer `launch-site.bat`
 
+## Publication GitHub Pages
+
+Le dépôt est configuré pour publier automatiquement `public/` via GitHub Pages (workflow `.github/workflows/deploy.yml`) à chaque `push` sur `master`.
+
+### Activer côté GitHub (une seule fois)
+
+1. Ouvrir **Settings** > **Pages** du dépôt.
+2. Dans **Build and deployment**, choisir **Source: GitHub Actions**.
+3. Pousser sur `master` (ou lancer le workflow manuellement).
+
+URL attendue :
+- `https://<votre-user>.github.io/<nom-du-repo>/usa-map.html`
+
+Si vous utilisez un domaine custom, pointez-le ensuite depuis la page **Settings > Pages**.
+
 ### Mettre à jour les données Livability
 
 ```powershell
