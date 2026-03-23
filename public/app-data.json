@@ -7934,10 +7934,10 @@
           "frenchEstimate": 15550,
           "description": "Mile High : culture, musées, sport pro (Broncos, Rockies, Nuggets, Avalanche), food scene ; accès massifs, Red Rocks et stations de ski (Aspen, Vail, Breckenridge). Coût de la vie au-dessus de la moyenne nationale.",
           "livability": {
-            "medianHomeValue": 615704,
+            "medianHomeValue": 565000,
             "medianIncome": 93503,
             "medianRent": 1631,
-            "medianPropertyTax": 3380,
+            "medianPropertyTax": 3280,
             "avgCommute": 22,
             "avgTempHighF": 66,
             "avgTempLowF": 37,
@@ -7951,10 +7951,10 @@
           "frenchEstimate": 10604,
           "description": "Pikes Peak, Garden of the Gods, zoo de montagne ; économie portée par l'aérospatial et la défense (Northrop, Lockheed) et la tech. 2e ville de l'État, souvent plus abordable que Denver.",
           "livability": {
-            "medianHomeValue": 467431,
+            "medianHomeValue": 442000,
             "medianIncome": 89455,
-            "medianRent": 1567,
-            "medianPropertyTax": 2680,
+            "medianRent": 1495,
+            "medianPropertyTax": 2565,
             "avgCommute": 20,
             "avgTempHighF": 61,
             "avgTempLowF": 35,
@@ -7968,10 +7968,10 @@
           "frenchEstimate": 8573,
           "description": "Grande ville à l'est de Denver ; logement et coût du quotidien souvent plus modérés qu'à Denver. Cherry Creek State Park, musées, scène culturelle ; familles et accès aéroport.",
           "livability": {
-            "medianHomeValue": 493736,
+            "medianHomeValue": 467000,
             "medianIncome": 91862,
-            "medianRent": 1758,
-            "medianPropertyTax": 2851,
+            "medianRent": 1665,
+            "medianPropertyTax": 2708,
             "avgCommute": 26,
             "avgTempHighF": 64,
             "avgTempLowF": 36,
@@ -7983,79 +7983,222 @@
           "name": "Fort Collins",
           "population": 170376,
           "frenchEstimate": 3697,
-          "description": "Colorado State University, scène brassicole majeure, Horsetooth Reservoir et Rocheuses à portée ; économie tech, éducation et santé, forte identité communautaire."
+          "description": "Colorado State University, scène brassicole majeure, Horsetooth Reservoir et Rocheuses à portée ; économie tech, éducation et santé, forte identité communautaire.",
+          "livability": {
+            "medianHomeValue": 535000,
+            "medianIncome": 77200,
+            "medianRent": 1590,
+            "medianPropertyTax": 3105,
+            "avgCommute": 21,
+            "avgTempHighF": 65,
+            "avgTempLowF": 36,
+            "annualRainfallIn": 16,
+            "annualSnowfallIn": 56
+          }
         },
         {
           "name": "Lakewood",
           "population": 155961,
           "frenchEstimate": 3384,
-          "description": "Banlieue ouest immédiate de Denver : cadre résidentiel, accès rapide aux montagnes et à la métropole."
+          "description": "Banlieue ouest immédiate de Denver : cadre résidentiel, accès rapide aux montagnes et à la métropole.",
+          "livability": {
+            "medianHomeValue": 557000,
+            "medianIncome": 78200,
+            "medianRent": 1630,
+            "medianPropertyTax": 3230,
+            "avgCommute": 25,
+            "avgTempHighF": 66,
+            "avgTempLowF": 37,
+            "annualRainfallIn": 17,
+            "annualSnowfallIn": 54
+          }
         },
         {
           "name": "Thornton",
           "population": 141867,
           "frenchEstimate": 3079,
-          "description": "Banlieue nord en croissance : milliers d'acres de parcs et trails, festivals ; immobilier souvent moins cher que dans d'autres secteurs du Grand Denver."
+          "description": "Banlieue nord en croissance : milliers d'acres de parcs et trails, festivals ; immobilier souvent moins cher que dans d'autres secteurs du Grand Denver.",
+          "livability": {
+            "medianHomeValue": 508000,
+            "medianIncome": 90400,
+            "medianRent": 1540,
+            "medianPropertyTax": 2945,
+            "avgCommute": 28,
+            "avgTempHighF": 65,
+            "avgTempLowF": 36,
+            "annualRainfallIn": 16,
+            "annualSnowfallIn": 54
+          }
         },
         {
           "name": "Arvada",
           "population": 124402,
           "frenchEstimate": 2700,
-          "description": "Nord-ouest de l'agglomération : ambiance de banlieue, proximité montagnes et Denver."
+          "description": "Nord-ouest de l'agglomération : ambiance de banlieue, proximité montagnes et Denver.",
+          "livability": {
+            "medianHomeValue": 615000,
+            "medianIncome": 100951,
+            "medianRent": 1740,
+            "medianPropertyTax": 3565,
+            "avgCommute": 26,
+            "avgTempHighF": 65,
+            "avgTempLowF": 36,
+            "annualRainfallIn": 17,
+            "annualSnowfallIn": 55
+          }
         },
         {
           "name": "Westminster",
           "population": 116317,
           "frenchEstimate": 2524,
-          "description": "Entre Denver et Boulder : mix urbain / résidentiel et accès plein air."
+          "description": "Entre Denver et Boulder : mix urbain / résidentiel et accès plein air.",
+          "livability": {
+            "medianHomeValue": 539000,
+            "medianIncome": 86600,
+            "medianRent": 1595,
+            "medianPropertyTax": 3125,
+            "avgCommute": 26,
+            "avgTempHighF": 65,
+            "avgTempLowF": 36,
+            "annualRainfallIn": 16,
+            "annualSnowfallIn": 54
+          }
         },
         {
           "name": "Pueblo",
           "population": 111876,
           "frenchEstimate": 2428,
-          "description": "Ville plus abordable sur l'Arkansas ; Riverwalk, Colorado State Fair, climat ensoleillé ; économie (acier, santé, agriculture) et petite scène entrepreneuriale."
+          "description": "Ville plus abordable sur l'Arkansas ; Riverwalk, Colorado State Fair, climat ensoleillé ; économie (acier, santé, agriculture) et petite scène entrepreneuriale.",
+          "livability": {
+            "medianHomeValue": 305000,
+            "medianIncome": 48600,
+            "medianRent": 1165,
+            "medianPropertyTax": 1770,
+            "avgCommute": 22,
+            "avgTempHighF": 69,
+            "avgTempLowF": 38,
+            "annualRainfallIn": 12,
+            "annualSnowfallIn": 28
+          }
         },
         {
           "name": "Centennial",
           "population": 111331,
           "frenchEstimate": 2416,
-          "description": "Banlieue sud-est du Grand Denver : réputée pour les écoles et le cadre de vie familial."
+          "description": "Banlieue sud-est du Grand Denver : réputée pour les écoles et le cadre de vie familial.",
+          "livability": {
+            "medianHomeValue": 605000,
+            "medianIncome": 124100,
+            "medianRent": 1720,
+            "medianPropertyTax": 3510,
+            "avgCommute": 26,
+            "avgTempHighF": 65,
+            "avgTempLowF": 36,
+            "annualRainfallIn": 17,
+            "annualSnowfallIn": 54
+          }
         },
         {
           "name": "Greeley",
           "population": 108795,
           "frenchEstimate": 2361,
-          "description": "Nord du Front Range, université ; agriculture, énergie et santé ; coût souvent plus modéré qu'à Denver. Greeley Stampede, plein air (Poudre, parcs)."
+          "description": "Nord du Front Range, université ; agriculture, énergie et santé ; coût souvent plus modéré qu'à Denver. Greeley Stampede, plein air (Poudre, parcs).",
+          "livability": {
+            "medianHomeValue": 405000,
+            "medianIncome": 68400,
+            "medianRent": 1350,
+            "medianPropertyTax": 2350,
+            "avgCommute": 23,
+            "avgTempHighF": 64,
+            "avgTempLowF": 34,
+            "annualRainfallIn": 15,
+            "annualSnowfallIn": 42
+          }
         },
         {
           "name": "Boulder",
           "population": 108250,
           "frenchEstimate": 2350,
-          "description": "Aux pieds des Rocheuses, CU Boulder, Pearl Street ; outdoor, vélo, engagement environnemental. Coût de la vie et loyers parmi les plus élevés du Colorado."
+          "description": "Aux pieds des Rocheuses, CU Boulder, Pearl Street ; outdoor, vélo, engagement environnemental. Coût de la vie et loyers parmi les plus élevés du Colorado.",
+          "livability": {
+            "medianHomeValue": 807000,
+            "medianIncome": 94900,
+            "medianRent": 2090,
+            "medianPropertyTax": 4680,
+            "avgCommute": 20,
+            "avgTempHighF": 65,
+            "avgTempLowF": 36,
+            "annualRainfallIn": 18,
+            "annualSnowfallIn": 83
+          }
         },
         {
           "name": "Longmont",
           "population": 98885,
           "frenchEstimate": 2145,
-          "description": "Entre Denver, Boulder et Fort Collins ; patrimoine agricole, tech et fabrication ; nombreux parcs ; logement souvent plus accessible qu'à Boulder."
+          "description": "Entre Denver, Boulder et Fort Collins ; patrimoine agricole, tech et fabrication ; nombreux parcs ; logement souvent plus accessible qu'à Boulder.",
+          "livability": {
+            "medianHomeValue": 548000,
+            "medianIncome": 89200,
+            "medianRent": 1615,
+            "medianPropertyTax": 3180,
+            "avgCommute": 24,
+            "avgTempHighF": 65,
+            "avgTempLowF": 36,
+            "annualRainfallIn": 16,
+            "annualSnowfallIn": 52
+          }
         },
         {
           "name": "Broomfield",
           "population": 74112,
           "frenchEstimate": 1609,
-          "description": "Comté consolidé entre Denver et Boulder : parcs, trails, emplois tech, santé et industrie ; banlieue dynamique."
+          "description": "Comté consolidé entre Denver et Boulder : parcs, trails, emplois tech, santé et industrie ; banlieue dynamique.",
+          "livability": {
+            "medianHomeValue": 598000,
+            "medianIncome": 112000,
+            "medianRent": 1705,
+            "medianPropertyTax": 3470,
+            "avgCommute": 26,
+            "avgTempHighF": 65,
+            "avgTempLowF": 36,
+            "annualRainfallIn": 16,
+            "annualSnowfallIn": 54
+          }
         },
         {
           "name": "Castle Rock",
           "population": 73158,
           "frenchEstimate": 1588,
-          "description": "Entre Denver et Colorado Springs : open space, dizaines de km de sentiers, centre-ville historique et événements ; prisé des familles."
+          "description": "Entre Denver et Colorado Springs : open space, dizaines de km de sentiers, centre-ville historique et événements ; prisé des familles.",
+          "livability": {
+            "medianHomeValue": 628000,
+            "medianIncome": 155000,
+            "medianRent": 1760,
+            "medianPropertyTax": 3640,
+            "avgCommute": 32,
+            "avgTempHighF": 64,
+            "avgTempLowF": 35,
+            "annualRainfallIn": 18,
+            "annualSnowfallIn": 78
+          }
         },
         {
           "name": "Littleton",
           "population": 45652,
           "frenchEstimate": 991,
-          "description": "Sud du Grand Denver : centre historique, musée, Chatfield et montagnes à portée ; banlieue familiale (ville incorporée)."
+          "description": "Sud du Grand Denver : centre historique, musée, Chatfield et montagnes à portée ; banlieue familiale (ville incorporée).",
+          "livability": {
+            "medianHomeValue": 572000,
+            "medianIncome": 94000,
+            "medianRent": 1660,
+            "medianPropertyTax": 3320,
+            "avgCommute": 25,
+            "avgTempHighF": 65,
+            "avgTempLowF": 36,
+            "annualRainfallIn": 17,
+            "annualSnowfallIn": 55
+          }
         }
       ],
       "frenchCount": 131775,
@@ -8095,7 +8238,7 @@
         "resteALivre": 46193,
         "costScale": 0.16868686868686872,
         "resteScale": 0.8274125,
-        "medianHomePrice": 640000,
+        "medianHomePrice": 591400,
         "medianRent": 1835,
         "medianHomeSize": 230,
         "medianRentSize": 95,
