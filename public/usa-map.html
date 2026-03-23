@@ -416,7 +416,6 @@
       flex-wrap: wrap;
     }
     .panel-header-left { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem 0.6rem; }
-    .panel-header-right { flex-shrink: 0; }
     .panel-header-block-label {
       display: block;
       font-size: 0.7rem;
@@ -664,6 +663,61 @@
       border-color: var(--accent);
       background: rgba(0,212,170,0.08);
     }
+    .panel-header-right {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      justify-content: flex-end;
+    }
+    .panel-links-more {
+      position: relative;
+    }
+    .panel-links-more > summary {
+      list-style: none;
+      cursor: pointer;
+      font-size: 0.72rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg2);
+      color: var(--accent);
+      white-space: nowrap;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .panel-links-more > summary::-webkit-details-marker { display: none; }
+    .panel-links-more > summary::after {
+      content: ' \25BE';
+      font-size: 0.65em;
+      opacity: 0.85;
+    }
+    .panel-links-more[open] > summary {
+      border-color: var(--accent);
+      background: rgba(0,212,170,0.08);
+    }
+    .panel-links-more-list {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 4px);
+      z-index: 30;
+      margin: 0;
+      padding: 0.45rem 0.65rem;
+      list-style: none;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.4);
+      min-width: 12.5rem;
+      max-width: min(18rem, 85vw);
+    }
+    .panel-links-more-list li { margin: 0.32rem 0; line-height: 1.35; }
+    .panel-links-more-list a {
+      font-size: 0.78rem;
+      color: var(--accent);
+      text-decoration: none;
+      word-break: break-word;
+    }
+    .panel-links-more-list a:hover { text-decoration: underline; }
     /* (removed .panel .state-link, .cities-list — no longer used) */
     .criteria-block {
       margin-top: 1rem;
@@ -1246,7 +1300,20 @@
           closeTitle: 'Fermer',
           closeFsTitle: 'Quitter le plein ecran (Esc)',
           openFsTitle: 'Plein ecran (Esc pour quitter)',
-          detailLink: 'Voir sur Livability.com ->'
+          detailLink: 'Voir sur Livability.com ->',
+          livabilityGuideCo: 'Meilleures villes (Livability)',
+          livabilityMovingCo: 'Vivre au Colorado (Choose Colorado · officiel)',
+          officialNewResidentLink: 'Nouveaux résidents (DMV Colorado)',
+          moreResourceLinks: 'Autres ressources',
+          chooseColoradoCostLink: 'Coût de la vie (Choose Colorado · OEDIT)',
+          chooseColoradoCostTitle: 'Coût de la vie — Choose Colorado (État)',
+          chooseColoradoDemoLink: 'Démographie (Choose Colorado · OEDIT)',
+          chooseColoradoDemoTitle: 'Démographie — Choose Colorado / Census 2020',
+          chooseColoradoRankLabor: 'offre de main-d\'œuvre — Forbes, 2019',
+          chooseColoradoRankBusiness: 'état pour les affaires — 24/7 Wall St., 2020',
+          chooseColoradoRankActive: 'État le plus « actif » (santé) — United Health Foundation, 2020',
+          chooseColoradoRankEdu: 'niveau de formation (bac+3) — WalletHub, 2021',
+          chooseColoradoRaceTitle: 'Race & origine hispanique (Census 2020)'
         },
         en: {
           pageTitle: 'Interactive USA map — living in the US (50 states + DC)',
@@ -1318,7 +1385,20 @@
           closeTitle: 'Close',
           closeFsTitle: 'Exit fullscreen (Esc)',
           openFsTitle: 'Fullscreen (Esc to exit)',
-          detailLink: 'View on Livability.com ->'
+          detailLink: 'View on Livability.com ->',
+          livabilityGuideCo: 'Best places to live (Livability)',
+          livabilityMovingCo: 'Live in Colorado (Choose Colorado · official)',
+          officialNewResidentLink: 'New residents (CO DMV)',
+          moreResourceLinks: 'More resources',
+          chooseColoradoCostLink: 'Cost of living (Choose Colorado · OEDIT)',
+          chooseColoradoCostTitle: 'Cost of living — Choose Colorado (State)',
+          chooseColoradoDemoLink: 'Demographics (Choose Colorado · OEDIT)',
+          chooseColoradoDemoTitle: 'Demographics — Choose Colorado / Census 2020',
+          chooseColoradoRankLabor: 'labor supply — Forbes, 2019',
+          chooseColoradoRankBusiness: 'best state for business — 24/7 Wall St., 2020',
+          chooseColoradoRankActive: 'most active state — United Health Foundation, 2020',
+          chooseColoradoRankEdu: 'educational attainment (bachelor\'s+) — WalletHub, 2021',
+          chooseColoradoRaceTitle: 'Race & Hispanic origin (Census 2020)'
         }
       };
       var currentLang = 'fr';
@@ -1594,13 +1674,17 @@
 
         var hasBudget = cost.index != null || cost.medianIncomeFamily4 != null || cost.livingWageFamily4 != null || cost.resteALivre != null || cost.medianHomePrice != null || cost.medianRent != null;
         var hasContexte = s.climat || data.politique || data.frenchCount != null;
+        var oeditDemo = data.chooseColoradoDemographics;
+        var hasOeditDemo = oeditDemo && oeditDemo.population != null;
 
         // —— Structure : panel-wrap > panel-header (fixe) + panel-inner (scroll)
         let html = '<div class="panel-wrap">';
 
-        // ── Compute state total population from topCities
+        // ── Population en-tête : chiffre officiel OEDIT (CO) si présent, sinon somme des topCities
         var statePop = 0;
-        if (data.topCities && data.topCities.length) {
+        if (hasOeditDemo && oeditDemo.population) {
+          statePop = oeditDemo.population;
+        } else if (data.topCities && data.topCities.length) {
           data.topCities.forEach(function (c) { if (c.population) statePop += c.population; });
         }
 
@@ -1633,8 +1717,37 @@
           html += '<p class="panel-ambiance">' + escapeHtml(data.ambiance) + '</p>';
         }
         html += '</div>';  // ferme panel-header-left
-        if (data.stateUrl) {
-          html += '<div class="panel-header-right"><a class="state-link" href="' + escapeHtml(data.stateUrl) + '" target="_blank" rel="noopener" title="' + escapeHtml(data.stateUrl) + '">' + (currentLang === 'en' ? 'Official site' : 'Site officiel') + '</a></div>';
+        var extraResourceLinks = [];
+        if (data.livabilityGuideUrl) {
+          extraResourceLinks.push({ url: data.livabilityGuideUrl, label: t('livabilityGuideCo') });
+        }
+        if (data.livabilityMovingUrl) {
+          extraResourceLinks.push({ url: data.livabilityMovingUrl, label: t('livabilityMovingCo') });
+        }
+        if (data.costOfLiving && data.costOfLiving.chooseColorado && data.costOfLiving.chooseColorado.sourceUrl) {
+          extraResourceLinks.push({ url: data.costOfLiving.chooseColorado.sourceUrl, label: t('chooseColoradoCostLink') });
+        }
+        if (data.chooseColoradoDemographics && data.chooseColoradoDemographics.sourceUrl) {
+          extraResourceLinks.push({ url: data.chooseColoradoDemographics.sourceUrl, label: t('chooseColoradoDemoLink') });
+        }
+        if (data.officialNewResidentUrl) {
+          extraResourceLinks.push({ url: data.officialNewResidentUrl, label: t('officialNewResidentLink') });
+        }
+        if (data.stateUrl || extraResourceLinks.length) {
+          html += '<div class="panel-header-right">';
+          if (data.stateUrl) {
+            html += '<a class="state-link" href="' + escapeHtml(data.stateUrl) + '" target="_blank" rel="noopener" title="' + escapeHtml(data.stateUrl) + '">' + (currentLang === 'en' ? 'Official site' : 'Site officiel') + '</a>';
+          }
+          if (extraResourceLinks.length) {
+            html += '<details class="panel-links-more">';
+            html += '<summary>' + escapeHtml(t('moreResourceLinks')) + '</summary>';
+            html += '<ul class="panel-links-more-list">';
+            extraResourceLinks.forEach(function (item) {
+              html += '<li><a href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener" title="' + escapeHtml(item.url) + '">' + escapeHtml(item.label) + '</a></li>';
+            });
+            html += '</ul></details>';
+          }
+          html += '</div>';
         }
         html += '</div>';  // ferme panel-header
 
@@ -1661,7 +1774,7 @@
         }
 
         // ── 2. CHIFFRES CLÉS
-        if (hasBudget || hasContexte) {
+        if (hasBudget || hasContexte || hasOeditDemo) {
           html += '<div class="panel-block"><div class="panel-section-title">' + (currentLang === 'en' ? 'Key figures' : 'Chiffres cles') + '</div>';
           html += '<div class="identity-sheet">';
           if (cost.index != null) {
@@ -1722,6 +1835,108 @@
           if (data.frenchCount != null) {
             var pct = data.frenchPercent != null ? ' (' + data.frenchPercent.toLocaleString(numberLocale(), { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' %)' : '';
             html += '<div class="identity-row"><span class="identity-label">' + (currentLang === 'en' ? 'French ancestry' : 'Origine francaise') + '</span><span class="identity-value">' + new Intl.NumberFormat(numberLocale()).format(data.frenchCount) + pct + '</span></div>';
+          }
+          var cc = cost.chooseColorado;
+          if (cc && (cc.overallVsUSPercent != null || cc.medianHouseholdIncomeVsUSPercent != null)) {
+            html += '<div class="choose-colorado-cost" style="margin-top:0.5rem;padding:0.55rem 0.7rem;background:rgba(0,212,170,0.07);border-radius:8px;border:1px solid var(--border);font-size:0.78rem;line-height:1.5;color:var(--text);">';
+            html += '<div style="font-weight:600;margin-bottom:0.4rem;color:var(--accent);">' + escapeHtml(t('chooseColoradoCostTitle')) + '</div>';
+            if (cc.overallVsUSPercent != null) {
+              html += '<div style="margin-bottom:0.25rem;"><span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'Overall cost of living vs U.S.' : 'Coût global vs moy. US') + '</span> <strong>+' + escapeHtml(String(cc.overallVsUSPercent)) + ' %</strong>';
+              if (cc.compareCAOverallPercent != null && cc.compareMAOverallPercent != null) {
+                html += ' <span style="color:var(--text-dim);">(' + (currentLang === 'en' ? 'ref.' : 'réf.') + ' CA +' + escapeHtml(String(cc.compareCAOverallPercent)) + ' %, MA +' + escapeHtml(String(cc.compareMAOverallPercent)) + ' %)</span>';
+              }
+              html += '</div>';
+            }
+            if (cc.groceriesVsUS === 'on_par') {
+              html += '<div style="margin-bottom:0.25rem;"><span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'Groceries' : 'Courses') + '</span> — ' + (currentLang === 'en' ? 'on par with U.S. average' : 'à la moyenne nationale') + '</div>';
+            }
+            if (cc.healthcareVsUSPercent != null) {
+              html += '<div style="margin-bottom:0.25rem;"><span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'Health care' : 'Santé') + '</span> <strong>' + escapeHtml(String(cc.healthcareVsUSPercent)) + ' %</strong> <span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'vs U.S. average' : 'vs moy. US') + '</span></div>';
+            }
+            if (cc.utilitiesVsUSPercent != null) {
+              html += '<div style="margin-bottom:0.25rem;"><span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'Utilities' : 'Services publics') + '</span> <strong>' + escapeHtml(String(cc.utilitiesVsUSPercent)) + ' %</strong> <span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'vs U.S. average' : 'vs moy. US') + '</span></div>';
+            }
+            if (cc.transportationVsUSPercent != null) {
+              html += '<div style="margin-bottom:0.25rem;"><span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'Transportation' : 'Transport') + '</span> <strong>+' + escapeHtml(String(cc.transportationVsUSPercent)) + ' %</strong> <span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'vs U.S. average' : 'vs moy. US') + '</span></div>';
+            }
+            if (cc.medianHouseholdIncomeVsUSPercent != null) {
+              html += '<div style="margin-bottom:0.35rem;"><span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'Median household income' : 'Revenu médian des ménages') + '</span> <strong>+' + escapeHtml(String(cc.medianHouseholdIncomeVsUSPercent)) + ' %</strong> <span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'vs U.S. median' : 'vs médiane US') + '</span></div>';
+            }
+            if (cc.sourceUrl) {
+              html += '<div style="font-size:0.72rem;color:var(--text-dim);margin-top:0.35rem;">🔗 <a href="' + escapeHtml(cc.sourceUrl) + '" target="_blank" rel="noopener" style="color:var(--accent);">choosecolorado.com/…/cost-of-living/</a> — OEDIT</div>';
+            }
+            html += '</div>';
+          }
+          if (hasOeditDemo) {
+            var demo = oeditDemo;
+            html += '<div class="choose-colorado-demo" style="margin-top:0.5rem;padding:0.55rem 0.7rem;background:rgba(96,165,250,0.08);border-radius:8px;border:1px solid var(--border);font-size:0.78rem;line-height:1.5;color:var(--text);">';
+            html += '<div style="font-weight:600;margin-bottom:0.4rem;color:var(--accent);">' + escapeHtml(t('chooseColoradoDemoTitle')) + '</div>';
+            html += '<div style="margin-bottom:0.25rem;"><span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'Population' : 'Population') + '</span> <strong>' + new Intl.NumberFormat(numberLocale()).format(demo.population) + '</strong></div>';
+            if (demo.medianAge != null) {
+              html += '<div style="margin-bottom:0.25rem;"><span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'Median age' : 'Âge médian') + '</span> <strong>' + escapeHtml(String(demo.medianAge)) + '</strong></div>';
+            }
+            if (demo.veterans != null) {
+              html += '<div style="margin-bottom:0.25rem;"><span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'Veterans' : 'Vétérans') + '</span> <strong>' + new Intl.NumberFormat(numberLocale()).format(demo.veterans) + '</strong></div>';
+            }
+            if (demo.personsPerHousehold != null) {
+              html += '<div style="margin-bottom:0.25rem;"><span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'Persons per household' : 'Pers. par ménage') + '</span> <strong>' + escapeHtml(String(demo.personsPerHousehold)) + '</strong></div>';
+            }
+            if (demo.foreignBornPercent != null) {
+              html += '<div style="margin-bottom:0.25rem;"><span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'Foreign-born' : 'Nés à l\'étranger') + '</span> <strong>' + escapeHtml(String(demo.foreignBornPercent)) + ' %</strong></div>';
+            }
+            if (demo.medianHouseholdIncomeCO != null && demo.medianHouseholdIncomeUS != null) {
+              html += '<div style="margin-bottom:0.25rem;"><span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'Median household income' : 'Revenu médian ménage') + '</span> CO <strong>' + formatUSD(demo.medianHouseholdIncomeCO) + '</strong> · US <strong>' + formatUSD(demo.medianHouseholdIncomeUS) + '</strong></div>';
+            }
+            if (demo.perCapitaIncome != null) {
+              html += '<div style="margin-bottom:0.25rem;"><span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'Per capita income' : 'Revenu par habitant') + '</span> <strong>' + formatUSD(demo.perCapitaIncome) + '</strong></div>';
+            }
+            if (demo.highSchoolOrHigherCO != null && demo.highSchoolOrHigherUS != null) {
+              html += '<div style="margin-bottom:0.25rem;"><span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'High school+ (25+)' : 'Lycée+ (25 ans+)') + '</span> CO <strong>' + escapeHtml(String(demo.highSchoolOrHigherCO)) + ' %</strong> · US <strong>' + escapeHtml(String(demo.highSchoolOrHigherUS)) + ' %</strong></div>';
+            }
+            if (demo.bachelorsOrHigherCO != null && demo.bachelorsOrHigherUS != null) {
+              html += '<div style="margin-bottom:0.25rem;"><span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'Bachelor\'s+ (25+)' : 'Bac+3+ (25 ans+)') + '</span> CO <strong>' + escapeHtml(String(demo.bachelorsOrHigherCO)) + ' %</strong> · US <strong>' + escapeHtml(String(demo.bachelorsOrHigherUS)) + ' %</strong></div>';
+            }
+            if (demo.genderFemalePercent != null && demo.genderMalePercent != null) {
+              html += '<div style="margin-bottom:0.25rem;"><span style="color:var(--text-dim);">' + (currentLang === 'en' ? 'Gender' : 'Sexe') + '</span> F <strong>' + escapeHtml(String(demo.genderFemalePercent)) + ' %</strong> · M <strong>' + escapeHtml(String(demo.genderMalePercent)) + ' %</strong></div>';
+            }
+            if (demo.raceEthnicity) {
+              var r = demo.raceEthnicity;
+              html += '<div style="margin-top:0.35rem;font-weight:600;color:var(--text-dim);font-size:0.72rem;">' + escapeHtml(t('chooseColoradoRaceTitle')) + '</div>';
+              function raceLine(label, val) {
+                if (val == null) return '';
+                return '<div style="margin-bottom:0.12rem;padding-left:0.35rem;"><span style="color:var(--text-dim);">' + escapeHtml(label) + '</span> <strong>' + escapeHtml(String(val)) + ' %</strong></div>';
+              }
+              if (currentLang === 'en') {
+                html += raceLine('White, not Hispanic/Latino', r.whiteNonHispanicPercent);
+                html += raceLine('Hispanic or Latino', r.hispanicOrLatinoPercent);
+                html += raceLine('Black', r.blackPercent);
+                html += raceLine('American Indian & Alaska Native', r.americanIndianAlaskanNativePercent);
+                html += raceLine('Asian', r.asianPercent);
+                html += raceLine('Native Hawaiian & Pacific Islander', r.nativeHawaiianPacificIslanderPercent);
+                html += raceLine('Two or more races', r.twoOrMoreRacesPercent);
+              } else {
+                html += raceLine('Blancs non hispaniques', r.whiteNonHispanicPercent);
+                html += raceLine('Hispaniques ou Latinos', r.hispanicOrLatinoPercent);
+                html += raceLine('Noirs', r.blackPercent);
+                html += raceLine('Amérindiens & Alaska Native', r.americanIndianAlaskanNativePercent);
+                html += raceLine('Asiatiques', r.asianPercent);
+                html += raceLine('Hawaïens & autres du Pacifique', r.nativeHawaiianPacificIslanderPercent);
+                html += raceLine('Deux races ou +', r.twoOrMoreRacesPercent);
+              }
+            }
+            if (demo.rankings && demo.rankings.length) {
+              html += '<div style="margin-top:0.4rem;font-weight:600;color:var(--text-dim);font-size:0.72rem;">' + (currentLang === 'en' ? 'Rankings (OEDIT)' : 'Classements (OEDIT)') + '</div><ul style="margin:0.25rem 0 0 1rem;padding:0;font-size:0.74rem;line-height:1.45;">';
+              demo.rankings.forEach(function (rk) {
+                if (rk.i18nKey && t(rk.i18nKey)) {
+                  html += '<li>#' + escapeHtml(String(rk.rank)) + ' — ' + escapeHtml(t(rk.i18nKey)) + '</li>';
+                }
+              });
+              html += '</ul>';
+            }
+            if (demo.sourceUrl) {
+              html += '<div style="font-size:0.72rem;color:var(--text-dim);margin-top:0.35rem;">🔗 <a href="' + escapeHtml(demo.sourceUrl) + '" target="_blank" rel="noopener" style="color:var(--accent);">choosecolorado.com/…/demographics/</a> — OEDIT</div>';
+            }
+            html += '</div>';
           }
           html += '</div></div>';
         }

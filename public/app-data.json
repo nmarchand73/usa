@@ -7869,22 +7869,70 @@
       "nameFr": "Colorado",
       "section": "mountain",
       "sectionLabel": "Montagnes & Sud-Ouest",
-      "contraste": "Denver et Boulder : 300 jours de soleil, tech, outdoor. Sundance s'y installe en 2027. Le rêve montagne, au prix du coût.",
-      "chiffre": "Fort Collins, Colorado Springs. Hiver neigeux en montagne, doux à Denver ; été sec 28–33 °C. Ski, randonnée, vélo, Broncos, bière. Coût élevé Denver/Boulder.",
-      "conseil": "Idéal outdoor et tech ; prévoir un budget confortable.",
+      "contraste": "Altitude moyenne la plus élevée des 50 États (~2100 m) : quatre saisons tempérées à l'ouest, est des plaines plus chaud en été. Rocheuses, ski et outdoor de classe mondiale ; 2e État en croissance démographique (OEDIT). Climat d'affaires souvent bien noté, tourisme et OREC. Denver et Springs en tête ; Boulder et Fort Collins très prisés (Livability). Front Range cher — Pueblo ou Greeley pour un budget plus serré.",
+      "chiffre": "Démographie OEDIT (Census 2020 + sources classements) : ~5,76 M hab., âge médian 37,5 ans, 9,7 % nés à l'étranger, 374 k vétérans ; revenu médian ménage ~72,3 k$ (US ~68,7 k$), revenu par habitant ~38,2 k$ ; bac+3 : ~40,9 % (US ~32,1 %). Coût de la vie OEDIT : +12 % global vs US (réf. CA +36 %, MA +31 %), etc. Villes Livability, employeurs santé/Lockheed/outdoor/DEN, USAFA, universités, aéroports.",
+      "conseil": "Arbitrer Grand Denver, Springs et nord (Fort Collins) selon emploi et budget ; « Autres ressources » : Livability, Choose Colorado (vivre), coût de la vie OEDIT, démographie OEDIT, DMV. Synthèses OEDIT sous Chiffres clés. Hiver : cotrip.org.",
       "stats": {
-        "climat": "Hiver -8 à 5 °C, Été 25 à 32 °C",
+        "climat": "Hiver -8 à 5 °C, Été 25 à 32 °C ; très lié à l'altitude ; est plus chaud",
         "cout": "élevé",
         "noIncomeTax": false,
         "classements": []
       },
       "stateUrl": "https://www.co.gov/",
+      "livabilityGuideUrl": "https://livability.com/co/where-to-live-now/best-places-to-live-in-colorado/",
+      "livabilityMovingUrl": "https://choosecolorado.com/living/",
+      "officialNewResidentUrl": "https://dmv.colorado.gov/new-to-colorado",
+      "chooseColoradoDemographics": {
+        "sourceUrl": "https://choosecolorado.com/doing-business/demographics/",
+        "censusRaceYear": "2020",
+        "population": 5758736,
+        "medianAge": 37.5,
+        "veterans": 373795,
+        "personsPerHousehold": 2.56,
+        "foreignBornPercent": 9.7,
+        "medianHouseholdIncomeCO": 72331,
+        "medianHouseholdIncomeUS": 68703,
+        "perCapitaIncome": 38226,
+        "highSchoolOrHigherCO": 91.7,
+        "highSchoolOrHigherUS": 88,
+        "bachelorsOrHigherCO": 40.9,
+        "bachelorsOrHigherUS": 32.1,
+        "genderFemalePercent": 49.6,
+        "genderMalePercent": 50.4,
+        "raceEthnicity": {
+          "whiteNonHispanicPercent": 67.7,
+          "hispanicOrLatinoPercent": 21.8,
+          "blackPercent": 4.6,
+          "americanIndianAlaskanNativePercent": 1.6,
+          "asianPercent": 3.5,
+          "nativeHawaiianPacificIslanderPercent": 0.2,
+          "twoOrMoreRacesPercent": 3.1
+        },
+        "rankings": [
+          {
+            "rank": 1,
+            "i18nKey": "chooseColoradoRankLabor"
+          },
+          {
+            "rank": 3,
+            "i18nKey": "chooseColoradoRankBusiness"
+          },
+          {
+            "rank": 2,
+            "i18nKey": "chooseColoradoRankActive"
+          },
+          {
+            "rank": 2,
+            "i18nKey": "chooseColoradoRankEdu"
+          }
+        ]
+      },
       "topCities": [
         {
           "name": "Denver",
           "population": 720349,
           "frenchEstimate": 15550,
-          "description": "Denver : métropole soleil et bière ; ski à 1 h.",
+          "description": "Mile High : culture, musées, sport pro (Broncos, Rockies, Nuggets, Avalanche), food scene ; accès massifs, Red Rocks et stations de ski (Aspen, Vail, Breckenridge). Coût de la vie au-dessus de la moyenne nationale.",
           "livability": {
             "medianHomeValue": 615704,
             "medianIncome": 93503,
@@ -7901,7 +7949,7 @@
           "name": "Colorado Springs",
           "population": 494607,
           "frenchEstimate": 10604,
-          "description": "Colorado Springs : militaire, Pikes Peak.",
+          "description": "Pikes Peak, Garden of the Gods, zoo de montagne ; économie portée par l'aérospatial et la défense (Northrop, Lockheed) et la tech. 2e ville de l'État, souvent plus abordable que Denver.",
           "livability": {
             "medianHomeValue": 467431,
             "medianIncome": 89455,
@@ -7918,7 +7966,7 @@
           "name": "Aurora",
           "population": 408729,
           "frenchEstimate": 8573,
-          "description": "Aurora : banlieue est de Denver.",
+          "description": "Grande ville à l'est de Denver ; logement et coût du quotidien souvent plus modérés qu'à Denver. Cherry Creek State Park, musées, scène culturelle ; familles et accès aéroport.",
           "livability": {
             "medianHomeValue": 493736,
             "medianIncome": 91862,
@@ -7935,43 +7983,79 @@
           "name": "Fort Collins",
           "population": 170376,
           "frenchEstimate": 3697,
-          "description": ""
+          "description": "Colorado State University, scène brassicole majeure, Horsetooth Reservoir et Rocheuses à portée ; économie tech, éducation et santé, forte identité communautaire."
         },
         {
           "name": "Lakewood",
           "population": 155961,
           "frenchEstimate": 3384,
-          "description": ""
+          "description": "Banlieue ouest immédiate de Denver : cadre résidentiel, accès rapide aux montagnes et à la métropole."
         },
         {
           "name": "Thornton",
           "population": 141867,
           "frenchEstimate": 3079,
-          "description": ""
+          "description": "Banlieue nord en croissance : milliers d'acres de parcs et trails, festivals ; immobilier souvent moins cher que dans d'autres secteurs du Grand Denver."
         },
         {
           "name": "Arvada",
           "population": 124402,
           "frenchEstimate": 2700,
-          "description": ""
+          "description": "Nord-ouest de l'agglomération : ambiance de banlieue, proximité montagnes et Denver."
         },
         {
           "name": "Westminster",
           "population": 116317,
           "frenchEstimate": 2524,
-          "description": ""
+          "description": "Entre Denver et Boulder : mix urbain / résidentiel et accès plein air."
         },
         {
           "name": "Pueblo",
           "population": 111876,
           "frenchEstimate": 2428,
-          "description": ""
+          "description": "Ville plus abordable sur l'Arkansas ; Riverwalk, Colorado State Fair, climat ensoleillé ; économie (acier, santé, agriculture) et petite scène entrepreneuriale."
         },
         {
           "name": "Centennial",
           "population": 111331,
           "frenchEstimate": 2416,
-          "description": ""
+          "description": "Banlieue sud-est du Grand Denver : réputée pour les écoles et le cadre de vie familial."
+        },
+        {
+          "name": "Greeley",
+          "population": 108795,
+          "frenchEstimate": 2361,
+          "description": "Nord du Front Range, université ; agriculture, énergie et santé ; coût souvent plus modéré qu'à Denver. Greeley Stampede, plein air (Poudre, parcs)."
+        },
+        {
+          "name": "Boulder",
+          "population": 108250,
+          "frenchEstimate": 2350,
+          "description": "Aux pieds des Rocheuses, CU Boulder, Pearl Street ; outdoor, vélo, engagement environnemental. Coût de la vie et loyers parmi les plus élevés du Colorado."
+        },
+        {
+          "name": "Longmont",
+          "population": 98885,
+          "frenchEstimate": 2145,
+          "description": "Entre Denver, Boulder et Fort Collins ; patrimoine agricole, tech et fabrication ; nombreux parcs ; logement souvent plus accessible qu'à Boulder."
+        },
+        {
+          "name": "Broomfield",
+          "population": 74112,
+          "frenchEstimate": 1609,
+          "description": "Comté consolidé entre Denver et Boulder : parcs, trails, emplois tech, santé et industrie ; banlieue dynamique."
+        },
+        {
+          "name": "Castle Rock",
+          "population": 73158,
+          "frenchEstimate": 1588,
+          "description": "Entre Denver et Colorado Springs : open space, dizaines de km de sentiers, centre-ville historique et événements ; prisé des familles."
+        },
+        {
+          "name": "Littleton",
+          "population": 45652,
+          "frenchEstimate": 991,
+          "description": "Sud du Grand Denver : centre historique, musée, Chatfield et montagnes à portée ; banlieue familiale (ville incorporée)."
         }
       ],
       "frenchCount": 131775,
@@ -8014,45 +8098,59 @@
         "medianHomePrice": 640000,
         "medianRent": 1835,
         "medianHomeSize": 230,
-        "medianRentSize": 95
+        "medianRentSize": 95,
+        "chooseColorado": {
+          "sourceUrl": "https://choosecolorado.com/living/cost-of-living/",
+          "overallVsUSPercent": 12,
+          "compareCAOverallPercent": 36,
+          "compareMAOverallPercent": 31,
+          "groceriesVsUS": "on_par",
+          "healthcareVsUSPercent": -4.2,
+          "utilitiesVsUSPercent": -1.6,
+          "transportationVsUSPercent": 6.7,
+          "medianHouseholdIncomeVsUSPercent": 16.2
+        }
       },
       "atouts": [
-        "Ski et plein air (Rockies)",
-        "Denver dynamique",
-        "Ensoleillement, bière artisanale",
-        "Économie diversifiée"
+        "RMNP, stations (Vail, Aspen, Steamboat, Breckenridge), sources chaudes",
+        "Denver pro sports ; Springs, Boulder, Fort Collins (universités, outdoor)",
+        "Climat d'affaires, tourisme, outdoor industry ; hub DEN",
+        "Santé, défense/aéro, éducation (CU, CSU, Mines, USAFA, CC)"
       ],
       "pointsVigilance": [
         "Coût du logement en hausse",
-        "Altitude et sécheresse"
+        "Altitude et sécheresse",
+        "Conduite montagne/neige (cotrip.org)"
       ],
-      "pourQui": "Sportifs et actifs aimant la montagne et une métropole à taille humaine.",
-      "ambiance": "Montagne et ciel bleu ; Denver jeune et sportive, stations et sentiers partout.",
+      "pourQui": "Sportifs outdoor, familles, étudiants, cadres tech/aéro/santé et indépendants cherchant qualité de vie et dynamisme économique.",
+      "ambiance": "Quatre saisons, festivals (musique, bouffe, patrimoine) ; Denver jeune et sportive, brasseries, Red Rocks ; Springs et pics ; Fort Collins étudiante.",
       "onAime": [
-        "Ski et plein air (Rockies)",
-        "Denver dynamique",
-        "Ensoleillement, bière artisanale",
-        "Économie diversifiée"
+        "RMNP, stations (Vail, Aspen, Steamboat, Breckenridge), sources chaudes",
+        "Denver pro sports ; Springs, Boulder, Fort Collins (universités, outdoor)",
+        "Climat d'affaires, tourisme, outdoor industry ; hub DEN",
+        "Santé, défense/aéro, éducation (CU, CSU, Mines, USAFA, CC)"
       ],
       "onDeteste": [
         "Coût du logement en hausse",
-        "Altitude et sécheresse"
+        "Altitude et sécheresse",
+        "Conduite montagne/neige (cotrip.org)"
       ],
       "lieuxRemarquables": {
         "culture": [
           "Denver Art Museum",
+          "Pearl Street Mall (Boulder, piéton)",
           "Red Rocks Amphitheatre (concerts en plein air)",
           "Mesa Verde National Park (habitations ancestrales)"
         ],
         "parcs": [
-          "Rocky Mountain National Park",
+          "Rocky Mountain NP (≈ 110 km au NW de Denver, 560+ km de sentiers, pics > 3650 m)",
           "Great Sand Dunes National Park",
           "Black Canyon of the Gunnison"
         ],
         "nature": [
           "Montagnes Rocheuses (58 sommets > 4000 m)",
-          "Maroon Bells (paysage iconique)",
-          "Garden of the Gods (Colorado Springs)"
+          "Stations ski : Vail, Aspen, Steamboat Springs, Breckenridge",
+          "Glenwood Hot Springs ; Maroon Bells ; Garden of the Gods (Springs)"
         ]
       },
       "politique": "Démocrate"
@@ -15935,6 +16033,30 @@
     "CO|Centennial": [
       39.579155,
       -104.8769227
+    ],
+    "CO|Boulder": [
+      40.01499,
+      -105.27055
+    ],
+    "CO|Broomfield": [
+      39.9205,
+      -105.0867
+    ],
+    "CO|Castle Rock": [
+      39.3722,
+      -104.8561
+    ],
+    "CO|Greeley": [
+      40.4233,
+      -104.7091
+    ],
+    "CO|Littleton": [
+      39.6133,
+      -105.0167
+    ],
+    "CO|Longmont": [
+      40.1672,
+      -105.1019
     ],
     "NM|Roswell": [
       33.3943282,
