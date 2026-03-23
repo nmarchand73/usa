@@ -994,6 +994,7 @@
     <nav class="tab-bar" aria-label="Navigation principale">
       <div class="tab-bar-main">
         <button type="button" id="tabMap" class="active">🗺️ Carte interactive</button>
+        <button type="button" id="tabColorado">⛰️ Colorado</button>
         <button type="button" id="tabLivability">📊 Livability Top 100</button>
       </div>
       <div class="lang-toggle" role="group" id="langToggle" aria-label="Langue / Language">
@@ -1153,7 +1154,7 @@
       let bmxVenuesLayer = null;
       let mxVenuesLayer = null;
       let skiVenuesLayer = null;
-      
+
       let d3MapInitialized = false;
       let d3PathByCode = null;
       // Données chargées depuis venues-map.json (SX/SMX, VTT, BMX)
@@ -1180,6 +1181,7 @@
           heroTitle: 'Vivre aux Etats-Unis : carte des Etats et top villes',
           heroSubtitle: 'Qualite de vie, couts, climat et classements Livability — donnees du Livre Heros USA. Cliquez sur un Etat.',
           tabMap: '🗺️ Carte interactive',
+          tabColorado: '⛰️ Colorado',
           tabLivability: '📊 Livability Top 100',
           loadErrTitle: 'Donnees non chargees',
           loadErrText: 'Ouvrez cette page via un serveur local pour charger les fichiers JSON. Par exemple : npm start ou npx serve . dans le dossier du projet.',
@@ -1251,6 +1253,7 @@
           heroTitle: 'Living in the US: state map, cities & livability',
           heroSubtitle: 'Quality of life, costs, climate and Livability rankings from the USA Hero Book. Click a state for details.',
           tabMap: '🗺️ Interactive map',
+          tabColorado: '⛰️ Colorado',
           tabLivability: '📊 Livability Top 100',
           loadErrTitle: 'Data not loaded',
           loadErrText: 'Open this page from a local server to load JSON files. Example: npm start or npx serve . in the project folder.',
@@ -1396,6 +1399,8 @@
         }
         var tabMapBtn = document.getElementById('tabMap');
         if (tabMapBtn) tabMapBtn.textContent = t('tabMap');
+        var tabCoBtn = document.getElementById('tabColorado');
+        if (tabCoBtn) tabCoBtn.textContent = t('tabColorado');
         var tabLivBtn = document.getElementById('tabLivability');
         if (tabLivBtn) tabLivBtn.textContent = t('tabLivability');
         var btnCost = document.getElementById('btnCost');
@@ -2893,23 +2898,63 @@
         tbody.innerHTML = html;
       }
 
+      function flyMapToUsa() {
+        if (!leafletMap) return;
+        leafletMap.setView([39.5, -98], 4);
+      }
+
+      function flyMapToColorado() {
+        if (!leafletMap || !window.L) return;
+        // Limites Etat du Colorado (serre) — maxZoom eleve pour un vrai zoom terrain
+        var sw = window.L.latLng(36.993, -109.06);
+        var ne = window.L.latLng(41.002, -102.042);
+        var b = window.L.latLngBounds(sw, ne);
+        leafletMap.fitBounds(b, { padding: [4, 4], maxZoom: 13, animate: true });
+      }
+
       function initLivabilityTab() {
-        // Tab switching
+        // Tab switching (Map + Colorado partagent le meme contenu carte)
         var tabMap = document.getElementById('tabMap');
+        var tabCo = document.getElementById('tabColorado');
         var tabLiv = document.getElementById('tabLivability');
         var contentMap = document.getElementById('tabMapContent');
         var contentLiv = document.getElementById('tabLivabilityContent');
         if (tabMap && tabLiv && contentMap && contentLiv) {
           tabMap.addEventListener('click', function () {
             tabMap.classList.add('active');
+            if (tabCo) tabCo.classList.remove('active');
             tabLiv.classList.remove('active');
             contentMap.classList.add('active');
             contentLiv.classList.remove('active');
-            if (leafletMap) setTimeout(function () { leafletMap.invalidateSize(); }, 100);
+            setTimeout(function () {
+              if (leafletMap) {
+                leafletMap.invalidateSize();
+                flyMapToUsa();
+              }
+            }, 100);
+            setTimeout(function () { if (leafletMap) leafletMap.invalidateSize(); }, 300);
           });
+          if (tabCo) {
+            tabCo.addEventListener('click', function () {
+              tabCo.classList.add('active');
+              tabMap.classList.remove('active');
+              tabLiv.classList.remove('active');
+              contentMap.classList.add('active');
+              contentLiv.classList.remove('active');
+              setTimeout(function () {
+                if (leafletMap) {
+                  leafletMap.invalidateSize();
+                  flyMapToColorado();
+                }
+              }, 100);
+              setTimeout(function () { if (leafletMap) leafletMap.invalidateSize(); }, 300);
+              if (typeof showState === 'function') showState('CO');
+            });
+          }
           tabLiv.addEventListener('click', function () {
             tabLiv.classList.add('active');
             tabMap.classList.remove('active');
+            if (tabCo) tabCo.classList.remove('active');
             contentLiv.classList.add('active');
             contentMap.classList.remove('active');
           });
@@ -3034,6 +3079,59 @@
           dots += '<circle cx="' + dx.toFixed(1) + '" cy="' + dy.toFixed(1) + '" r="3.5" fill="var(--accent)" stroke="var(--bg2)" stroke-width="1.5"/>';
         });
         return '<svg viewBox="0 0 260 260" width="260" height="260" style="overflow:visible">' + grid + axes + '<polygon points="' + points + '" fill="rgba(0,212,170,0.18)" stroke="var(--accent)" stroke-width="2"/>' + dots + lbls + '</svg>';
+      }
+
+      // ── UTF-8 lu comme Windows-1252 (ex. "Ã‰conomie" au lieu de "Économie") — reparation a l import ──
+      var CP1252_UNICODE_TO_BYTE = (function () {
+        var w128 = [0x20ac, 0xfffd, 0x201a, 0x0192, 0x201e, 0x2026, 0x2020, 0x2021, 0x02c6, 0x2030, 0x0160, 0x2039, 0x0152, 0xfffd, 0x017d, 0xfffd, 0xfffd, 0x2018, 0x2019, 0x201c, 0x201d, 0x2022, 0x2013, 0x2014, 0x02dc, 0x2122, 0x0161, 0x203a, 0x0153, 0xfffd, 0x017e, 0x0178];
+        var m = new Map();
+        var b, u;
+        for (b = 0; b < 256; b++) {
+          u = b < 0x80 ? b : (b < 0xa0 ? w128[b - 0x80] : b);
+          if (!m.has(u)) m.set(u, b);
+        }
+        return m;
+      })();
+
+      function fixMojibakeUtf8FromCp1252(s) {
+        if (typeof s !== 'string' || !/[\u00c2\u00c3]/.test(s)) return s;
+        var bytes = [];
+        var enc = new TextEncoder();
+        var i, u, bb, j, sub;
+        for (i = 0; i < s.length; i++) {
+          u = s.charCodeAt(i);
+          if (u < 128) {
+            bytes.push(u);
+          } else {
+            bb = CP1252_UNICODE_TO_BYTE.get(u);
+            if (bb !== undefined) {
+              bytes.push(bb);
+            } else {
+              sub = enc.encode(s[i]);
+              for (j = 0; j < sub.length; j++) bytes.push(sub[j]);
+            }
+          }
+        }
+        return new TextDecoder('utf-8', { fatal: false }).decode(new Uint8Array(bytes));
+      }
+
+      function deepFixLivabilityStringsInPlace(node) {
+        if (node == null) return;
+        if (typeof node === 'string') return;
+        if (Array.isArray(node)) {
+          node.forEach(function (item, idx) {
+            if (typeof item === 'string') node[idx] = fixMojibakeUtf8FromCp1252(item);
+            else deepFixLivabilityStringsInPlace(item);
+          });
+          return;
+        }
+        if (typeof node === 'object') {
+          Object.keys(node).forEach(function (k) {
+            var v = node[k];
+            if (typeof v === 'string') node[k] = fixMojibakeUtf8FromCp1252(v);
+            else deepFixLivabilityStringsInPlace(v);
+          });
+        }
       }
 
       // ── City detail panel ──
@@ -3273,6 +3371,7 @@
           var venues = appData.venues || {};
           if (Array.isArray(appData.airports) && appData.airports.length) US_AIRPORTS = appData.airports;
           LIVABILITY_DETAILS = appData.livabilityDetails || {};
+          deepFixLivabilityStringsInPlace(LIVABILITY_DETAILS);
           if (venues.sxSmxVenues) SX_SMX_VENUES = venues.sxSmxVenues;
           if (venues.mtbBikeParks) MTB_BIKE_PARKS = venues.mtbBikeParks;
           if (venues.bmxTracks) BMX_TRACKS = venues.bmxTracks;
