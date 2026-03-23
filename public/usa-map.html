@@ -3499,7 +3499,7 @@
       });
 
       Promise.all([
-        fetch('app-data.json').then(function (r) {
+        fetch('app-data.json', { cache: 'no-cache' }).then(function (r) {
           if (!r.ok) throw new Error(r.statusText);
           return r.json();
         }),

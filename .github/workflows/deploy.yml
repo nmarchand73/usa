@@ -24,6 +24,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Regenerate public/app-data.json from map-data
+        run: node scripts/merge-json.js
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
