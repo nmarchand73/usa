@@ -48,6 +48,9 @@
       background:rgba(10,14,23,.55); border:1px solid var(--border); border-radius:12px;
       padding:.5rem .6rem; backdrop-filter: blur(6px);
     }
+    .toolbar .filters{ display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; margin-left:.35rem; }
+    .toolbar label{ display:inline-flex; gap:.4rem; align-items:center; font-size:.9rem; color:var(--text-dim); }
+    .toolbar input[type="checkbox"]{ accent-color: var(--accent); }
     .pill{ display:inline-flex; align-items:center; gap:.4rem; padding:.25rem .55rem; border:1px solid var(--border); border-radius:999px; color:var(--text); font-size:.9rem; }
     .swatch{ width:10px; height:10px; border-radius:3px; display:inline-block; }
     .panel-empty{ color:var(--text-dim); padding:.6rem .4rem; }
@@ -84,6 +87,12 @@
           <span class="pill"><span class="swatch" style="background:#fbbf24"></span> Coût moyen</span>
           <span class="pill"><span class="swatch" style="background:#f97316"></span> Coût élevé</span>
           <span class="pill"><span class="swatch" style="background:#ef4444"></span> Très élevé</span>
+          <span class="filters" aria-label="Filtres lieux">
+            <label><input type="checkbox" id="filterCityPoints"> Points villes (régions)</label>
+            <label><input type="checkbox" id="filterMtb" checked> VTT (bike parks)</label>
+            <label><input type="checkbox" id="filterBmx" checked> BMX (pumptracks)</label>
+            <label><input type="checkbox" id="filterSelectedRegion"> Limiter à la région sélectionnée</label>
+          </span>
         </div>
         <div id="d3MiniWrap" aria-hidden="true"><svg id="d3Mini"></svg></div>
         <div id="leafletMap"></div>
@@ -117,9 +126,16 @@
       let regionMap = null;
       let cityCoordinates = null;
       let manifest = null;
+      let venues = null;
       let leafletMap = null;
       let regionLayer = null;
       let cityLayer = null;
+      let cityPointsLayer = null;
+      let mtbLayer = null;
+      let bmxLayer = null;
+      let selectedRegionCode = null;
+      let regionsGeoJson = null;
+      let regionFeatureByCode = null;
 
       function safeText(s) { return (s == null) ? '' : String(s); }
 
@@ -128,6 +144,18 @@
         if (!Number.isFinite(n) || n <= 0) return '—';
         if (n >= 1000000) return (Math.round(n / 10000) / 100) + ' M€';
         return Math.round(n / 1000) + ' k€';
+      }
+
+      function fmtEurPerM2(v) {
+        const n = Number(v);
+        if (!Number.isFinite(n) || n <= 0) return '—';
+        return Math.round(n).toLocaleString('fr-FR') + ' €/m²';
+      }
+
+      function fmtRentEurMonth(v) {
+        const n = Number(v);
+        if (!Number.isFinite(n) || n <= 0) return '—';
+        return Math.round(n).toLocaleString('fr-FR') + ' €/mois';
       }
 
       function costColor(costLabel) {
@@ -149,12 +177,14 @@
         const cities = Array.isArray(data.topCities) ? data.topCities : [];
         const citiesHtml = cities.map(c => {
           const liv = c.livability || {};
+          const homePerM2 = liv.homePriceEurPerM2 ?? liv.medianPriceEurPerM2 ?? null;
+          const rentMonth = liv.medianRentEurMonth ?? liv.medianRent ?? null;
           return (
             '<div class="city-item">' +
               '<div class="name">' + safeText(c.name) + '</div>' +
               '<div class="sub">' + safeText(c.description) + '</div>' +
-              '<div class="sub">Immobilier (indicatif) : <b>' + fmtEurApprox(liv.medianHomeValue) +
-              '</b> · Loyer : <b>' + fmtEurApprox(liv.medianRent) + '</b></div>' +
+              '<div class="sub">Immobilier (indicatif) : <b>' + (homePerM2 != null ? fmtEurPerM2(homePerM2) : fmtEurApprox(liv.medianHomeValue)) +
+              '</b> · Loyer : <b>' + fmtRentEurMonth(rentMonth) + '</b></div>' +
             '</div>'
           );
         }).join('');
@@ -184,6 +214,134 @@
         }
       }
 
+      function clearCityPointsLayer() {
+        if (cityPointsLayer) {
+          cityPointsLayer.clearLayers();
+          leafletMap.removeLayer(cityPointsLayer);
+          cityPointsLayer = null;
+        }
+      }
+
+      function clearVenueLayers() {
+        if (mtbLayer) { mtbLayer.clearLayers(); leafletMap.removeLayer(mtbLayer); mtbLayer = null; }
+        if (bmxLayer) { bmxLayer.clearLayers(); leafletMap.removeLayer(bmxLayer); bmxLayer = null; }
+      }
+
+      function buildVenueLayer(items, style, popupFn) {
+        const markers = [];
+        (items || []).forEach(v => {
+          const lat = Number(v.lat), lng = Number(v.lng);
+          if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+          const m = L.circleMarker([lat, lng], style);
+          const html = popupFn(v);
+          if (html) m.bindPopup(html);
+          markers.push(m);
+        });
+        return L.layerGroup(markers);
+      }
+
+      function isVenueInSelectedRegion(v) {
+        if (!regionsGeoJson || !regionFeatureByCode || !selectedRegionCode) return true;
+        const feat = regionFeatureByCode[selectedRegionCode];
+        if (!feat) return true;
+        const lat = Number(v.lat), lng = Number(v.lng);
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return false;
+        // d3.geoContains expects [lng, lat]
+        return typeof d3 !== 'undefined' && typeof d3.geoContains === 'function'
+          ? d3.geoContains(feat, [lng, lat])
+          : true;
+      }
+
+      function applyCityPointsFilter() {
+        clearCityPointsLayer();
+        if (!leafletMap || !regionMap || !cityCoordinates) return;
+
+        const showCityPoints = !!document.getElementById('filterCityPoints')?.checked;
+        if (!showCityPoints) return;
+
+        const restrictToRegion = !!document.getElementById('filterSelectedRegion')?.checked;
+
+        const markers = [];
+        Object.keys(regionMap).forEach(regionCode => {
+          if (restrictToRegion && selectedRegionCode && regionCode !== selectedRegionCode) return;
+          const r = regionMap[regionCode];
+          const cities = Array.isArray(r.topCities) ? r.topCities : [];
+          cities.forEach(c => {
+            const key = regionCode + '|' + c.name;
+            const ll = cityCoordinates[key];
+            if (!ll || ll.length !== 2) return;
+            const liv = c.livability || {};
+            const homePerM2 = liv.homePriceEurPerM2 ?? liv.medianPriceEurPerM2 ?? null;
+            const popup = '<b>' + safeText(c.name) + '</b><br>' + safeText(r.nameFr) +
+              '<br>Immobilier : ' + (homePerM2 != null ? fmtEurPerM2(homePerM2) : fmtEurApprox(liv.medianHomeValue));
+
+            const m = L.circleMarker([ll[0], ll[1]], {
+              radius: 6.5,
+              color: '#0b1220',
+              weight: 2,
+              fillColor: '#7dd3fc',
+              fillOpacity: 0.95
+            }).bindPopup(popup);
+
+            m.on('click', function () {
+              // Select the region (and refresh filters/panel)
+              const layer = regionLayer && regionLayer.getLayers
+                ? regionLayer.getLayers().find(l => String(l.feature?.properties?.code) === String(regionCode))
+                : null;
+              if (layer) {
+                highlightRegion(layer, regionCode);
+              } else {
+                selectedRegionCode = regionCode;
+                renderPanel(regionCode);
+                drawCities(regionCode);
+                applyVenueFilters();
+                applyCityPointsFilter();
+              }
+            });
+
+            markers.push(m);
+          });
+        });
+
+        if (!markers.length) return;
+        cityPointsLayer = L.layerGroup(markers).addTo(leafletMap);
+      }
+
+      function applyVenueFilters() {
+        clearVenueLayers();
+        if (!leafletMap || !venues) return;
+
+        const showMtb = !!document.getElementById('filterMtb')?.checked;
+        const showBmx = !!document.getElementById('filterBmx')?.checked;
+        const restrictToRegion = !!document.getElementById('filterSelectedRegion')?.checked;
+
+        if (showMtb && Array.isArray(venues.mtbBikeParks) && venues.mtbBikeParks.length) {
+          const items = restrictToRegion ? venues.mtbBikeParks.filter(isVenueInSelectedRegion) : venues.mtbBikeParks;
+          mtbLayer = buildVenueLayer(
+            items,
+            { radius: 5.5, color: '#0b1220', weight: 1.5, fillColor: '#22c55e', fillOpacity: 0.85 },
+            (v) => {
+              const name = safeText(v.name || 'Bike park');
+              const url = v.url || v.osmUrl;
+              return '<b>VTT</b> · ' + name + (url ? ('<br><a href="' + url + '" target="_blank" rel="noopener">OpenStreetMap</a>') : '');
+            }
+          ).addTo(leafletMap);
+        }
+
+        if (showBmx && Array.isArray(venues.bmxTracks) && venues.bmxTracks.length) {
+          const items = restrictToRegion ? venues.bmxTracks.filter(isVenueInSelectedRegion) : venues.bmxTracks;
+          bmxLayer = buildVenueLayer(
+            items,
+            { radius: 5.5, color: '#0b1220', weight: 1.5, fillColor: '#ef4444', fillOpacity: 0.85 },
+            (v) => {
+              const name = safeText(v.name || 'Pumptrack');
+              const url = v.url || v.osmUrl;
+              return '<b>BMX pumptrack</b> · ' + name + (url ? ('<br><a href="' + url + '" target="_blank" rel="noopener">OpenStreetMap</a>') : '');
+            }
+          ).addTo(leafletMap);
+        }
+      }
+
       function drawCities(regionCode) {
         clearCityLayer();
         const data = regionMap && regionMap[regionCode];
@@ -195,8 +353,9 @@
           const ll = cityCoordinates[key];
           if (!ll || ll.length !== 2) return;
           const liv = c.livability || {};
+          const homePerM2 = liv.homePriceEurPerM2 ?? liv.medianPriceEurPerM2 ?? null;
           const popup = '<b>' + safeText(c.name) + '</b><br>' + safeText(data.nameFr) +
-            '<br>Immobilier : ' + fmtEurApprox(liv.medianHomeValue);
+            '<br>Immobilier : ' + (homePerM2 != null ? fmtEurPerM2(homePerM2) : fmtEurApprox(liv.medianHomeValue));
           markers.push(L.circleMarker([ll[0], ll[1]], {
             radius: 7,
             color: '#0b1220',
@@ -215,20 +374,41 @@
           regionLayer.resetStyle(l);
         });
         layer.setStyle({ weight: 3, color: '#e2e8f0', fillOpacity: 0.75 });
+        selectedRegionCode = regionCode;
         renderPanel(regionCode);
         drawCities(regionCode);
+        applyVenueFilters();
+        applyCityPointsFilter();
       }
 
       function initLeaflet(geojson) {
+        regionsGeoJson = geojson;
+        regionFeatureByCode = {};
+        if (geojson && Array.isArray(geojson.features)) {
+          geojson.features.forEach(f => {
+            const code = String(f.properties && f.properties.code);
+            if (code) regionFeatureByCode[code] = f;
+          });
+        }
         leafletMap = L.map('leafletMap', {
           zoomControl: true,
           scrollWheelZoom: true
         });
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 18,
-          attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(leafletMap);
+        const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        });
+        const satelliteLayer = L.tileLayer(
+          'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+          { maxZoom: 19, attribution: '&copy; <a href="https://www.esri.com/">Esri</a>' }
+        );
+        osmLayer.addTo(leafletMap);
+        L.control.layers(
+          { 'Carte': osmLayer, 'Satellite': satelliteLayer },
+          {},
+          { position: 'topright' }
+        ).addTo(leafletMap);
 
         function styleFeature(f) {
           const code = String(f.properties && f.properties.code);
@@ -295,11 +475,26 @@
         manifest = appData.manifest || {};
         regionMap = appData.regionMap || {};
         cityCoordinates = appData.cityCoordinates || {};
+        venues = appData.venues || {};
 
         const geoPath = (manifest.geo && manifest.geo.regionsGeoJson) ? manifest.geo.regionsGeoJson : 'geo/regions-fr.geojson';
         return fetch(geoPath, { cache: 'no-cache' }).then(r => r.json()).then(geojson => {
           initLeaflet(geojson);
           initD3Mini(geojson);
+          // Venue filters
+          const filterCityPoints = document.getElementById('filterCityPoints');
+          const filterMtb = document.getElementById('filterMtb');
+          const filterBmx = document.getElementById('filterBmx');
+          const filterSelectedRegion = document.getElementById('filterSelectedRegion');
+          if (filterCityPoints) filterCityPoints.addEventListener('change', applyCityPointsFilter);
+          if (filterMtb) filterMtb.addEventListener('change', applyVenueFilters);
+          if (filterBmx) filterBmx.addEventListener('change', applyVenueFilters);
+          if (filterSelectedRegion) filterSelectedRegion.addEventListener('change', function () {
+            applyVenueFilters();
+            applyCityPointsFilter();
+          });
+          applyVenueFilters();
+          applyCityPointsFilter();
         });
       }).catch(err => {
         console.error(err);

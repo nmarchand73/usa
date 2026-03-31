@@ -15,7 +15,8 @@ const PUBLIC = path.join(BASE, 'public');
 
 const FILES = {
   regionMap: path.join(MAP_DATA, 'region-map.json'),
-  cityCoordinates: path.join(MAP_DATA, 'city-coordinates-fr.json')
+  cityCoordinates: path.join(MAP_DATA, 'city-coordinates-fr.json'),
+  venues: path.join(MAP_DATA, 'venues-map-fr.json')
 };
 
 const OUT_FILE = path.join(PUBLIC, 'app-data-fr.json');
@@ -32,6 +33,7 @@ function readJson(filePath, fallback) {
 
 const regionMap = readJson(FILES.regionMap, {});
 const cityCoordinates = readJson(FILES.cityCoordinates, {});
+const venues = readJson(FILES.venues, {});
 
 const appData = {
   manifest: {
@@ -56,7 +58,7 @@ const appData = {
   },
   regionMap,
   cityCoordinates,
-  venues: {},
+  venues,
   airports: [],
   livabilityDetails: {}
 };
