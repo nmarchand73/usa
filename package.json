@@ -6,6 +6,8 @@
     "start": "npx serve public",
     "scrape": "node scripts/scrape-livability-cities.js",
     "build": "node scripts/merge-json.js",
+    "build:fr": "node scripts/merge-json-fr.js",
+    "build:all": "npm run build ; npm run build:fr",
     "book": "node scripts/generate-travel-hero-usa.js",
     "book:pdf": "python scripts/docx-to-pdf.py",
     "book:ville-ideale": "node scripts/generate-livre-usa-famille.js",

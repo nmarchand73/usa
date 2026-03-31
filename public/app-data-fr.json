@@ -1,0 +1,640 @@
+{
+  "manifest": {
+    "countryCode": "FR",
+    "adminLevel": "ADM1",
+    "adminLabelFr": "Régions",
+    "adminLabelEn": "Regions",
+    "defaultLocale": "fr",
+    "currency": "EUR",
+    "keys": {
+      "territoryKey": "{countryCode}-{adminCode}",
+      "cityKey": "{adminCode}|{cityName}",
+      "notes": [
+        "France V1 (ADM1) uses INSEE region codes as adminCode (e.g., 11, 84).",
+        "City coordinates keys are built as \"{adminCode}|{CityName}\" matching topCities[].name.",
+        "For future ADM2 (departments), prefer explicit territory keys like FR-69 to avoid collisions with region codes."
+      ]
+    },
+    "geo": {
+      "regionsGeoJson": "geo/regions-fr.geojson"
+    }
+  },
+  "regionMap": {
+    "11": {
+      "code": "11",
+      "nameFr": "Île-de-France",
+      "nameEn": "Île-de-France",
+      "section": "north",
+      "sectionLabel": "Nord & Bassin parisien",
+      "contraste": "Le centre décisionnel et culturel : densité, opportunités et mobilité — mais pression immobilière et rythme intense.",
+      "chiffre": "Paris + petite couronne : bassin d’emplois majeur, réseaux de transports denses, offre culturelle incomparable.",
+      "conseil": "Pour l’équilibre budget/qualité de vie, regarder la grande couronne ou les villes bien connectées (RER/Transilien).",
+      "stats": {
+        "climat": "Océanique dégradé : hivers frais, étés modérés à chauds",
+        "cout": "très élevé",
+        "noIncomeTax": false,
+        "classements": []
+      },
+      "regionUrl": "https://www.iledefrance.fr/",
+      "topCities": [
+        {
+          "name": "Paris",
+          "population": 2161000,
+          "description": "Capitale : culture, emplois, universités, transports.",
+          "livability": {
+            "medianHomeValue": 1000000,
+            "medianIncome": 34000,
+            "medianRent": 1500
+          }
+        },
+        {
+          "name": "Versailles",
+          "population": 85000,
+          "description": "Patrimoine, cadre résidentiel, accès Paris.",
+          "livability": {
+            "medianHomeValue": 650000,
+            "medianIncome": 32000,
+            "medianRent": 1350
+          }
+        }
+      ]
+    },
+    "24": {
+      "code": "24",
+      "nameFr": "Centre-Val de Loire",
+      "nameEn": "Centre-Loire Valley",
+      "section": "north",
+      "sectionLabel": "Nord & Bassin parisien",
+      "contraste": "Châteaux, vallées et villes moyennes : plus calme que l’IDF, souvent plus accessible, avec une forte qualité patrimoniale.",
+      "chiffre": "Orléans/Tours : pôles d’emplois et de services ; accès rapide à Paris selon axes ferroviaires.",
+      "conseil": "Bon compromis pour télétravail + accès Paris ponctuel ; viser proximité gare si navettes régulières.",
+      "stats": {
+        "climat": "Océanique à influences continentales",
+        "cout": "moyen",
+        "noIncomeTax": false,
+        "classements": []
+      },
+      "regionUrl": "https://www.centre-valdeloire.fr/",
+      "topCities": [
+        {
+          "name": "Tours",
+          "population": 138000,
+          "description": "Université, vie culturelle, Loire.",
+          "livability": {
+            "medianHomeValue": 280000,
+            "medianIncome": 25000,
+            "medianRent": 850
+          }
+        },
+        {
+          "name": "Orléans",
+          "population": 117000,
+          "description": "Économie tertiaire, proximité Paris.",
+          "livability": {
+            "medianHomeValue": 260000,
+            "medianIncome": 26000,
+            "medianRent": 820
+          }
+        }
+      ]
+    },
+    "27": {
+      "code": "27",
+      "nameFr": "Bourgogne-Franche-Comté",
+      "nameEn": "Burgundy–Franche-Comté",
+      "section": "east",
+      "sectionLabel": "Est & Massifs",
+      "contraste": "Vins, vallées et reliefs : cadre nature et gastronomie, coûts souvent plus bas que l’arc alpin, mobilité plus dépendante de l’axe Paris–Lyon.",
+      "chiffre": "Dijon/Besancon : villes universitaires ; ski doux dans le Jura.",
+      "conseil": "Idéal pour calme + accès grands axes ; vérifier bassin d’emploi local selon secteur.",
+      "stats": {
+        "climat": "Continental / montagnard (Jura)",
+        "cout": "bas à moyen",
+        "noIncomeTax": false,
+        "classements": []
+      },
+      "regionUrl": "https://www.bourgognefranchecomte.fr/",
+      "topCities": [
+        {
+          "name": "Dijon",
+          "population": 156000,
+          "description": "Gastronomie, université, TGV.",
+          "livability": {
+            "medianHomeValue": 250000,
+            "medianIncome": 26000,
+            "medianRent": 800
+          }
+        },
+        {
+          "name": "Besançon",
+          "population": 117000,
+          "description": "Patrimoine, industrie, nature.",
+          "livability": {
+            "medianHomeValue": 220000,
+            "medianIncome": 24000,
+            "medianRent": 750
+          }
+        }
+      ]
+    },
+    "28": {
+      "code": "28",
+      "nameFr": "Normandie",
+      "nameEn": "Normandy",
+      "section": "west",
+      "sectionLabel": "Ouest & Littoral",
+      "contraste": "Côte, bocage et villes portuaires : mer proche, météo plus humide, bonnes liaisons vers Paris depuis certains axes.",
+      "chiffre": "Rouen/Caen/Le Havre : économie portuaire et services ; patrimoine et mémoire.",
+      "conseil": "Choisir selon littoral (tourisme) vs axe Seine (emploi). Attention à l’humidité et au vent sur la côte.",
+      "stats": {
+        "climat": "Océanique humide",
+        "cout": "moyen",
+        "noIncomeTax": false,
+        "classements": []
+      },
+      "regionUrl": "https://www.normandie.fr/",
+      "topCities": [
+        {
+          "name": "Rouen",
+          "population": 114000,
+          "description": "Seine, histoire, bassin d’emploi.",
+          "livability": {
+            "medianHomeValue": 240000,
+            "medianIncome": 24000,
+            "medianRent": 780
+          }
+        },
+        {
+          "name": "Caen",
+          "population": 108000,
+          "description": "Université, proximité mer.",
+          "livability": {
+            "medianHomeValue": 230000,
+            "medianIncome": 23500,
+            "medianRent": 770
+          }
+        }
+      ]
+    },
+    "32": {
+      "code": "32",
+      "nameFr": "Hauts-de-France",
+      "nameEn": "Hauts-de-France",
+      "section": "north",
+      "sectionLabel": "Nord & Bassin parisien",
+      "contraste": "Grand Nord urbain et industriel : coûts souvent plus accessibles, proximité Belgique/UK, climat plus frais et humide.",
+      "chiffre": "Lille : grand pôle étudiant et tertiaire ; réseau TGV vers Paris/Bruxelles/Londres.",
+      "conseil": "Bon ratio coût/emploi autour de Lille ; arbitrer selon mobilité (train) et exposition au vent/pluie.",
+      "stats": {
+        "climat": "Océanique frais",
+        "cout": "moyen",
+        "noIncomeTax": false,
+        "classements": []
+      },
+      "regionUrl": "https://www.hautsdefrance.fr/",
+      "topCities": [
+        {
+          "name": "Lille",
+          "population": 236000,
+          "description": "Métropole, emplois, vie étudiante.",
+          "livability": {
+            "medianHomeValue": 300000,
+            "medianIncome": 25000,
+            "medianRent": 900
+          }
+        },
+        {
+          "name": "Amiens",
+          "population": 133000,
+          "description": "Ville moyenne, patrimoine, université.",
+          "livability": {
+            "medianHomeValue": 210000,
+            "medianIncome": 22000,
+            "medianRent": 720
+          }
+        }
+      ]
+    },
+    "44": {
+      "code": "44",
+      "nameFr": "Grand Est",
+      "nameEn": "Grand Est",
+      "section": "east",
+      "sectionLabel": "Est & Massifs",
+      "contraste": "Carrefour européen : proximité Allemagne/Suisse/Luxembourg, opportunités transfrontalières, contrastes entre plaines, Vosges et vignobles.",
+      "chiffre": "Strasbourg : institutions européennes ; Metz/Nancy : axes tertiaires et universitaires.",
+      "conseil": "Si frontalier, regarder temps de trajet et fiscalité ; sinon privilégier villes bien connectées (TGV/autoroutes).",
+      "stats": {
+        "climat": "Continental",
+        "cout": "moyen",
+        "noIncomeTax": false,
+        "classements": []
+      },
+      "regionUrl": "https://www.grandest.fr/",
+      "topCities": [
+        {
+          "name": "Strasbourg",
+          "population": 291000,
+          "description": "Europe, culture, mobilité.",
+          "livability": {
+            "medianHomeValue": 320000,
+            "medianIncome": 26000,
+            "medianRent": 950
+          }
+        },
+        {
+          "name": "Reims",
+          "population": 182000,
+          "description": "Champagne, TGV vers Paris.",
+          "livability": {
+            "medianHomeValue": 270000,
+            "medianIncome": 24000,
+            "medianRent": 820
+          }
+        }
+      ]
+    },
+    "52": {
+      "code": "52",
+      "nameFr": "Pays de la Loire",
+      "nameEn": "Pays de la Loire",
+      "section": "west",
+      "sectionLabel": "Ouest & Littoral",
+      "contraste": "Ouest dynamique : côte (Vendée) + métropole (Nantes), bonne attractivité mais hausse des prix autour des pôles.",
+      "chiffre": "Nantes : tech/industries, grande qualité de vie ; littoral prisé en été.",
+      "conseil": "Pour budget, viser l’arrière-pays ou villes secondaires bien desservies ; anticiper saisonnalité sur la côte.",
+      "stats": {
+        "climat": "Océanique doux",
+        "cout": "moyen",
+        "noIncomeTax": false,
+        "classements": []
+      },
+      "regionUrl": "https://www.paysdelaloire.fr/",
+      "topCities": [
+        {
+          "name": "Nantes",
+          "population": 320000,
+          "description": "Métropole, emploi, culture.",
+          "livability": {
+            "medianHomeValue": 330000,
+            "medianIncome": 26000,
+            "medianRent": 900
+          }
+        },
+        {
+          "name": "Angers",
+          "population": 156000,
+          "description": "Ville verte, étudiant, services.",
+          "livability": {
+            "medianHomeValue": 280000,
+            "medianIncome": 24500,
+            "medianRent": 820
+          }
+        }
+      ]
+    },
+    "53": {
+      "code": "53",
+      "nameFr": "Bretagne",
+      "nameEn": "Brittany",
+      "section": "west",
+      "sectionLabel": "Ouest & Littoral",
+      "contraste": "Péninsule océanique : air marin, villes à taille humaine, littoral superbe — mais vent, pluie et distance à Paris.",
+      "chiffre": "Rennes : pôle numérique et étudiant ; Brest/Lorient : ports et industries.",
+      "conseil": "Si sensibilité météo, choisir sud vs nord ; privilégier proximité gare/axes si déplacements fréquents.",
+      "stats": {
+        "climat": "Océanique venteux",
+        "cout": "moyen",
+        "noIncomeTax": false,
+        "classements": []
+      },
+      "regionUrl": "https://www.bretagne.bzh/",
+      "topCities": [
+        {
+          "name": "Rennes",
+          "population": 225000,
+          "description": "Tech, universités, TGV.",
+          "livability": {
+            "medianHomeValue": 320000,
+            "medianIncome": 26000,
+            "medianRent": 900
+          }
+        },
+        {
+          "name": "Brest",
+          "population": 139000,
+          "description": "Port, mer, recherche.",
+          "livability": {
+            "medianHomeValue": 200000,
+            "medianIncome": 23000,
+            "medianRent": 700
+          }
+        }
+      ]
+    },
+    "75": {
+      "code": "75",
+      "nameFr": "Nouvelle-Aquitaine",
+      "nameEn": "Nouvelle-Aquitaine",
+      "section": "south",
+      "sectionLabel": "Sud & Atlantique",
+      "contraste": "Très vaste : océan, vignobles, montagne (Pyrénées) ; grands écarts de prix (Bordeaux/Bassin) vs intérieur rural.",
+      "chiffre": "Bordeaux : métropole attractive ; surf et nature sur la côte.",
+      "conseil": "Définir d’abord le style de vie (métropole vs littoral vs campagne) : les arbitrages budget/emploi changent fortement.",
+      "stats": {
+        "climat": "Océanique au nord, plus doux au sud",
+        "cout": "moyen",
+        "noIncomeTax": false,
+        "classements": []
+      },
+      "regionUrl": "https://www.nouvelle-aquitaine.fr/",
+      "topCities": [
+        {
+          "name": "Bordeaux",
+          "population": 260000,
+          "description": "Métropole, vins, services.",
+          "livability": {
+            "medianHomeValue": 420000,
+            "medianIncome": 26000,
+            "medianRent": 950
+          }
+        },
+        {
+          "name": "La Rochelle",
+          "population": 77000,
+          "description": "Port, littoral, tourisme.",
+          "livability": {
+            "medianHomeValue": 380000,
+            "medianIncome": 25000,
+            "medianRent": 900
+          }
+        }
+      ]
+    },
+    "76": {
+      "code": "76",
+      "nameFr": "Occitanie",
+      "nameEn": "Occitania",
+      "section": "south",
+      "sectionLabel": "Sud & Méditerranée",
+      "contraste": "Du Massif central aux Pyrénées et à la Méditerranée : villes très dynamiques (Toulouse/Montpellier) et grands espaces.",
+      "chiffre": "Toulouse : aérospatial ; Montpellier : santé/numérique ; fortes croissances démographiques locales.",
+      "conseil": "Pour budget, regarder périphéries et villes moyennes ; anticiper chaleur estivale et risques (sécheresse/feux) selon zones.",
+      "stats": {
+        "climat": "Méditerranéen au littoral, montagnard Pyrénées",
+        "cout": "moyen",
+        "noIncomeTax": false,
+        "classements": []
+      },
+      "regionUrl": "https://www.laregion.fr/",
+      "topCities": [
+        {
+          "name": "Toulouse",
+          "population": 511000,
+          "description": "Aérospatial, universités, tech.",
+          "livability": {
+            "medianHomeValue": 330000,
+            "medianIncome": 27000,
+            "medianRent": 900
+          }
+        },
+        {
+          "name": "Montpellier",
+          "population": 307000,
+          "description": "Méditerranée, étudiant, santé.",
+          "livability": {
+            "medianHomeValue": 340000,
+            "medianIncome": 25000,
+            "medianRent": 930
+          }
+        }
+      ]
+    },
+    "84": {
+      "code": "84",
+      "nameFr": "Auvergne-Rhône-Alpes",
+      "nameEn": "Auvergne-Rhône-Alpes",
+      "section": "east",
+      "sectionLabel": "Est & Massifs",
+      "contraste": "Alpes, lacs et métropoles : très attractif (Lyon/Annecy/Grenoble), mais forte pression immobilière sur les zones les plus demandées.",
+      "chiffre": "Lyon : pôle économique majeur ; stations alpines ; industries et recherche (Grenoble).",
+      "conseil": "Arbitrer clairement entre proximité montagnes (cher) et bassins urbains secondaires (plus accessibles).",
+      "stats": {
+        "climat": "Continental / montagnard",
+        "cout": "élevé",
+        "noIncomeTax": false,
+        "classements": []
+      },
+      "regionUrl": "https://www.auvergnerhonealpes.fr/",
+      "topCities": [
+        {
+          "name": "Lyon",
+          "population": 522000,
+          "description": "Métropole, gastronomie, emploi.",
+          "livability": {
+            "medianHomeValue": 420000,
+            "medianIncome": 27000,
+            "medianRent": 1000
+          }
+        },
+        {
+          "name": "Grenoble",
+          "population": 158000,
+          "description": "Tech, montagne, recherche.",
+          "livability": {
+            "medianHomeValue": 320000,
+            "medianIncome": 26000,
+            "medianRent": 900
+          }
+        }
+      ]
+    },
+    "93": {
+      "code": "93",
+      "nameFr": "Provence-Alpes-Côte d'Azur",
+      "nameEn": "Provence-Alpes-Côte d'Azur",
+      "section": "south",
+      "sectionLabel": "Sud & Méditerranée",
+      "contraste": "Méditerranée + Alpes du Sud : climat, mer et montagne ; prix très élevés sur la Côte d’Azur, plus modérés dans l’arrière-pays.",
+      "chiffre": "Marseille/Nice : grandes villes ; tourisme, services, tech (Sophia Antipolis).",
+      "conseil": "Si budget contraint, éviter littoral premium ; privilégier villes connectées et arrière-pays.",
+      "stats": {
+        "climat": "Méditerranéen (été chaud), montagnard au nord",
+        "cout": "élevé",
+        "noIncomeTax": false,
+        "classements": []
+      },
+      "regionUrl": "https://www.maregionsud.fr/",
+      "topCities": [
+        {
+          "name": "Marseille",
+          "population": 870000,
+          "description": "Port, culture, Méditerranée.",
+          "livability": {
+            "medianHomeValue": 300000,
+            "medianIncome": 23000,
+            "medianRent": 850
+          }
+        },
+        {
+          "name": "Nice",
+          "population": 342000,
+          "description": "Côte d’Azur, aéroport, services.",
+          "livability": {
+            "medianHomeValue": 470000,
+            "medianIncome": 24000,
+            "medianRent": 1000
+          }
+        }
+      ]
+    },
+    "94": {
+      "code": "94",
+      "nameFr": "Corse",
+      "nameEn": "Corsica",
+      "section": "south",
+      "sectionLabel": "Sud & Méditerranée",
+      "contraste": "Île montagneuse : paysages exceptionnels, mer et nature — mais contraintes d’insularité et saisonnalité forte.",
+      "chiffre": "Ajaccio/Bastia : pôles de services ; tourisme et agriculture.",
+      "conseil": "Bien anticiper transport (avion/bateau) et saisonnalité des emplois ; viser zones moins exposées à la surchauffe estivale.",
+      "stats": {
+        "climat": "Méditerranéen",
+        "cout": "moyen à élevé",
+        "noIncomeTax": false,
+        "classements": []
+      },
+      "regionUrl": "https://www.isula.corsica/",
+      "topCities": [
+        {
+          "name": "Ajaccio",
+          "population": 73000,
+          "description": "Capitale régionale, mer.",
+          "livability": {
+            "medianHomeValue": 330000,
+            "medianIncome": 22000,
+            "medianRent": 750
+          }
+        },
+        {
+          "name": "Bastia",
+          "population": 48000,
+          "description": "Port, accès Cap Corse.",
+          "livability": {
+            "medianHomeValue": 300000,
+            "medianIncome": 22000,
+            "medianRent": 720
+          }
+        }
+      ]
+    }
+  },
+  "cityCoordinates": {
+    "11|Paris": [
+      48.8566,
+      2.3522
+    ],
+    "11|Versailles": [
+      48.8014,
+      2.1301
+    ],
+    "24|Tours": [
+      47.3941,
+      0.6848
+    ],
+    "24|Orléans": [
+      47.9029,
+      1.9093
+    ],
+    "27|Dijon": [
+      47.322,
+      5.0415
+    ],
+    "27|Besançon": [
+      47.2378,
+      6.0241
+    ],
+    "28|Rouen": [
+      49.4431,
+      1.0993
+    ],
+    "28|Caen": [
+      49.1829,
+      -0.3707
+    ],
+    "32|Lille": [
+      50.6292,
+      3.0573
+    ],
+    "32|Amiens": [
+      49.8941,
+      2.2958
+    ],
+    "44|Strasbourg": [
+      48.5734,
+      7.7521
+    ],
+    "44|Reims": [
+      49.2583,
+      4.0317
+    ],
+    "52|Nantes": [
+      47.2184,
+      -1.5536
+    ],
+    "52|Angers": [
+      47.4784,
+      -0.5632
+    ],
+    "53|Rennes": [
+      48.1173,
+      -1.6778
+    ],
+    "53|Brest": [
+      48.3904,
+      -4.4861
+    ],
+    "75|Bordeaux": [
+      44.8378,
+      -0.5792
+    ],
+    "75|La Rochelle": [
+      46.1603,
+      -1.1511
+    ],
+    "76|Toulouse": [
+      43.6047,
+      1.4442
+    ],
+    "76|Montpellier": [
+      43.6119,
+      3.8772
+    ],
+    "84|Lyon": [
+      45.764,
+      4.8357
+    ],
+    "84|Grenoble": [
+      45.1885,
+      5.7245
+    ],
+    "93|Marseille": [
+      43.2965,
+      5.3698
+    ],
+    "93|Nice": [
+      43.7102,
+      7.262
+    ],
+    "94|Ajaccio": [
+      41.9192,
+      8.7386
+    ],
+    "94|Bastia": [
+      42.7028,
+      9.4509
+    ]
+  },
+  "venues": {},
+  "airports": [],
+  "livabilityDetails": {}
+}

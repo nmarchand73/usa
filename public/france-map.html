@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>France — carte interactive (régions)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root{
+      --bg:#0a0e17; --bg2:#111827; --bg3:#1a2235;
+      --accent:#00d4aa; --accent2:#7c3aed;
+      --text:#e2e8f0; --text-dim:#94a3b8; --border:#1e293b;
+      --code-bg:#0d1117;
+    }
+    body{ background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; line-height:1.65; min-height:100vh; }
+    body::before{
+      content:''; position:fixed; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events:none; z-index:9999;
+    }
+    a{ color:var(--accent); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+    .app{ display:flex; flex-direction:column; min-height:100vh; }
+    .hero{ text-align:center; padding:2rem 1.5rem 1.25rem; }
+    .hero h1{
+      font-family:'JetBrains Mono',monospace;
+      font-size:clamp(1.7rem,4.5vw,2.6rem);
+      font-weight:700;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      margin-bottom:.4rem;
+    }
+    .hero p{ color:var(--text-dim); font-size:1.05rem; }
+    .hero-line{ height:2px; width:240px; margin:1rem auto 0; background:linear-gradient(90deg,transparent,var(--accent),transparent); }
+    .main{ flex:1; display:flex; flex-wrap:wrap; gap:1rem; padding:1rem 1.5rem 2rem; max-width:1400px; margin:0 auto; width:100%; }
+    .map-wrap{ flex:1 1 62%; min-width:320px; border:1px solid var(--border); border-radius:14px; overflow:hidden; background:linear-gradient(180deg,var(--bg2),rgba(17,24,39,.7)); position:relative; }
+    .panel{ flex:1 1 34%; min-width:320px; border:1px solid var(--border); border-radius:14px; background:linear-gradient(180deg,var(--bg2),rgba(17,24,39,.75)); padding:1rem 1.1rem; }
+    #leafletMap{ height:560px; }
+    #d3MiniWrap{ position:absolute; right:12px; top:12px; width:240px; height:220px; border:1px solid var(--border); border-radius:12px; background:rgba(10,14,23,.55); backdrop-filter: blur(6px); overflow:hidden; }
+    #d3Mini{ width:240px; height:220px; }
+    .toolbar{
+      position:absolute; left:12px; top:12px;
+      display:flex; gap:.5rem; align-items:center; flex-wrap:wrap;
+      background:rgba(10,14,23,.55); border:1px solid var(--border); border-radius:12px;
+      padding:.5rem .6rem; backdrop-filter: blur(6px);
+    }
+    .pill{ display:inline-flex; align-items:center; gap:.4rem; padding:.25rem .55rem; border:1px solid var(--border); border-radius:999px; color:var(--text); font-size:.9rem; }
+    .swatch{ width:10px; height:10px; border-radius:3px; display:inline-block; }
+    .panel-empty{ color:var(--text-dim); padding:.6rem .4rem; }
+    .kicker{ font-family:'JetBrains Mono',monospace; font-size:.9rem; color:var(--text-dim); }
+    .title-row{ display:flex; justify-content:space-between; align-items:baseline; gap:1rem; }
+    .title-row h2{ font-size:1.35rem; margin:.2rem 0 .35rem; }
+    .meta{ color:var(--text-dim); font-size:.95rem; }
+    .section{ margin-top:1rem; padding-top:1rem; border-top:1px solid var(--border); }
+    .section h3{ font-family:'JetBrains Mono',monospace; font-size:.95rem; color:var(--accent); margin-bottom:.35rem; }
+    .city-list{ display:flex; flex-direction:column; gap:.5rem; margin-top:.3rem; }
+    .city-item{ padding:.55rem .65rem; border:1px solid var(--border); border-radius:12px; background:rgba(26,34,53,.35); }
+    .city-item .name{ font-weight:700; }
+    .city-item .sub{ color:var(--text-dim); font-size:.95rem; margin-top:.2rem; }
+    code{ background:var(--code-bg); padding:0 .35rem; border-radius:6px; border:1px solid var(--border); }
+    footer{ color:var(--text-dim); padding:1rem 1.5rem; text-align:center; border-top:1px solid var(--border); }
+    @media (max-width: 960px){
+      #leafletMap{ height:520px; }
+      #d3MiniWrap{ display:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="hero">
+      <h1>Vivre en France : carte des régions</h1>
+      <p>Version V1 — 13 régions métropolitaines. Cliquez sur une région pour afficher la fiche et les villes.</p>
+      <div class="hero-line"></div>
+    </header>
+
+    <main class="main">
+      <section class="map-wrap" aria-label="Carte France">
+        <div class="toolbar" aria-label="Légende">
+          <span class="pill"><span class="swatch" style="background:#22c55e"></span> Coût bas</span>
+          <span class="pill"><span class="swatch" style="background:#fbbf24"></span> Coût moyen</span>
+          <span class="pill"><span class="swatch" style="background:#f97316"></span> Coût élevé</span>
+          <span class="pill"><span class="swatch" style="background:#ef4444"></span> Très élevé</span>
+        </div>
+        <div id="d3MiniWrap" aria-hidden="true"><svg id="d3Mini"></svg></div>
+        <div id="leafletMap"></div>
+      </section>
+
+      <aside class="panel" id="panel">
+        <div class="panel-empty" id="panelEmpty">Cliquez sur une région pour afficher les informations.</div>
+        <div id="panelContent" style="display:none;"></div>
+      </aside>
+    </main>
+
+    <footer>
+      Données V1 (exemples) — à sourcer/affiner. Carte : <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a> + <a href="https://d3js.org/" target="_blank" rel="noopener">D3</a>. Contours : Etalab (contours administratifs).
+      <div style="margin-top:.25rem;">Retour : <a href="index.html">Accueil</a> · <a href="usa-map.html">USA</a></div>
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js" crossorigin=""></script>
+  <script>
+    (function () {
+      const COST_COLORS = {
+        'bas': '#22c55e',
+        'moyen': '#fbbf24',
+        'élevé': '#f97316',
+        'très élevé': '#ef4444',
+        'moyen à élevé': '#f97316',
+        'bas à moyen': '#fbbf24'
+      };
+
+      let regionMap = null;
+      let cityCoordinates = null;
+      let manifest = null;
+      let leafletMap = null;
+      let regionLayer = null;
+      let cityLayer = null;
+
+      function safeText(s) { return (s == null) ? '' : String(s); }
+
+      function fmtEurApprox(v) {
+        const n = Number(v);
+        if (!Number.isFinite(n) || n <= 0) return '—';
+        if (n >= 1000000) return (Math.round(n / 10000) / 100) + ' M€';
+        return Math.round(n / 1000) + ' k€';
+      }
+
+      function costColor(costLabel) {
+        const k = safeText(costLabel).toLowerCase();
+        return COST_COLORS[k] || '#334155';
+      }
+
+      function renderPanel(regionCode) {
+        const data = regionMap && regionMap[regionCode];
+        const panelEmpty = document.getElementById('panelEmpty');
+        const panelContent = document.getElementById('panelContent');
+        if (!data) {
+          panelContent.style.display = 'none';
+          panelEmpty.style.display = 'block';
+          panelEmpty.textContent = 'Région non trouvée (' + regionCode + ').';
+          return;
+        }
+
+        const cities = Array.isArray(data.topCities) ? data.topCities : [];
+        const citiesHtml = cities.map(c => {
+          const liv = c.livability || {};
+          return (
+            '<div class="city-item">' +
+              '<div class="name">' + safeText(c.name) + '</div>' +
+              '<div class="sub">' + safeText(c.description) + '</div>' +
+              '<div class="sub">Immobilier (indicatif) : <b>' + fmtEurApprox(liv.medianHomeValue) +
+              '</b> · Loyer : <b>' + fmtEurApprox(liv.medianRent) + '</b></div>' +
+            '</div>'
+          );
+        }).join('');
+
+        panelContent.innerHTML =
+          '<div class="kicker">FR · ' + safeText(manifest && manifest.adminLabelFr) + ' · code ' + safeText(data.code) + '</div>' +
+          '<div class="title-row">' +
+            '<h2>' + safeText(data.nameFr) + '</h2>' +
+            '<div class="meta">Coût : <b style="color:' + costColor(data.stats && data.stats.cout) + '">' + safeText(data.stats && data.stats.cout) + '</b></div>' +
+          '</div>' +
+          '<div class="meta">' + safeText(data.stats && data.stats.climat) + '</div>' +
+          '<div class="section"><h3>Contraste</h3><div>' + safeText(data.contraste) + '</div></div>' +
+          '<div class="section"><h3>Chiffres & repères</h3><div>' + safeText(data.chiffre) + '</div></div>' +
+          '<div class="section"><h3>Conseil</h3><div>' + safeText(data.conseil) + '</div></div>' +
+          '<div class="section"><h3>Villes</h3><div class="city-list">' + citiesHtml + '</div></div>' +
+          (data.regionUrl ? ('<div class="section"><h3>Ressources</h3><div><a href="' + data.regionUrl + '" target="_blank" rel="noopener">Site de la région</a></div></div>') : '');
+
+        panelEmpty.style.display = 'none';
+        panelContent.style.display = 'block';
+      }
+
+      function clearCityLayer() {
+        if (cityLayer) {
+          cityLayer.clearLayers();
+          leafletMap.removeLayer(cityLayer);
+          cityLayer = null;
+        }
+      }
+
+      function drawCities(regionCode) {
+        clearCityLayer();
+        const data = regionMap && regionMap[regionCode];
+        if (!data || !Array.isArray(data.topCities) || !cityCoordinates) return;
+
+        const markers = [];
+        data.topCities.forEach(c => {
+          const key = regionCode + '|' + c.name;
+          const ll = cityCoordinates[key];
+          if (!ll || ll.length !== 2) return;
+          const liv = c.livability || {};
+          const popup = '<b>' + safeText(c.name) + '</b><br>' + safeText(data.nameFr) +
+            '<br>Immobilier : ' + fmtEurApprox(liv.medianHomeValue);
+          markers.push(L.circleMarker([ll[0], ll[1]], {
+            radius: 7,
+            color: '#0b1220',
+            weight: 2,
+            fillColor: '#7c3aed',
+            fillOpacity: 0.9
+          }).bindPopup(popup));
+        });
+
+        if (!markers.length) return;
+        cityLayer = L.layerGroup(markers).addTo(leafletMap);
+      }
+
+      function highlightRegion(layer, regionCode) {
+        regionLayer.eachLayer(l => {
+          regionLayer.resetStyle(l);
+        });
+        layer.setStyle({ weight: 3, color: '#e2e8f0', fillOpacity: 0.75 });
+        renderPanel(regionCode);
+        drawCities(regionCode);
+      }
+
+      function initLeaflet(geojson) {
+        leafletMap = L.map('leafletMap', {
+          zoomControl: true,
+          scrollWheelZoom: true
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 18,
+          attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(leafletMap);
+
+        function styleFeature(f) {
+          const code = String(f.properties && f.properties.code);
+          const data = regionMap && regionMap[code];
+          const cost = data && data.stats && data.stats.cout;
+          return {
+            color: '#0b1220',
+            weight: 1,
+            fillColor: costColor(cost),
+            fillOpacity: 0.55
+          };
+        }
+
+        regionLayer = L.geoJSON(geojson, {
+          style: styleFeature,
+          onEachFeature: function (feature, layer) {
+            const code = String(feature.properties && feature.properties.code);
+            const nom = safeText(feature.properties && feature.properties.nom);
+            layer.bindTooltip(nom + ' (' + code + ')', { sticky: true, direction: 'top', opacity: 0.95 });
+            layer.on('click', function () { highlightRegion(layer, code); });
+          }
+        }).addTo(leafletMap);
+
+        leafletMap.fitBounds(regionLayer.getBounds(), { padding: [18, 18] });
+      }
+
+      function initD3Mini(geojson) {
+        const svg = d3.select('#d3Mini');
+        const w = 240, h = 220;
+        svg.attr('viewBox', '0 0 ' + w + ' ' + h);
+        svg.selectAll('*').remove();
+
+        const projection = d3.geoMercator().fitSize([w, h], geojson);
+        const path = d3.geoPath(projection);
+
+        svg.append('rect').attr('x', 0).attr('y', 0).attr('width', w).attr('height', h).attr('fill', 'transparent');
+
+        svg.selectAll('path')
+          .data(geojson.features)
+          .enter()
+          .append('path')
+          .attr('d', path)
+          .attr('fill', d => {
+            const code = String(d.properties && d.properties.code);
+            const data = regionMap && regionMap[code];
+            const cost = data && data.stats && data.stats.cout;
+            return costColor(cost);
+          })
+          .attr('stroke', 'rgba(226,232,240,0.25)')
+          .attr('stroke-width', 0.7)
+          .style('cursor', 'pointer')
+          .on('click', function (ev, d) {
+            const code = String(d.properties && d.properties.code);
+            renderPanel(code);
+            drawCities(code);
+            // Leaflet highlight is handled separately; keep D3 as quick selector
+          });
+      }
+
+      Promise.all([
+        fetch('app-data-fr.json', { cache: 'no-cache' }).then(r => { if (!r.ok) throw new Error(r.statusText); return r.json(); }),
+      ]).then(pair => {
+        const appData = pair[0];
+        manifest = appData.manifest || {};
+        regionMap = appData.regionMap || {};
+        cityCoordinates = appData.cityCoordinates || {};
+
+        const geoPath = (manifest.geo && manifest.geo.regionsGeoJson) ? manifest.geo.regionsGeoJson : 'geo/regions-fr.geojson';
+        return fetch(geoPath, { cache: 'no-cache' }).then(r => r.json()).then(geojson => {
+          initLeaflet(geojson);
+          initD3Mini(geojson);
+        });
+      }).catch(err => {
+        console.error(err);
+        const panelEmpty = document.getElementById('panelEmpty');
+        panelEmpty.textContent = 'Erreur de chargement. Ouvre cette page via un serveur local (npm start).';
+      });
+    })();
+  </script>
+</body>
+</html>
+

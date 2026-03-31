@@ -27,11 +27,14 @@ jobs:
       - name: Regenerate public/app-data.json from map-data
         run: node scripts/merge-json.js
 
+      - name: Regenerate public/app-data-fr.json from map-data
+        run: node scripts/merge-json-fr.js
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Use usa-map as root index (no redirect)
-        run: cp public/usa-map.html public/index.html
+      - name: Ensure index.html exists (hub)
+        run: test -f public/index.html
 
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
