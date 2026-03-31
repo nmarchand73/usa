@@ -75,6 +75,88 @@
       margin: 0 auto;
       width: 100%;
     }
+    /* Carte + panneau État : même idée que france-map (bandeau repliable à droite) */
+    .usa-map-split {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 1rem;
+      flex: 1 1 100%;
+      width: 100%;
+      min-width: 0;
+    }
+    .usa-map-split > .map-wrap {
+      flex: 1 1 0;
+      min-width: min(100%, 320px);
+    }
+    .panel-shell {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      flex: 0 0 min(400px, 34vw);
+      max-width: min(460px, 40vw);
+      min-width: 0;
+      min-height: 0;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--bg2), rgba(17, 24, 39, 0.75));
+      transition: flex-basis 0.22s ease, max-width 0.22s ease, min-width 0.22s ease;
+    }
+    .panel-shell--collapsed {
+      flex: 0 0 44px;
+      max-width: 44px;
+      min-width: 44px;
+    }
+    .panel-shell--collapsed .panel {
+      display: none;
+    }
+    .panel-edge {
+      flex: 0 0 44px;
+      width: 44px;
+      border: 0;
+      margin: 0;
+      padding: 0.5rem 0.35rem;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.92);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      line-height: 1.2;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .panel-edge:hover {
+      color: var(--accent);
+      background: rgba(17, 24, 39, 0.98);
+    }
+    .panel-edge:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
+    .panel-shell:not(.panel-shell--collapsed) .panel-edge {
+      border-right: 1px solid var(--border);
+    }
+    .panel-shell .panel {
+      flex: 1 1 0;
+      min-width: 0;
+      min-height: 0;
+      width: auto;
+      max-width: none;
+      height: auto;
+      max-height: min(560px, 85vh);
+      border: none;
+      border-radius: 0;
+      background: transparent;
+    }
     /* Language toggle — same family as tab-bar */
     .lang-toggle {
       display: inline-flex;
@@ -304,6 +386,38 @@
     .leaflet-popup-content .city-popup-state { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.5rem; }
     .leaflet-popup-content .city-popup-btn { display: inline-block; margin-top: 0.5rem; padding: 0.35rem 0.75rem; background: var(--accent); color: var(--bg); border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
     .leaflet-popup-content .city-popup-btn:hover { opacity: 0.9; }
+    /* Échelle graphique (Leaflet scale) — même style que france-map */
+    #leafletMap .leaflet-control.leaflet-control-scale {
+      margin: 0 12px 12px 0 !important;
+      padding: 8px 12px 10px !important;
+      background: rgba(10, 14, 23, 0.82) !important;
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(148, 163, 184, 0.28) !important;
+      border-radius: 8px !important;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25) !important;
+    }
+    #leafletMap .leaflet-control-scale-line {
+      --scale-line: #f1f5f9;
+      margin: 0 !important;
+      padding: 0 4px 3px !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      border: 2px solid var(--scale-line) !important;
+      border-top: none !important;
+      border-left-color: var(--scale-line) !important;
+      border-right-color: var(--scale-line) !important;
+      border-bottom-color: var(--scale-line) !important;
+      color: #f1f5f9 !important;
+      font-size: 11px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.02em !important;
+      font-family: 'DM Sans', system-ui, sans-serif !important;
+      line-height: 1.25 !important;
+      text-align: center !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85) !important;
+      white-space: nowrap !important;
+    }
     /* Fullscreen mode */
     .map-wrap.fullscreen {
       position: fixed !important;
@@ -771,11 +885,137 @@
     .load-err h4 { color: var(--yellow); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; margin-bottom: 0.5rem; }
     footer {
       text-align: center;
-      padding: 1.5rem 1rem;
+      padding: 0.75rem 1.25rem 1rem;
       color: var(--text-dim);
-      font-size: 0.8rem;
+      font-size: 0.92rem;
       border-top: 1px solid var(--border);
       margin-top: auto;
+    }
+    footer .footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem 0.65rem;
+    }
+    footer .footer-sep {
+      opacity: 0.45;
+      user-select: none;
+    }
+    .map-legend-help {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .fr-info-open {
+      font: inherit;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: rgba(0, 212, 170, 0.12);
+      border: 1px solid rgba(0, 212, 170, 0.38);
+      color: var(--accent);
+      border-radius: 8px;
+      padding: 0.4rem 0.75rem;
+      line-height: 1.2;
+    }
+    .fr-info-open:hover {
+      background: rgba(0, 212, 170, 0.2);
+      color: #5eead4;
+    }
+    .fr-info-open-mono {
+      text-transform: none;
+      font-size: 0.8rem;
+      letter-spacing: 0;
+    }
+    .fr-info-dialog {
+      max-width: min(40rem, 94vw);
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0;
+      background: var(--bg2);
+      color: var(--text);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+    }
+    .fr-info-dialog::backdrop {
+      background: rgba(0, 0, 0, 0.62);
+      backdrop-filter: blur(5px);
+    }
+    .fr-info-dialog__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1.1rem 0.65rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .fr-info-dialog__title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0;
+      line-height: 1.35;
+    }
+    .fr-info-dialog__close {
+      flex-shrink: 0;
+      font: inherit;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--text-dim);
+      border-radius: 8px;
+      width: 2.25rem;
+      height: 2.25rem;
+      line-height: 1;
+      font-size: 1.15rem;
+    }
+    .fr-info-dialog__close:hover {
+      color: var(--accent);
+      border-color: rgba(0, 212, 170, 0.4);
+    }
+    .fr-info-dialog__body {
+      padding: 1rem 1.15rem 1.2rem;
+      max-height: min(72vh, 560px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      text-align: left;
+    }
+    .fr-info-dialog__body h3 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--accent);
+      margin: 1rem 0 0.45rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .fr-info-dialog__body h3:first-child {
+      margin-top: 0;
+    }
+    .fr-info-dialog__body p {
+      margin: 0.4rem 0 0;
+      color: var(--text);
+    }
+    .fr-info-dialog__body p.note-dim {
+      color: var(--text-dim);
+      font-size: 0.86rem;
+    }
+    .fr-info-dialog__body a {
+      color: var(--accent);
+    }
+    .fr-info-dialog__body code {
+      background: var(--code-bg);
+      padding: 0.1rem 0.35rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-size: 0.82em;
     }
     /* ── Tab navigation ── */
     .tab-bar {
@@ -1028,6 +1268,35 @@
     @media (max-width: 640px) {
       .hero h1 { font-size: 1.8rem; }
       .main { flex-direction: column; }
+      .usa-map-split {
+        flex-direction: column;
+      }
+      .panel-shell {
+        flex: 0 0 auto !important;
+        max-width: none !important;
+        min-width: 0 !important;
+        width: 100%;
+      }
+      .panel-shell--collapsed {
+        flex: 0 0 auto !important;
+        max-width: none !important;
+        min-height: 44px;
+      }
+      .panel-shell--collapsed .panel {
+        display: none;
+      }
+      .panel-shell:not(.panel-shell--collapsed) {
+        max-height: min(52vh, 480px);
+      }
+      .panel-edge {
+        width: 100%;
+        writing-mode: horizontal-tb;
+        transform: none;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+        min-height: 44px;
+        letter-spacing: 0.08em;
+      }
       .panel { max-width: none; max-height: none; }
       .panel { height: 60vh; max-height: none; width: 100%; max-width: none; }
       .tab-bar { gap: 0.5rem; flex-direction: column; }
@@ -1062,6 +1331,7 @@
     </div>
     <div id="tabMapContent" class="tab-content active">
     <main class="main">
+      <div class="usa-map-split">
       <div class="map-wrap view-dynamic">
         <div class="map-legend">
           <label id="legendColorBy">Colorer par :</label>
@@ -1116,6 +1386,9 @@
             <button type="button" id="btnViewStates">Carte par États (couleurs)</button>
             <button type="button" id="btnFullscreen" class="btn-fullscreen" title="Plein écran (Esc pour quitter)">⛶</button>
           </div>
+          <div class="map-legend-help">
+            <button type="button" class="fr-info-open fr-info-open-mono" id="usaInfoOpenMap" aria-haspopup="dialog" aria-controls="usaInfoDialog">Aide &amp; sources</button>
+          </div>
           <div class="venue-filters" id="venueFilters">
             <div class="venue-filters-title" id="venueFiltersTitle">Lieux (carte dynamique)</div>
             <div class="venue-filters-row">
@@ -1136,10 +1409,16 @@
         <object id="svgMap" class="path-map" data="usa-states.svg" type="image/svg+xml" aria-hidden="true"></object>
         <div id="mapTooltip" class="map-tooltip" aria-hidden="true" role="tooltip"></div>
       </div>
-      <aside class="panel" id="panel">
-        <div class="panel-empty" id="panelEmpty">Cliquez sur un État pour afficher les stats et l’histoire.</div>
-        <div id="panelContent" style="display: none;"></div>
-      </aside>
+      <div class="panel-shell panel-shell--collapsed" id="usaPanelShell">
+        <button type="button" class="panel-edge" id="usaPanelToggle" aria-expanded="false" aria-controls="panel" title="">
+          <span class="panel-edge__label">Fiche</span>
+        </button>
+        <aside class="panel" id="panel">
+          <div class="panel-empty" id="panelEmpty">Cliquez sur un État pour afficher les stats et l’histoire.</div>
+          <div id="panelContent" style="display: none;"></div>
+        </aside>
+      </div>
+      </div><!-- /usa-map-split -->
     </main>
     </div><!-- /tabMapContent -->
     <div id="tabLivabilityContent" class="tab-content">
@@ -1184,8 +1463,22 @@
       </section>
     </div><!-- /tabLivabilityContent -->
     <footer id="appFooter">
-      Données issues du Livre Héros USA 50 États. Carte dynamique&nbsp;: <a href="https://leafletjs.com/" target="_blank" rel="noopener" style="color: var(--accent);">Leaflet</a> + CARTO. Carte par États&nbsp;: <a href="https://simplemaps.com/resources/svg-us" target="_blank" rel="noopener" style="color: var(--accent);">SimpleMaps</a>.
+      <nav class="footer-nav" aria-label="Pied de page">
+        <a href="index.html" id="footerLinkHome">Accueil</a>
+        <span class="footer-sep" aria-hidden="true">·</span>
+        <a href="france-map.html" id="footerLinkFrance">France</a>
+        <span class="footer-sep" aria-hidden="true">·</span>
+        <button type="button" class="fr-info-open fr-info-open-mono" id="usaInfoOpenFooter" aria-haspopup="dialog" aria-controls="usaInfoDialog">Sources &amp; crédits</button>
+      </nav>
     </footer>
+
+    <dialog class="fr-info-dialog" id="usaInfoDialog" aria-labelledby="usaInfoDialogTitle">
+      <div class="fr-info-dialog__head">
+        <h2 class="fr-info-dialog__title" id="usaInfoDialogTitle">Aide · sources · crédits</h2>
+        <button type="button" class="fr-info-dialog__close" id="usaInfoDialogClose" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="fr-info-dialog__body" id="usaInfoDialogBody"></div>
+    </dialog>
   </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js" crossorigin=""></script>
@@ -1291,7 +1584,18 @@
           thHousing: 'Logem.',
           thSafety: 'Secur.',
           thTransportation: 'Transp.',
-          footerHtml: 'Donnees issues du Livre Heros USA 50 Etats. Carte dynamique&nbsp;: <a href="https://leafletjs.com/" target="_blank" rel="noopener" style="color: var(--accent);">Leaflet</a> + CARTO. Carte par Etats&nbsp;: <a href="https://simplemaps.com/resources/svg-us" target="_blank" rel="noopener" style="color: var(--accent);">SimpleMaps</a>.',
+          footerHome: 'Accueil',
+          footerFrance: 'France',
+          footerMapInfo: 'Aide & sources',
+          footerSources: 'Sources & crédits',
+          infoDialogTitle: 'Aide · sources · crédits',
+          infoDialogHtml:
+            '<h3>Utilisation</h3>' +
+            '<p>Qualité de vie, coûts, climat et classements Livability — données du <strong>Livre Héros USA</strong>. Cliquez sur un État pour la fiche détaillée.</p>' +
+            '<p class="note-dim">Carte <strong>dynamique</strong> (zoom, villes, lieux) ou <strong>par États</strong> (couleurs selon le critère sélectionné).</p>' +
+            '<h3>Données &amp; crédits</h3>' +
+            '<p>Données issues du Livre Héros USA (50 États + DC). Carte dynamique&nbsp;: <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a> + tuiles CARTO. Carte par États&nbsp;: <a href="https://simplemaps.com/resources/svg-us" target="_blank" rel="noopener">SimpleMaps</a>. Table Livability&nbsp;: indicateurs publics / Livability.com.</p>' +
+            '<p class="note-dim">Couches cartographiques (SX, VTT, BMX, ski, aéroports, top villes)&nbsp;: jeux de données du dépôt projet (README, scripts).</p>',
           countSingular: 'ville',
           countPlural: 'villes',
           peopleSuffix: 'hab.',
@@ -1313,7 +1617,11 @@
           chooseColoradoRankBusiness: 'état pour les affaires — 24/7 Wall St., 2020',
           chooseColoradoRankActive: 'État le plus « actif » (santé) — United Health Foundation, 2020',
           chooseColoradoRankEdu: 'niveau de formation (bac+3) — WalletHub, 2021',
-          chooseColoradoRaceTitle: 'Race & origine hispanique (Census 2020)'
+          chooseColoradoRaceTitle: 'Race & origine hispanique (Census 2020)',
+          usaPanelEdgeCollapsedLabel: 'Fiche',
+          usaPanelEdgeExpandedLabel: '◄',
+          usaPanelExpandTitle: 'Afficher la fiche État',
+          usaPanelCollapseTitle: 'Replier la fiche (carte plus large)'
         },
         en: {
           pageTitle: 'Interactive USA map — living in the US (50 states + DC)',
@@ -1376,7 +1684,18 @@
           thHousing: 'Housing',
           thSafety: 'Safety',
           thTransportation: 'Transp.',
-          footerHtml: 'Data from the USA Hero Book (50 states). Dynamic map&nbsp;: <a href="https://leafletjs.com/" target="_blank" rel="noopener" style="color: var(--accent);">Leaflet</a> + CARTO. State map&nbsp;: <a href="https://simplemaps.com/resources/svg-us" target="_blank" rel="noopener" style="color: var(--accent);">SimpleMaps</a>.',
+          footerHome: 'Home',
+          footerFrance: 'France',
+          footerMapInfo: 'Help & sources',
+          footerSources: 'Credits & sources',
+          infoDialogTitle: 'Help · sources · credits',
+          infoDialogHtml:
+            '<h3>Usage</h3>' +
+            '<p>Quality of life, costs, climate and Livability rankings from the <strong>USA Hero Book</strong>. Click a state for the detail panel.</p>' +
+            '<p class="note-dim"><strong>Dynamic</strong> map (zoom, cities, venues) or <strong>state</strong> map (choropleth by selected metric).</p>' +
+            '<h3>Data &amp; credits</h3>' +
+            '<p>Data from the USA Hero Book (50 states + DC). Dynamic map: <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a> + CARTO tiles. State map: <a href="https://simplemaps.com/resources/svg-us" target="_blank" rel="noopener">SimpleMaps</a>. Livability table: public metrics / Livability.com.</p>' +
+            '<p class="note-dim">Map layers (SX, MTB, BMX, ski, airports, top cities): project datasets (README, scripts).</p>',
           countSingular: 'city',
           countPlural: 'cities',
           peopleSuffix: 'people',
@@ -1398,7 +1717,11 @@
           chooseColoradoRankBusiness: 'best state for business — 24/7 Wall St., 2020',
           chooseColoradoRankActive: 'most active state — United Health Foundation, 2020',
           chooseColoradoRankEdu: 'educational attainment (bachelor\'s+) — WalletHub, 2021',
-          chooseColoradoRaceTitle: 'Race & Hispanic origin (Census 2020)'
+          chooseColoradoRaceTitle: 'Race & Hispanic origin (Census 2020)',
+          usaPanelEdgeCollapsedLabel: 'Sheet',
+          usaPanelEdgeExpandedLabel: '◄',
+          usaPanelExpandTitle: 'Show state panel',
+          usaPanelCollapseTitle: 'Collapse panel (wider map)'
         }
       };
       var currentLang = 'fr';
@@ -1406,6 +1729,33 @@
       function t(key) {
         var table = I18N[currentLang] || I18N.fr;
         return table[key] || (I18N.fr[key] || key);
+      }
+
+      function usaPanelRefreshToggleUi() {
+        var shell = document.getElementById('usaPanelShell');
+        var btn = document.getElementById('usaPanelToggle');
+        var lab = btn && btn.querySelector('.panel-edge__label');
+        if (!shell || !btn || !lab) return;
+        var collapsed = shell.classList.contains('panel-shell--collapsed');
+        lab.textContent = collapsed ? t('usaPanelEdgeCollapsedLabel') : t('usaPanelEdgeExpandedLabel');
+        btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+        btn.title = collapsed ? t('usaPanelExpandTitle') : t('usaPanelCollapseTitle');
+      }
+
+      function setUsaPanelCollapsed(collapsed) {
+        var shell = document.getElementById('usaPanelShell');
+        if (!shell) return;
+        shell.classList.toggle('panel-shell--collapsed', !!collapsed);
+        usaPanelRefreshToggleUi();
+        if (leafletMap && typeof leafletMap.invalidateSize === 'function') {
+          window.setTimeout(function () {
+            leafletMap.invalidateSize({ animate: false });
+          }, 230);
+        }
+      }
+
+      function expandUsaPanel() {
+        setUsaPanelCollapsed(false);
       }
 
       function navigatorLocaleList() {
@@ -1562,8 +1912,18 @@
           th.textContent = t(headerMap[id]) + ' ';
           if (arrow) th.appendChild(arrow);
         });
-        var footer = document.getElementById('appFooter');
-        if (footer) footer.innerHTML = t('footerHtml');
+        var footerHome = document.getElementById('footerLinkHome');
+        if (footerHome) footerHome.textContent = t('footerHome');
+        var footerFrance = document.getElementById('footerLinkFrance');
+        if (footerFrance) footerFrance.textContent = t('footerFrance');
+        var usaInfoOpenMap = document.getElementById('usaInfoOpenMap');
+        if (usaInfoOpenMap) usaInfoOpenMap.textContent = t('footerMapInfo');
+        var usaInfoOpenFooter = document.getElementById('usaInfoOpenFooter');
+        if (usaInfoOpenFooter) usaInfoOpenFooter.textContent = t('footerSources');
+        var usaInfoTitle = document.getElementById('usaInfoDialogTitle');
+        if (usaInfoTitle) usaInfoTitle.textContent = t('infoDialogTitle');
+        var usaInfoBody = document.getElementById('usaInfoDialogBody');
+        if (usaInfoBody) usaInfoBody.innerHTML = t('infoDialogHtml');
         var lf = document.getElementById('langFr');
         var le = document.getElementById('langEn');
         if (lf) {
@@ -1574,6 +1934,7 @@
           le.classList.toggle('active', currentLang === 'en');
           le.setAttribute('aria-pressed', currentLang === 'en' ? 'true' : 'false');
         }
+        usaPanelRefreshToggleUi();
       }
 
       // ── Fullscreen toggle (runs immediately, DOM is ready since script is at end of body) ──
@@ -2241,6 +2602,7 @@
           }
         }
         if (d3PathByCode) applyColorsToD3Map();
+        expandUsaPanel();
       }
 
       function initLeafletMap(stateData, cityCoords) {
@@ -2275,6 +2637,15 @@
           {},
           { position: 'topright' }
         ).addTo(leafletMap);
+        window.L.control
+          .scale({
+            position: 'bottomright',
+            maxWidth: 140,
+            metric: true,
+            imperial: false,
+            updateWhenIdle: true
+          })
+          .addTo(leafletMap);
         leafletMap.setMaxBounds(window.L.latLngBounds(window.L.latLng(24, -126), window.L.latLng(50, -66)));
         cityCoords = cityCoords || {};
         function makeCityIcon(fillColor) {
@@ -3524,6 +3895,14 @@
           }
           stateMap = data;
           bindMap();
+          var usaPanelToggle = document.getElementById('usaPanelToggle');
+          var usaPanelShell = document.getElementById('usaPanelShell');
+          if (usaPanelToggle && usaPanelShell) {
+            usaPanelToggle.addEventListener('click', function () {
+              setUsaPanelCollapsed(!usaPanelShell.classList.contains('panel-shell--collapsed'));
+            });
+            usaPanelRefreshToggleUi();
+          }
           // Afficher l’échelle « Coût de la vie » au chargement (même logique que les autres)
           document.getElementById('scaleCost').style.display = 'flex';
           document.getElementById('btnCost').addEventListener('click', function () {
@@ -3674,6 +4053,24 @@
           showLoadErr();
           console.error(err);
         });
+    })();
+  </script>
+  <script>
+    (function () {
+      var dlg = document.getElementById('usaInfoDialog');
+      if (!dlg) return;
+      function openDlg() {
+        if (typeof dlg.showModal === 'function') dlg.showModal();
+      }
+      function closeDlg() {
+        if (typeof dlg.close === 'function') dlg.close();
+      }
+      ['usaInfoOpenMap', 'usaInfoOpenFooter'].forEach(function (id) {
+        var btn = document.getElementById(id);
+        if (btn) btn.addEventListener('click', openDlg);
+      });
+      var closeBtn = document.getElementById('usaInfoDialogClose');
+      if (closeBtn) closeBtn.addEventListener('click', closeDlg);
     })();
   </script>
 </body>

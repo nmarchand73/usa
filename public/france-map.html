@@ -13,6 +13,7 @@
     :root{
       --bg:#0a0e17; --bg2:#111827; --bg3:#1a2235;
       --accent:#00d4aa; --accent2:#7c3aed;
+      --green:#22c55e; --yellow:#fbbf24; --red:#ef4444;
       --text:#e2e8f0; --text-dim:#94a3b8; --border:#1e293b;
       --code-bg:#0d1117;
     }
@@ -34,25 +35,255 @@
       background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent;
       margin-bottom:.4rem;
     }
-    .hero p{ color:var(--text-dim); font-size:1.05rem; }
     .hero-line{ height:2px; width:240px; margin:1rem auto 0; background:linear-gradient(90deg,transparent,var(--accent),transparent); }
-    .main{ flex:1; display:flex; flex-wrap:wrap; gap:1rem; padding:1rem 1.5rem 2rem; max-width:1400px; margin:0 auto; width:100%; }
-    .map-wrap{ flex:1 1 62%; min-width:320px; border:1px solid var(--border); border-radius:14px; overflow:hidden; background:linear-gradient(180deg,var(--bg2),rgba(17,24,39,.7)); position:relative; }
-    .panel{ flex:1 1 34%; min-width:320px; border:1px solid var(--border); border-radius:14px; background:linear-gradient(180deg,var(--bg2),rgba(17,24,39,.75)); padding:1rem 1.1rem; }
-    #leafletMap{ height:560px; }
-    #d3MiniWrap{ position:absolute; right:12px; top:12px; width:240px; height:220px; border:1px solid var(--border); border-radius:12px; background:rgba(10,14,23,.55); backdrop-filter: blur(6px); overflow:hidden; }
-    #d3Mini{ width:240px; height:220px; }
-    .toolbar{
-      position:absolute; left:12px; top:12px;
-      display:flex; gap:.5rem; align-items:center; flex-wrap:wrap;
-      background:rgba(10,14,23,.55); border:1px solid var(--border); border-radius:12px;
-      padding:.5rem .6rem; backdrop-filter: blur(6px);
+    .main{ flex:1; display:flex; flex-direction:column; padding:1rem 1.5rem 2rem; width:100%; max-width:none; margin:0; }
+    .main-split{
+      display:flex;
+      flex-direction:row;
+      align-items:stretch;
+      gap:1rem;
+      width:100%;
+      flex:1;
+      min-height:0;
     }
-    .toolbar .filters{ display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; margin-left:.35rem; }
-    .toolbar label{ display:inline-flex; gap:.4rem; align-items:center; font-size:.9rem; color:var(--text-dim); }
-    .toolbar input[type="checkbox"]{ accent-color: var(--accent); }
-    .pill{ display:inline-flex; align-items:center; gap:.4rem; padding:.25rem .55rem; border:1px solid var(--border); border-radius:999px; color:var(--text); font-size:.9rem; }
-    .swatch{ width:10px; height:10px; border-radius:3px; display:inline-block; }
+    /* Aligné sur usa-map.html : légende au-dessus, pas d’overlay semi-transparent sur la carte */
+    .map-wrap{
+      flex:1 1 0;
+      min-width:min(100%,320px);
+      background:var(--bg2);
+      border:1px solid var(--border);
+      border-radius:12px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      padding:0;
+      position:relative;
+    }
+    .map-legend{
+      flex:0 0 auto;
+      display:flex;
+      flex-direction:column;
+      gap:0.5rem;
+      padding:0.75rem 1rem;
+      background:var(--bg2);
+      border-bottom:1px solid var(--border);
+      margin-bottom:0;
+    }
+    .map-legend-top{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:0.5rem 1rem;
+    }
+    .map-legend-label{
+      font-family:'JetBrains Mono',monospace;
+      font-size:0.85rem;
+      color:var(--text-dim);
+      flex-shrink:0;
+    }
+    .map-legend-actions{
+      margin-left:auto;
+      display:flex;
+      align-items:center;
+      gap:0.5rem;
+      flex-shrink:0;
+    }
+    .btn-fullscreen{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:30px; height:30px;
+      background:var(--bg3); border:1px solid var(--border); border-radius:6px;
+      color:var(--text-dim); cursor:pointer; font-size:1rem; line-height:1;
+      transition:all 0.15s ease;
+    }
+    .btn-fullscreen:hover{ color:var(--text); border-color:var(--accent); background:var(--bg2); }
+    .map-wrap.fullscreen .btn-fullscreen{ background:var(--accent); color:var(--bg); border-color:var(--accent); }
+    /* Plein écran — même principe que usa-map (légende + zone carte) */
+    .map-wrap.fullscreen{
+      position:fixed !important;
+      inset:0 !important;
+      z-index:10000 !important;
+      width:100vw !important;
+      height:100vh !important;
+      max-width:none !important;
+      max-height:none !important;
+      min-width:0 !important;
+      min-height:0 !important;
+      flex:none !important;
+      border-radius:0 !important;
+      border:none !important;
+      margin:0 !important;
+      padding:0 !important;
+      display:flex !important;
+      flex-direction:column !important;
+      overflow:visible !important;
+    }
+    .map-wrap.fullscreen .map-legend{
+      flex:0 0 auto !important;
+      border-radius:0 !important;
+    }
+    .map-wrap.fullscreen .map-leaflet-stack{
+      flex:1 1 0 !important;
+      min-height:0 !important;
+      display:flex !important;
+      flex-direction:column !important;
+    }
+    .map-wrap.fullscreen #leafletMap{
+      flex:1 1 0 !important;
+      height:0 !important;
+      min-height:0 !important;
+      border-radius:0 !important;
+    }
+    .fr-info-open{
+      font:inherit;
+      font-family:'JetBrains Mono',monospace;
+      font-size:0.72rem;
+      font-weight:600;
+      letter-spacing:0.04em;
+      text-transform:uppercase;
+      cursor:pointer;
+      background:rgba(0,212,170,.12);
+      border:1px solid rgba(0,212,170,.38);
+      color:var(--accent);
+      border-radius:8px;
+      padding:0.4rem 0.75rem;
+      line-height:1.2;
+    }
+    .fr-info-open:hover{ background:rgba(0,212,170,.2); color:#5eead4; }
+    .fr-info-open-mono{ text-transform:none; font-size:0.8rem; letter-spacing:0; }
+    .venue-filters{
+      margin-top:0.35rem;
+      padding-top:0.65rem;
+      border-top:1px solid var(--border);
+    }
+    .map-wrap.view-dynamic .venue-filters{ display:block; }
+    .venue-filters .venue-filters-title{
+      font-family:'JetBrains Mono',monospace;
+      font-size:0.7rem;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      color:var(--text-dim);
+      margin-bottom:0.4rem;
+    }
+    .venue-filters-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:0.5rem 0.75rem;
+      align-items:center;
+    }
+    .venue-filters-row label{
+      display:inline-flex;
+      align-items:center;
+      gap:0.35rem;
+      font-size:0.8rem;
+      color:var(--text);
+      cursor:pointer;
+    }
+    .venue-filters-row label:hover{ color:var(--accent); }
+    .venue-filters-row input[type="checkbox"]{
+      accent-color:var(--accent);
+      width:1em;
+      height:1em;
+      flex-shrink:0;
+    }
+    /* Légende : pastille = couleur du point sur la carte. */
+    .venue-swatch{
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      flex-shrink:0;
+      border:2px solid;
+      box-shadow:0 0 0 1px rgba(0,0,0,.35);
+    }
+    .venue-swatch--city-points{ background:#2dd4bf; border-color:#0f766e; }
+    .venue-swatch--mtb-general{ background:#0ea5e9; border-color:#082f49; }
+    .venue-swatch--mtb-downhill{ background:#f97316; border-color:#431407; }
+    .venue-swatch--pumptrack{ background:#c084fc; border-color:#4c1d95; }
+    .venue-swatch--bmx{ background:#f43f5e; border-color:#500724; }
+    .venue-swatch--yelloh{ background:#facc15; border-color:#713f12; }
+    .venue-swatch--sandaya{ background:#34d399; border-color:#065f46; }
+    .venue-swatch--city-region{ background:#6366f1; border-color:#312e81; }
+    .map-leaflet-stack{
+      position:relative;
+      flex:1 1 auto;
+      min-height:0;
+    }
+    /* Colonne fiche : repliée par défaut pour maximiser la carte. */
+    .panel-shell{
+      display:flex;
+      flex-direction:row;
+      align-items:stretch;
+      flex:0 0 min(380px,34vw);
+      max-width:min(400px,40vw);
+      min-width:0;
+      min-height:0;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      background:linear-gradient(180deg,var(--bg2),rgba(17,24,39,.75));
+      transition:flex-basis .22s ease,max-width .22s ease,min-width .22s ease;
+    }
+    .panel-shell--collapsed{
+      flex:0 0 44px;
+      max-width:44px;
+      min-width:44px;
+    }
+    .panel-shell--collapsed .panel{ display:none; }
+    .panel-edge{
+      flex:0 0 44px;
+      width:44px;
+      border:0;
+      margin:0;
+      padding:.5rem .35rem;
+      cursor:pointer;
+      background:rgba(15,23,42,.92);
+      color:var(--text);
+      font-family:'JetBrains Mono',monospace;
+      font-size:.65rem;
+      font-weight:600;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      line-height:1.2;
+      writing-mode:vertical-rl;
+      transform:rotate(180deg);
+      border-right:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+    }
+    .panel-edge:hover{ color:var(--accent); background:rgba(17,24,39,.98); }
+    .panel-edge:focus-visible{ outline:2px solid var(--accent); outline-offset:-2px; }
+    .panel-shell:not(.panel-shell--collapsed) .panel-edge{
+      border-right:1px solid var(--border);
+    }
+    .panel{
+      flex:1 1 0;
+      min-width:0;
+      min-height:0;
+      overflow:auto;
+      border:0;
+      border-radius:0;
+      background:transparent;
+      padding:1rem 1.1rem;
+    }
+    #leafletMap{
+      width:100%;
+      height:560px;
+      min-height:360px;
+      border-radius:0 0 12px 12px;
+      background:var(--bg3);
+      position:relative;
+      display:block;
+      outline:none;
+    }
+    /* Évite le « cadre noir » de focus / sélection navigateur au clic sur les régions (SVG Leaflet). */
+    .leaflet-container,
+    .leaflet-container:focus,
+    .leaflet-container:focus-visible,
+    .leaflet-container .leaflet-overlay-pane svg .leaflet-interactive,
+    .leaflet-container .leaflet-overlay-pane svg .leaflet-interactive:focus{
+      outline:none !important;
+    }
     .panel-empty{ color:var(--text-dim); padding:.6rem .4rem; }
     .kicker{ font-family:'JetBrains Mono',monospace; font-size:.9rem; color:var(--text-dim); }
     .title-row{ display:flex; justify-content:space-between; align-items:baseline; gap:1rem; }
@@ -65,10 +296,216 @@
     .city-item .name{ font-weight:700; }
     .city-item .sub{ color:var(--text-dim); font-size:.95rem; margin-top:.2rem; }
     code{ background:var(--code-bg); padding:0 .35rem; border-radius:6px; border:1px solid var(--border); }
-    footer{ color:var(--text-dim); padding:1rem 1.5rem; text-align:center; border-top:1px solid var(--border); }
+    /* Leaflet hover tooltips (lieux VTT / pumptrack / piste BMX) */
+    .leaflet-tooltip.venue-tooltip{
+      background:rgba(10,14,23,.94) !important; color:var(--text) !important;
+      border:1px solid var(--border) !important; border-radius:10px !important;
+      padding:.45rem .65rem !important; font-size:.82rem !important; line-height:1.35 !important;
+      box-shadow:0 10px 28px rgba(0,0,0,.45) !important; max-width:280px;
+    }
+    .leaflet-tooltip.venue-tooltip--camping{
+      max-width:min(320px,92vw) !important;
+      padding:.5rem .7rem .52rem !important;
+    }
+    .leaflet-tooltip.venue-tooltip strong{ font-weight:700; color:var(--accent); }
+    .leaflet-tooltip.venue-tooltip .tt-kind{ font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--text-dim); margin-bottom:.15rem; }
+    .leaflet-tooltip.venue-tooltip .tt-name{ font-weight:600; }
+    .leaflet-tooltip.venue-tooltip .tt-city{ color:var(--text-dim); font-size:.78rem; margin-top:.2rem; }
+    .leaflet-tooltip.venue-tooltip .tt-region{ color:var(--text-dim); font-size:.72rem; margin-top:.12rem; opacity:.95; }
+    .leaflet-tooltip-top.venue-tooltip::before,
+    .leaflet-tooltip-bottom.venue-tooltip::before{ border-top-color:rgba(10,14,23,.94) !important; border-bottom-color:rgba(10,14,23,.94) !important; }
+    /* Popup Yelloh! (photo + liste) : bandeau visuel = 30 % de la hauteur, le reste défile */
+    .leaflet-container .leaflet-popup.leaflet-popup-yelloh .leaflet-popup-content-wrapper{
+      padding:0;
+      overflow:hidden;
+    }
+    .leaflet-container .leaflet-popup.leaflet-popup-yelloh .leaflet-popup-content{
+      margin:0;
+      min-width:min(320px, 92vw);
+      max-width:min(380px, 94vw);
+    }
+    .yelloh-popup.yelloh-popup--has-image{
+      display:flex;
+      flex-direction:column;
+      width:100%;
+      height:min(70vh, 520px);
+      max-height:min(70vh, 520px);
+      min-height:0;
+      box-sizing:border-box;
+      color:var(--text);
+      background:#fff;
+    }
+    .yelloh-popup__media{
+      flex:0 0 30%;
+      height:30%;
+      max-height:30%;
+      min-height:0;
+      overflow:hidden;
+      border-bottom:1px solid rgba(148,163,184,.45);
+    }
+    .yelloh-popup__media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center;
+      display:block;
+    }
+    .yelloh-popup__main{
+      flex:1 1 auto;
+      min-height:0;
+      overflow-y:auto;
+      overflow-x:hidden;
+      -webkit-overflow-scrolling:touch;
+      padding:12px 14px 14px;
+      font-size:.9rem;
+      line-height:1.45;
+      color:#1e293b;
+    }
+    .yelloh-popup__main a{ color:#0d9488; }
+    /* Échelle graphique : une seule “carte” sombre + barre horizontale type plan (pas de double encadré) */
+    #leafletMap .leaflet-control.leaflet-control-scale{
+      margin:0 12px 12px 0 !important;
+      padding:8px 12px 10px !important;
+      background:rgba(10,14,23,.82) !important;
+      -webkit-backdrop-filter:blur(10px);
+      backdrop-filter:blur(10px);
+      border:1px solid rgba(148,163,184,.28) !important;
+      border-radius:8px !important;
+      box-shadow:0 2px 12px rgba(0,0,0,.25) !important;
+    }
+    #leafletMap .leaflet-control-scale-line{
+      --scale-line:#f1f5f9;
+      margin:0 !important;
+      padding:0 4px 3px !important;
+      background:transparent !important;
+      box-shadow:none !important;
+      border:2px solid var(--scale-line) !important;
+      border-top:none !important;
+      border-left-color:var(--scale-line) !important;
+      border-right-color:var(--scale-line) !important;
+      border-bottom-color:var(--scale-line) !important;
+      color:#f1f5f9 !important;
+      font-size:11px !important;
+      font-weight:600 !important;
+      letter-spacing:.02em !important;
+      font-family:'DM Sans',system-ui,sans-serif !important;
+      line-height:1.25 !important;
+      text-align:center !important;
+      text-shadow:0 1px 3px rgba(0,0,0,.85) !important;
+      white-space:nowrap !important;
+    }
+    footer{
+      color:var(--text-dim);
+      padding:0.75rem 1.25rem 1rem;
+      text-align:center;
+      border-top:1px solid var(--border);
+      font-size:0.92rem;
+    }
+    footer .footer-nav{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+      gap:0.35rem 0.65rem;
+    }
+    footer .footer-sep{ opacity:0.45; user-select:none; }
+    .fr-info-dialog{
+      max-width:min(40rem, 94vw);
+      width:100%;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:0;
+      background:var(--bg2);
+      color:var(--text);
+      box-shadow:0 24px 80px rgba(0,0,0,.55);
+    }
+    .fr-info-dialog::backdrop{
+      background:rgba(0,0,0,.62);
+      backdrop-filter:blur(5px);
+    }
+    .fr-info-dialog__head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:1rem;
+      padding:1rem 1.1rem 0.65rem;
+      border-bottom:1px solid var(--border);
+    }
+    .fr-info-dialog__title{
+      font-family:'JetBrains Mono',monospace;
+      font-size:1rem;
+      font-weight:700;
+      color:var(--text);
+      margin:0;
+      line-height:1.35;
+    }
+    .fr-info-dialog__close{
+      flex-shrink:0;
+      font:inherit;
+      cursor:pointer;
+      border:1px solid var(--border);
+      background:rgba(15,23,42,.85);
+      color:var(--text-dim);
+      border-radius:8px;
+      width:2.25rem;
+      height:2.25rem;
+      line-height:1;
+      font-size:1.15rem;
+    }
+    .fr-info-dialog__close:hover{ color:var(--accent); border-color:rgba(0,212,170,.4); }
+    .fr-info-dialog__body{
+      padding:1rem 1.15rem 1.2rem;
+      max-height:min(72vh, 560px);
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
+      font-size:0.9rem;
+      line-height:1.55;
+    }
+    .fr-info-dialog__body h3{
+      font-family:'JetBrains Mono',monospace;
+      font-size:0.82rem;
+      color:var(--accent);
+      margin:1rem 0 0.45rem;
+      text-transform:uppercase;
+      letter-spacing:0.06em;
+    }
+    .fr-info-dialog__body h3:first-child{ margin-top:0; }
+    .fr-info-dialog__body p{ margin:0.4rem 0 0; color:var(--text); }
+    .fr-info-dialog__body p.note-dim{ color:var(--text-dim); font-size:0.86rem; }
+    .fr-info-dialog__body code{
+      background:var(--code-bg);
+      padding:0.1rem 0.35rem;
+      border-radius:6px;
+      border:1px solid var(--border);
+      font-size:0.82em;
+    }
     @media (max-width: 960px){
-      #leafletMap{ height:520px; }
-      #d3MiniWrap{ display:none; }
+      #leafletMap{ height:520px; min-height:320px; }
+      .main-split{ flex-direction:column; }
+      .panel-shell{
+        flex:0 0 auto !important;
+        max-width:none !important;
+        min-width:0 !important;
+        width:100%;
+      }
+      .panel-shell--collapsed{
+        flex:0 0 auto !important;
+        max-width:none !important;
+        min-height:44px;
+      }
+      .panel-shell--collapsed .panel{ display:none; }
+      .panel-edge{
+        width:100%;
+        writing-mode:horizontal-tb;
+        transform:none;
+        border-right:0;
+        border-bottom:1px solid var(--border);
+        min-height:44px;
+        letter-spacing:.08em;
+      }
+      .panel-shell:not(.panel-shell--collapsed){
+        max-height:min(52vh,480px);
+      }
     }
   </style>
 </head>
@@ -76,38 +513,82 @@
   <div class="app">
     <header class="hero">
       <h1>Vivre en France : carte des régions</h1>
-      <p>Version V1 — 13 régions métropolitaines. Cliquez sur une région pour afficher la fiche et les villes.</p>
       <div class="hero-line"></div>
     </header>
 
     <main class="main">
-      <section class="map-wrap" aria-label="Carte France">
-        <div class="toolbar" aria-label="Légende">
-          <span class="pill"><span class="swatch" style="background:#22c55e"></span> Coût bas</span>
-          <span class="pill"><span class="swatch" style="background:#fbbf24"></span> Coût moyen</span>
-          <span class="pill"><span class="swatch" style="background:#f97316"></span> Coût élevé</span>
-          <span class="pill"><span class="swatch" style="background:#ef4444"></span> Très élevé</span>
-          <span class="filters" aria-label="Filtres lieux">
-            <label><input type="checkbox" id="filterCityPoints"> Points villes (régions)</label>
-            <label><input type="checkbox" id="filterMtb" checked> VTT (bike parks)</label>
-            <label><input type="checkbox" id="filterBmx" checked> BMX (pumptracks)</label>
-            <label><input type="checkbox" id="filterSelectedRegion"> Limiter à la région sélectionnée</label>
-          </span>
+      <div class="main-split">
+      <section class="map-wrap view-dynamic" aria-label="Carte France">
+        <div class="map-legend" aria-label="Carte et filtres">
+          <div class="map-legend-top">
+            <span class="map-legend-label">Carte &amp; filtres</span>
+            <div class="map-legend-actions">
+              <button type="button" id="btnFullscreen" class="btn-fullscreen" title="Plein écran (Esc pour quitter)">⛶</button>
+              <button type="button" class="fr-info-open fr-info-open-mono" id="frInfoOpenMap" aria-haspopup="dialog" aria-controls="frInfoDialog">Aide &amp; sources</button>
+            </div>
+          </div>
+          <div class="venue-filters" id="frVenueFilters" aria-label="Lieux sur la carte">
+            <div class="venue-filters-title">Afficher sur la carte</div>
+            <div class="venue-filters-row">
+              <label><input type="checkbox" id="filterCityPoints"><span class="venue-swatch venue-swatch--city-points" title="Turquoise"></span> Points villes (toutes régions)</label>
+              <label><input type="checkbox" id="filterMtb" checked><span class="venue-swatch venue-swatch--mtb-general" title="Bleu ciel"></span> VTT · bike parks (hors descente)</label>
+              <label><input type="checkbox" id="filterMtbDownhill" checked><span class="venue-swatch venue-swatch--mtb-downhill" title="Orange"></span> VTT · descente / bike park montagne</label>
+              <label><input type="checkbox" id="filterPumptrack" checked><span class="venue-swatch venue-swatch--pumptrack" title="Violet"></span> Pumptracks</label>
+              <label><input type="checkbox" id="filterBmxTrack" checked><span class="venue-swatch venue-swatch--bmx" title="Rose / rouge"></span> Pistes BMX</label>
+              <label><input type="checkbox" id="filterYellohVillage" checked><span class="venue-swatch venue-swatch--yelloh" title="Jaune / ambre"></span> Campings Yelloh! Village</label>
+              <label><input type="checkbox" id="filterSandaya" checked><span class="venue-swatch venue-swatch--sandaya" title="Vert émeraude"></span> Campings Sandaya (France)</label>
+            </div>
+          </div>
         </div>
-        <div id="d3MiniWrap" aria-hidden="true"><svg id="d3Mini"></svg></div>
-        <div id="leafletMap"></div>
+        <div class="map-leaflet-stack">
+          <div id="leafletMap"></div>
+        </div>
       </section>
 
-      <aside class="panel" id="panel">
-        <div class="panel-empty" id="panelEmpty">Cliquez sur une région pour afficher les informations.</div>
-        <div id="panelContent" style="display:none;"></div>
-      </aside>
+      <div class="panel-shell panel-shell--collapsed" id="frPanelShell">
+        <button type="button" class="panel-edge" id="frPanelToggle" aria-expanded="false" aria-controls="panel" title="Afficher la fiche région">
+          <span class="panel-edge__label">Fiche</span>
+        </button>
+        <aside class="panel" id="panel">
+          <div class="panel-empty" id="panelEmpty">Cliquez sur une région pour afficher les informations.</div>
+          <div id="panelContent" style="display:none;"></div>
+        </aside>
+      </div>
+      </div>
     </main>
 
     <footer>
-      Données V1 (exemples) — à sourcer/affiner. Carte : <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a> + <a href="https://d3js.org/" target="_blank" rel="noopener">D3</a>. Contours : Etalab (contours administratifs).
-      <div style="margin-top:.25rem;">Retour : <a href="index.html">Accueil</a> · <a href="usa-map.html">USA</a></div>
+      <nav class="footer-nav" aria-label="Pied de page">
+        <a href="index.html">Accueil</a>
+        <span class="footer-sep" aria-hidden="true">·</span>
+        <a href="usa-map.html">USA</a>
+        <span class="footer-sep" aria-hidden="true">·</span>
+        <button type="button" class="fr-info-open fr-info-open-mono" id="frInfoOpenFooter" aria-haspopup="dialog" aria-controls="frInfoDialog">Sources &amp; crédits</button>
+      </nav>
     </footer>
+
+    <dialog class="fr-info-dialog" id="frInfoDialog" aria-labelledby="frInfoDialogTitle">
+      <div class="fr-info-dialog__head">
+        <h2 class="fr-info-dialog__title" id="frInfoDialogTitle">Aide · sources · crédits</h2>
+        <button type="button" class="fr-info-dialog__close" id="frInfoDialogClose" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="fr-info-dialog__body">
+        <h3>Utilisation</h3>
+        <p>V1 — 13 régions métropolitaines. La fiche (panneau de droite) est <strong>repliée par défaut</strong> ; ouvrez-la avec le bandeau « Fiche » ou en cliquant une région.</p>
+        <p>Contours des régions — coût de la vie, climat et villes : la fiche à droite résume la région sélectionnée.</p>
+        <p class="note-dim">Bike parks <strong>descente montagne</strong> : données OSM (<code>mtb:type=downhill</code>, <code>mtb:lift=yes</code>) — <a href="https://wiki.openstreetmap.org/wiki/Tag:mtb:type%3Ddownhill" target="_blank" rel="noopener">wiki OSM</a> · <a href="https://www.kelbikepark.fr/" target="_blank" rel="noopener">KelBikePark</a>.</p>
+        <p class="note-dim">Couches : une pastille par type. <strong>Yelloh!</strong> : taille des points selon la note satisfaction. <strong>Sandaya</strong> : taille légère selon les étoiles (pas de note dans la source). Après clic sur une région, les villes de la fiche peuvent apparaître en points <strong>indigo</strong> sur la carte (couche distincte des cases ci-dessus).</p>
+
+        <h3>Données &amp; actualisation</h3>
+        <p>Géolocalisation des lieux : <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap</a> (Overpass).</p>
+        <p><strong>Campings Yelloh! Village</strong> : France via l’API du site (<code>searchCampings</code>) — <a href="https://www.yellohvillage.fr/" target="_blank" rel="noopener">yellohvillage.fr</a> · <code>npm run fetch:fr-yelloh-official</code>.</p>
+        <p><strong>Campings Sandaya</strong> (France métropolitaine &amp; Corse) : page liste — <a href="https://www.sandaya.fr/nos-campings" target="_blank" rel="noopener">sandaya.fr/nos-campings</a> · <code>npm run fetch:fr-sandaya</code>.</p>
+        <p><strong>Sources hors OSM</strong> (annuaires, fédération, presse, stations) : <a href="bikeparks-fr-external-sources.json" target="_blank" rel="noopener">liste JSON</a> · <a href="https://www.kelbikepark.fr/fr" target="_blank" rel="noopener">KelBikePark</a> · <a href="https://sitesvtt.ffc.fr/" target="_blank" rel="noopener">Sites VTT FFC</a> · <a href="https://owlaps.fr/" target="_blank" rel="noopener">Owlaps</a>.</p>
+
+        <h3>Technique</h3>
+        <p>Carte : <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a> + <a href="https://d3js.org/" target="_blank" rel="noopener">D3</a>. Contours des régions : Etalab.</p>
+      </div>
+    </dialog>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
@@ -123,6 +604,137 @@
         'bas à moyen': '#fbbf24'
       };
 
+      /** Points carte (circleMarker) : une couleur par type. Campings Yelloh (API) : rayon = f(note), voir yellohCircleStyleForVenue. Sandaya : rayon léger selon étoiles, voir sandayaCircleStyle. */
+      const MAP_MARKER = {
+        mtbGeneral: { radius: 5.5, color: '#082f49', weight: 1.5, fillColor: '#0ea5e9', fillOpacity: 0.88 },
+        mtbDownhill: { radius: 6, color: '#431407', weight: 1.5, fillColor: '#f97316', fillOpacity: 0.9 },
+        pumptrack: { radius: 5.5, color: '#4c1d95', weight: 1.5, fillColor: '#c084fc', fillOpacity: 0.9 },
+        bmx: { radius: 5.5, color: '#500724', weight: 1.5, fillColor: '#f43f5e', fillOpacity: 0.9 },
+        yelloh: { radius: 8, color: '#713f12', weight: 1.5, fillColor: '#facc15', fillOpacity: 0.9 },
+        sandaya: { radius: 6.5, color: '#065f46', weight: 1.5, fillColor: '#34d399', fillOpacity: 0.9 },
+        cityRegion: { radius: 7, color: '#312e81', weight: 2, fillColor: '#6366f1', fillOpacity: 0.92 },
+        cityPoints: { radius: 6.5, color: '#0f766e', weight: 2, fillColor: '#2dd4bf', fillOpacity: 0.95 }
+      };
+
+      const YELLOH_NOTE_RADIUS_MIN = 5.5;
+      const YELLOH_NOTE_RADIUS_MAX = 12;
+
+      function yellohSatisfactionNumber(v) {
+        if (!v || v.note == null || !String(v.note).trim()) return NaN;
+        const n = Number(String(v.note).replace(',', '.'));
+        return Number.isFinite(n) ? n : NaN;
+      }
+
+      /** Min / max des notes sur les campings GraphQL de la couche (pour étaler les tailles). */
+      function computeYellohNoteScale(items) {
+        const vals = [];
+        for (let i = 0; i < (items || []).length; i++) {
+          if (items[i].source !== 'Yelloh! GraphQL') continue;
+          const n = yellohSatisfactionNumber(items[i]);
+          if (Number.isFinite(n)) vals.push(n);
+        }
+        if (!vals.length) return null;
+        let min = vals[0];
+        let max = vals[0];
+        for (let j = 1; j < vals.length; j++) {
+          if (vals[j] < min) min = vals[j];
+          if (vals[j] > max) max = vals[j];
+        }
+        const span = max - min;
+        return {
+          min: min,
+          max: max,
+          span: span > 1e-6 ? span : 0,
+          uniform: span <= 1e-6
+        };
+      }
+
+      function yellohCircleStyleForVenue(v, scale) {
+        const b = MAP_MARKER.yelloh;
+        const rLo = YELLOH_NOTE_RADIUS_MIN;
+        const rHi = YELLOH_NOTE_RADIUS_MAX;
+        let radius;
+        if (v.source !== 'Yelloh! GraphQL') {
+          radius = 6.2;
+        } else {
+          const note = yellohSatisfactionNumber(v);
+          if (!Number.isFinite(note)) {
+            radius = (rLo + rHi) / 2;
+          } else if (!scale || scale.uniform) {
+            const c = Math.min(1, Math.max(0, note / 100));
+            radius = rLo + c * (rHi - rLo);
+          } else {
+            const t = (note - scale.min) / scale.span;
+            const c = Math.min(1, Math.max(0, t));
+            radius = rLo + c * (rHi - rLo);
+          }
+        }
+        return {
+          radius: radius,
+          color: b.color,
+          weight: b.weight,
+          fillColor: b.fillColor,
+          fillOpacity: b.fillOpacity
+        };
+      }
+
+      /** Sandaya : pas de note satisfaction dans la source — rayon discret selon étoiles. */
+      function sandayaCircleStyle(v) {
+        const b = MAP_MARKER.sandaya;
+        const sc = v && v.starCount != null ? Number(v.starCount) : NaN;
+        let radius = b.radius;
+        if (Number.isFinite(sc)) {
+          if (sc >= 5) radius = 7.2;
+          else if (sc <= 4) radius = 6;
+        }
+        return {
+          radius: radius,
+          color: b.color,
+          weight: b.weight,
+          fillColor: b.fillColor,
+          fillOpacity: b.fillOpacity
+        };
+      }
+
+      function sandayaTooltipExtraHtml(v) {
+        if (!v || v.venueKind !== 'sandaya_camping') return '';
+        let h = '';
+        const sc = v.starCount != null ? Number(v.starCount) : NaN;
+        if (Number.isFinite(sc) && sc > 0) {
+          h +=
+            '<div class="tt-sub" style="margin-top:.18rem;font-size:.74rem;line-height:1.4">' +
+            '<b style="color:#e2e8f0">' + String(Math.round(sc)) + ' étoiles</b> · Sandaya</div>';
+        }
+        if (v.openingSeason) {
+          h +=
+            '<div class="tt-sub" style="margin-top:.2rem;font-size:.72rem;opacity:.92">' +
+            '<span style="opacity:.75">Saison</span> · ' +
+            safeText(v.openingSeason) +
+            '</div>';
+        }
+        return h;
+      }
+
+      function sandayaPopupBodyHtml(v) {
+        if (!v || v.venueKind !== 'sandaya_camping') return '';
+        let h = '';
+        const sc = v.starCount != null ? Number(v.starCount) : NaN;
+        if (Number.isFinite(sc) && sc > 0) {
+          h += '<div style="margin-top:.4rem"><b>Classement</b> : ' + String(Math.round(sc)) + ' étoiles</div>';
+        }
+        if (v.department) {
+          h += '<div style="margin-top:.28rem;font-size:.88em;opacity:.9"><b>Destination (site)</b> : ' + safeText(v.department) + '</div>';
+        }
+        if (v.openingSeason) {
+          h +=
+            '<div style="margin-top:.28rem;font-size:.88em;opacity:.92">' +
+            '<b>Saison (indicative)</b> : ' +
+            safeText(v.openingSeason) +
+            '</div>';
+        }
+        return h;
+      }
+
       let regionMap = null;
       let cityCoordinates = null;
       let manifest = null;
@@ -132,12 +744,39 @@
       let cityLayer = null;
       let cityPointsLayer = null;
       let mtbLayer = null;
-      let bmxLayer = null;
+      let mtbDownhillLayer = null;
+      let pumptrackLayer = null;
+      let bmxTrackLayer = null;
+      let yellohVillageLayer = null;
+      let sandayaLayer = null;
       let selectedRegionCode = null;
       let regionsGeoJson = null;
       let regionFeatureByCode = null;
 
       function safeText(s) { return (s == null) ? '' : String(s); }
+
+      /**
+       * Ferme les tooltips liés à un layer ou à un groupe (LayerGroup / GeoJSON).
+       * Évite les infobulles « fantômes » quand on retire la couche ou qu’on recharge (sticky + remove).
+       */
+      function closeTooltipsRecursively(layer) {
+        if (!layer) return;
+        if (typeof layer.eachLayer === 'function') {
+          layer.eachLayer(closeTooltipsRecursively);
+          return;
+        }
+        if (typeof layer.closeTooltip === 'function') {
+          layer.closeTooltip();
+        }
+      }
+
+      /** Ferme tous les tooltips des layers accrochés à la carte (régions + contrôles ignorés). */
+      function closeAllTooltipsOnMap() {
+        if (!leafletMap || typeof leafletMap.eachLayer !== 'function') return;
+        leafletMap.eachLayer(function (ly) {
+          closeTooltipsRecursively(ly);
+        });
+      }
 
       function fmtEurApprox(v) {
         const n = Number(v);
@@ -163,6 +802,69 @@
         return COST_COLORS[k] || '#334155';
       }
 
+      function frPanelRefreshToggleUi() {
+        const shell = document.getElementById('frPanelShell');
+        const btn = document.getElementById('frPanelToggle');
+        const lab = btn && btn.querySelector('.panel-edge__label');
+        if (!shell || !btn || !lab) return;
+        const collapsed = shell.classList.contains('panel-shell--collapsed');
+        lab.textContent = collapsed ? 'Fiche' : '◄';
+        btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+        btn.title = collapsed ? 'Afficher la fiche région' : 'Replier la fiche (carte plus large)';
+      }
+
+      function setFrPanelCollapsed(collapsed) {
+        const shell = document.getElementById('frPanelShell');
+        if (!shell) return;
+        shell.classList.toggle('panel-shell--collapsed', !!collapsed);
+        frPanelRefreshToggleUi();
+        if (leafletMap && typeof leafletMap.invalidateSize === 'function') {
+          window.setTimeout(function () {
+            leafletMap.invalidateSize({ animate: false });
+          }, 230);
+        }
+      }
+
+      function expandFrPanel() {
+        setFrPanelCollapsed(false);
+      }
+
+      (function initFullscreen() {
+        const fsWrap = document.querySelector('.map-wrap');
+        const btnFs = document.getElementById('btnFullscreen');
+        if (!fsWrap || !btnFs) return;
+
+        function exitFs() {
+          fsWrap.classList.remove('fullscreen');
+          document.body.style.overflow = '';
+          btnFs.textContent = '⛶';
+          btnFs.title = 'Plein écran (Esc pour quitter)';
+          window.setTimeout(function () { if (leafletMap && leafletMap.invalidateSize) leafletMap.invalidateSize({ animate: false }); }, 100);
+          window.setTimeout(function () { if (leafletMap && leafletMap.invalidateSize) leafletMap.invalidateSize({ animate: false }); }, 300);
+        }
+
+        function enterFs() {
+          fsWrap.classList.add('fullscreen');
+          document.body.style.overflow = 'hidden';
+          btnFs.textContent = '✕';
+          btnFs.title = 'Quitter le plein écran (Esc)';
+          window.setTimeout(function () { if (leafletMap && leafletMap.invalidateSize) leafletMap.invalidateSize({ animate: false }); }, 100);
+          window.setTimeout(function () { if (leafletMap && leafletMap.invalidateSize) leafletMap.invalidateSize({ animate: false }); }, 300);
+        }
+
+        btnFs.addEventListener('click', function () {
+          if (fsWrap.classList.contains('fullscreen')) exitFs();
+          else enterFs();
+        });
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && fsWrap.classList.contains('fullscreen')) {
+            e.preventDefault();
+            exitFs();
+          }
+        });
+      })();
+
       function renderPanel(regionCode) {
         const data = regionMap && regionMap[regionCode];
         const panelEmpty = document.getElementById('panelEmpty');
@@ -171,6 +873,7 @@
           panelContent.style.display = 'none';
           panelEmpty.style.display = 'block';
           panelEmpty.textContent = 'Région non trouvée (' + regionCode + ').';
+          expandFrPanel();
           return;
         }
 
@@ -204,10 +907,12 @@
 
         panelEmpty.style.display = 'none';
         panelContent.style.display = 'block';
+        expandFrPanel();
       }
 
       function clearCityLayer() {
         if (cityLayer) {
+          closeTooltipsRecursively(cityLayer);
           cityLayer.clearLayers();
           leafletMap.removeLayer(cityLayer);
           cityLayer = null;
@@ -216,6 +921,7 @@
 
       function clearCityPointsLayer() {
         if (cityPointsLayer) {
+          closeTooltipsRecursively(cityPointsLayer);
           cityPointsLayer.clearLayers();
           leafletMap.removeLayer(cityPointsLayer);
           cityPointsLayer = null;
@@ -223,33 +929,344 @@
       }
 
       function clearVenueLayers() {
-        if (mtbLayer) { mtbLayer.clearLayers(); leafletMap.removeLayer(mtbLayer); mtbLayer = null; }
-        if (bmxLayer) { bmxLayer.clearLayers(); leafletMap.removeLayer(bmxLayer); bmxLayer = null; }
+        if (mtbLayer) {
+          closeTooltipsRecursively(mtbLayer);
+          mtbLayer.clearLayers();
+          leafletMap.removeLayer(mtbLayer);
+          mtbLayer = null;
+        }
+        if (mtbDownhillLayer) {
+          closeTooltipsRecursively(mtbDownhillLayer);
+          mtbDownhillLayer.clearLayers();
+          leafletMap.removeLayer(mtbDownhillLayer);
+          mtbDownhillLayer = null;
+        }
+        if (pumptrackLayer) {
+          closeTooltipsRecursively(pumptrackLayer);
+          pumptrackLayer.clearLayers();
+          leafletMap.removeLayer(pumptrackLayer);
+          pumptrackLayer = null;
+        }
+        if (bmxTrackLayer) {
+          closeTooltipsRecursively(bmxTrackLayer);
+          bmxTrackLayer.clearLayers();
+          leafletMap.removeLayer(bmxTrackLayer);
+          bmxTrackLayer = null;
+        }
+        if (yellohVillageLayer) {
+          closeTooltipsRecursively(yellohVillageLayer);
+          yellohVillageLayer.clearLayers();
+          leafletMap.removeLayer(yellohVillageLayer);
+          yellohVillageLayer = null;
+        }
+        if (sandayaLayer) {
+          closeTooltipsRecursively(sandayaLayer);
+          sandayaLayer.clearLayers();
+          leafletMap.removeLayer(sandayaLayer);
+          sandayaLayer = null;
+        }
       }
 
-      function buildVenueLayer(items, style, popupFn) {
+      function listYellohVillageCampings() {
+        const a = venues && venues.yellohVillageCampings;
+        return Array.isArray(a) ? a : [];
+      }
+
+      function listSandayaCampings() {
+        const a = venues && venues.sandayaCampings;
+        return Array.isArray(a) ? a : [];
+      }
+
+      function listPumptracks() {
+        const p = venues && venues.pumptracks;
+        if (Array.isArray(p) && p.length) return p;
+        return [];
+      }
+
+      function listBmxPistes() {
+        return venues && Array.isArray(venues.bmxTracks) ? venues.bmxTracks : [];
+      }
+
+      /** Bike park / site VTT « montagne » : tags OSM mtb:type (DH, freeride, bikepark) ou mtb:lift=yes. */
+      function venueIsMtbDownhill(v) {
+        if (!v) return false;
+        if (v.mtbProfile === 'downhill') return true;
+        const mt = String(v.mtbType || '').toLowerCase().trim();
+        if (mt === 'downhill' || mt === 'freeride' || mt === 'bikepark') return true;
+        if (v.mtbLift === 'yes') return true;
+        return false;
+      }
+
+      function listMtbGeneral() {
+        const arr = venues && Array.isArray(venues.mtbBikeParks) ? venues.mtbBikeParks : [];
+        return arr.filter(function (x) { return !venueIsMtbDownhill(x); });
+      }
+
+      function mtbDownhillCoordKey(v) {
+        const lat = Number(v.lat), lng = Number(v.lng);
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+        return Math.round(lat * 1e4) / 1e4 + ',' + Math.round(lng * 1e4) / 1e4;
+      }
+
+      /** OSM + liste stations géocodées (Nominatim), sans doublon ~100 m */
+      function listMtbDownhill() {
+        const arr = venues && Array.isArray(venues.mtbBikeParks) ? venues.mtbBikeParks : [];
+        const osm = arr.filter(venueIsMtbDownhill);
+        const cur = venues && Array.isArray(venues.mtbDownhillCurated) ? venues.mtbDownhillCurated : [];
+        const seen = new Set();
+        const out = [];
+        for (let i = 0; i < osm.length; i++) {
+          const k = mtbDownhillCoordKey(osm[i]);
+          if (k) seen.add(k);
+          out.push(osm[i]);
+        }
+        for (let j = 0; j < cur.length; j++) {
+          const k = mtbDownhillCoordKey(cur[j]);
+          if (!k || seen.has(k)) continue;
+          seen.add(k);
+          out.push(cur[j]);
+        }
+        return out;
+      }
+
+      /** Infobulle VTT descente : infos utiles seulement (pas de jargon technique). */
+      function mtbDownhillTooltipDetailHtml(v) {
+        if (v.source === 'curated_nominatim') return '';
+        const parts = [];
+        const mt = String(v.mtbType || '').toLowerCase().trim();
+        if (mt === 'downhill') parts.push('Descente');
+        else if (mt === 'freeride') parts.push('Freeride');
+        else if (mt === 'bikepark') parts.push('Bike park');
+        else if (v.mtbType) parts.push(safeText(v.mtbType));
+        if (v.mtbLift === 'yes') parts.push('Remontées');
+        if (!parts.length) return '';
+        return '<div class="tt-sub" style="font-size:.72rem;color:var(--text-dim);margin-top:.25rem">' + parts.join(' · ') + '</div>';
+      }
+
+      /** Commune ou région, sans étiquette « Ville : » (infobulle allégée). */
+      function venueTooltipLocalityLineOnly(v) {
+        const ville = venueVilleLineText(v);
+        if (ville) return '<div class="tt-city">' + ville + '</div>';
+        const reg = venueRegionName(v);
+        if (reg) return '<div class="tt-region">' + reg + '</div>';
+        const lat = Number(v.lat), lng = Number(v.lng);
+        if (Number.isFinite(lat) && Number.isFinite(lng)) {
+          return '<div class="tt-region"><span style="opacity:.85;font-size:.78rem">' + lat.toFixed(3) + ', ' + lng.toFixed(3) + '</span></div>';
+        }
+        return '';
+      }
+
+      function yellohBadgesLineHtml(v) {
+        if (v.source !== 'Yelloh! GraphQL') return '';
+        const bits = [];
+        if (v.isNew) bits.push('Nouveau');
+        if (v.isResidence) bits.push('Résidence');
+        if (v.spotlighted) bits.push('En vedette');
+        if (!bits.length) return '';
+        let h = '<div style="font-size:.76rem;opacity:.9;margin-top:.35rem">';
+        for (let i = 0; i < bits.length; i++) {
+          h += '<span style="display:inline-block;margin:0 .35rem .2rem 0;padding:.12rem .45rem;border-radius:8px;background:rgba(0,212,170,.14);border:1px solid rgba(0,212,170,.32)">' +
+            safeText(bits[i]) + '</span>';
+        }
+        h += '</div>';
+        return h;
+      }
+
+      /** Infobulle : ligne « espace aquatique » courte. */
+      function yellohSwimmingTooltipLineHtml(v) {
+        if (v.source !== 'Yelloh! GraphQL' || !v.amenitiesByCategory || typeof v.amenitiesByCategory !== 'object') return '';
+        const block = v.amenitiesByCategory.swimming;
+        if (!block || !block.items || !block.items.length) return '';
+        const max = 4;
+        const slice = block.items.slice(0, max);
+        const extra = block.items.length > max ? ' (+' + (block.items.length - max) + ')' : '';
+        return (
+          '<div class="tt-sub" style="margin-top:.28rem;font-size:.72rem;line-height:1.35;color:var(--text-dim)">' +
+          '<span style="color:var(--text);font-weight:600">' +
+          safeText(block.label || 'Espace aquatique') +
+          '</span><br>' +
+          slice.map(function (x) { return safeText(x); }).join(' · ') +
+          (extra ? '<span style="opacity:.82">' + extra + '</span>' : '') +
+          '</div>'
+        );
+      }
+
+      /** Corps d’infobulle (Yelloh! GraphQL) — note, étoiles, saison, badges, aquatique. */
+      function yellohGraphqlTooltipEnrichedHtml(v) {
+        if (v.source !== 'Yelloh! GraphQL') return '';
+        let h = '';
+        const noteVal = yellohSatisfactionNumber(v);
+        if (Number.isFinite(noteVal)) {
+          h +=
+            '<div class="tt-sub" style="margin-top:.2rem;font-size:.8rem;line-height:1.35">' +
+            '<b style="color:var(--accent)">Note satisfaction</b> · ' +
+            safeText(String(v.note).trim()) +
+            '</div>';
+        }
+        const sc = v.starCount != null ? Number(v.starCount) : NaN;
+        if (Number.isFinite(sc) && sc > 0) {
+          h +=
+            '<div class="tt-sub" style="margin-top:.18rem;font-size:.74rem;line-height:1.4">' +
+            '<b style="color:#e2e8f0">' +
+            String(Math.round(sc)) +
+            ' étoiles</b></div>';
+        }
+        if (v.openingSeason) {
+          h +=
+            '<div class="tt-sub" style="margin-top:.2rem;font-size:.72rem;opacity:.92">' +
+            '<span style="opacity:.75">Saison</span> · ' +
+            safeText(v.openingSeason) +
+            '</div>';
+        }
+        h += yellohBadgesLineHtml(v);
+        h += yellohSwimmingTooltipLineHtml(v);
+        return h;
+      }
+
+      function yellohAmenitiesBlockHtml(v) {
+        if (v.source !== 'Yelloh! GraphQL' || !v.amenitiesByCategory || typeof v.amenitiesByCategory !== 'object') return '';
+        const order = ['swimming', 'facilities', 'children_clubs', 'sports_activities_on_site', 'sports_activities'];
+        let html = '';
+        for (let i = 0; i < order.length; i++) {
+          const key = order[i];
+          const block = v.amenitiesByCategory[key];
+          if (!block || !block.items || !block.items.length) continue;
+          const lab = block.label || key;
+          html += '<div style="margin-top:.5rem"><span style="font-weight:600;font-size:.88em">' + safeText(lab) + '</span>' +
+            '<ul style="margin:.12rem 0 0 1.05rem;padding:0;list-style:disc;font-size:.82em;line-height:1.38;opacity:.93">';
+          for (let j = 0; j < block.items.length; j++) {
+            html += '<li>' + safeText(block.items[j]) + '</li>';
+          }
+          html += '</ul></div>';
+        }
+        return html;
+      }
+
+      /** Image seule (sans wrapper layout) pour bandeau 30 % — GraphQL Yelloh!. */
+      function yellohGraphqlPopupImageInnerHtml(v) {
+        if (v.source !== 'Yelloh! GraphQL' || !v.image || !/^https?:\/\//i.test(String(v.image).trim())) return '';
+        const src = safeText(v.image.trim());
+        return '<img src="' + src + '" alt="">';
+      }
+
+      /** Détail popup campings Yelloh! (données GraphQL enrichies). opts.omitImage : ne pas réinjecter la photo (déjà en tête). */
+      function yellohGraphqlPopupBodyHtml(v, opts) {
+        if (v.source !== 'Yelloh! GraphQL') return '';
+        const omitImage = opts && opts.omitImage;
+        let h = '';
+        const sc = v.starCount != null ? Number(v.starCount) : NaN;
+        if (Number.isFinite(sc) && sc > 0) {
+          h += '<div style="margin-top:.4rem"><b>Classement</b> : ' + String(Math.round(sc)) + ' étoiles</div>';
+        }
+        if (Number.isFinite(yellohSatisfactionNumber(v))) {
+          h +=
+            '<div style="margin-top:.32rem"><b>Note satisfaction</b> : ' +
+            safeText(String(v.note).trim()) +
+            '</div>';
+        }
+        if (v.openingSeason) {
+          h += '<div style="margin-top:.28rem;font-size:.88em;opacity:.92"><b>Saison (indicative)</b> : ' + safeText(v.openingSeason) + '</div>';
+        }
+        h += yellohBadgesLineHtml(v);
+        if (!omitImage && v.image && /^https?:\/\//i.test(String(v.image).trim())) {
+          const src = safeText(v.image.trim());
+          h += '<div style="margin-top:.4rem;max-height:150px;overflow:hidden;border-radius:10px;border:1px solid rgba(148,163,184,.35)">' +
+            '<img src="' + src + '" alt="" style="width:100%;height:auto;display:block;object-fit:cover;max-height:150px"></div>';
+        }
+        h += yellohAmenitiesBlockHtml(v);
+        return h;
+      }
+
+      function buildVenueLayer(items, circleStyle, popupFn, tooltipFn, tooltipBindOptions) {
+        const baseTip = {
+          permanent: false,
+          sticky: false,
+          direction: 'top',
+          opacity: 1,
+          className: 'venue-tooltip'
+        };
+        const tipOpts = tooltipBindOptions && typeof tooltipBindOptions === 'object'
+          ? Object.assign({}, baseTip, tooltipBindOptions)
+          : baseTip;
         const markers = [];
         (items || []).forEach(v => {
           const lat = Number(v.lat), lng = Number(v.lng);
           if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
-          const m = L.circleMarker([lat, lng], style);
+          const m = L.circleMarker([lat, lng], circleStyle);
           const html = popupFn(v);
+          const tip = (typeof tooltipFn === 'function') ? tooltipFn(v) : '';
           if (html) m.bindPopup(html);
+          if (tip) {
+            m.bindTooltip(tip, tipOpts);
+            if (html) {
+              m.on('popupopen', function () {
+                if (typeof this.closeTooltip === 'function') this.closeTooltip();
+              });
+            }
+          }
           markers.push(m);
         });
         return L.layerGroup(markers);
       }
 
-      function isVenueInSelectedRegion(v) {
-        if (!regionsGeoJson || !regionFeatureByCode || !selectedRegionCode) return true;
-        const feat = regionFeatureByCode[selectedRegionCode];
-        if (!feat) return true;
+      /** Ville / commune / libellé lieu brut si présent dans les données */
+      function venueLocalityText(v) {
+        const city = v.city != null && String(v.city).trim() ? safeText(v.city) : '';
+        if (city) return city;
+        const alt = v.place || v.locality || v.commune || v.town || v.village || v.municipality;
+        if (alt != null && String(alt).trim()) return safeText(alt);
+        return '';
+      }
+
+      /** Région métropolitaine contenant le point (nom lisible) */
+      function venueRegionName(v) {
+        if (!regionFeatureByCode || typeof d3 === 'undefined' || typeof d3.geoContains !== 'function') return '';
         const lat = Number(v.lat), lng = Number(v.lng);
-        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return false;
-        // d3.geoContains expects [lng, lat]
-        return typeof d3 !== 'undefined' && typeof d3.geoContains === 'function'
-          ? d3.geoContains(feat, [lng, lat])
-          : true;
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return '';
+        const pt = [lng, lat];
+        for (const code of Object.keys(regionFeatureByCode)) {
+          const feat = regionFeatureByCode[code];
+          if (feat && d3.geoContains(feat, pt)) {
+            const rm = regionMap && regionMap[code];
+            if (rm && rm.nameFr) return safeText(rm.nameFr);
+            const nom = feat.properties && feat.properties.nom;
+            if (nom) return safeText(nom);
+            return 'Région ' + code;
+          }
+        }
+        return '';
+      }
+
+      /** Ville / commune (sans la région ni les coords) — pour libellé « Ville : … » */
+      function venueVilleLineText(v) {
+        return venueLocalityText(v);
+      }
+
+      /**
+       * Bloc localisation pour popups lieux : commune et/ou région si connues,
+       * sinon coordonnées — jamais de « Ville : — » vide.
+       */
+      function venuePopupLocationHtml(v) {
+        const ville = venueVilleLineText(v);
+        const reg = venueRegionName(v);
+        const lines = [];
+        if (ville) lines.push(ville);
+        if (reg) lines.push(reg);
+        if (!lines.length) {
+          const lat = Number(v.lat), lng = Number(v.lng);
+          if (Number.isFinite(lat) && Number.isFinite(lng)) {
+            lines.push(lat.toFixed(3) + ', ' + lng.toFixed(3));
+          }
+        }
+        if (!lines.length) return '';
+        let inner = '';
+        for (let i = 0; i < lines.length; i++) {
+          const sty = i === 0
+            ? 'font-weight:600;color:#0f172a;'
+            : 'font-size:92%;opacity:.85;color:#475569;';
+          inner += (i ? '<br>' : '') + '<span style="' + sty + '">' + lines[i] + '</span>';
+        }
+        return '<div style="margin-top:.45rem;padding-top:.4rem;border-top:1px solid #e2e8f0;font-size:.88rem;line-height:1.45;">' + inner + '</div>';
       }
 
       function applyCityPointsFilter() {
@@ -259,11 +1276,8 @@
         const showCityPoints = !!document.getElementById('filterCityPoints')?.checked;
         if (!showCityPoints) return;
 
-        const restrictToRegion = !!document.getElementById('filterSelectedRegion')?.checked;
-
         const markers = [];
         Object.keys(regionMap).forEach(regionCode => {
-          if (restrictToRegion && selectedRegionCode && regionCode !== selectedRegionCode) return;
           const r = regionMap[regionCode];
           const cities = Array.isArray(r.topCities) ? r.topCities : [];
           cities.forEach(c => {
@@ -275,13 +1289,7 @@
             const popup = '<b>' + safeText(c.name) + '</b><br>' + safeText(r.nameFr) +
               '<br>Immobilier : ' + (homePerM2 != null ? fmtEurPerM2(homePerM2) : fmtEurApprox(liv.medianHomeValue));
 
-            const m = L.circleMarker([ll[0], ll[1]], {
-              radius: 6.5,
-              color: '#0b1220',
-              weight: 2,
-              fillColor: '#7dd3fc',
-              fillOpacity: 0.95
-            }).bindPopup(popup);
+            const m = L.circleMarker([ll[0], ll[1]], MAP_MARKER.cityPoints).bindPopup(popup);
 
             m.on('click', function () {
               // Select the region (and refresh filters/panel)
@@ -312,33 +1320,212 @@
         if (!leafletMap || !venues) return;
 
         const showMtb = !!document.getElementById('filterMtb')?.checked;
-        const showBmx = !!document.getElementById('filterBmx')?.checked;
-        const restrictToRegion = !!document.getElementById('filterSelectedRegion')?.checked;
+        const showMtbDh = !!document.getElementById('filterMtbDownhill')?.checked;
+        const showPump = !!document.getElementById('filterPumptrack')?.checked;
+        const showBmxPiste = !!document.getElementById('filterBmxTrack')?.checked;
+        const showYelloh = !!document.getElementById('filterYellohVillage')?.checked;
+        const showSandaya = !!document.getElementById('filterSandaya')?.checked;
 
-        if (showMtb && Array.isArray(venues.mtbBikeParks) && venues.mtbBikeParks.length) {
-          const items = restrictToRegion ? venues.mtbBikeParks.filter(isVenueInSelectedRegion) : venues.mtbBikeParks;
+        if (showMtb && listMtbGeneral().length) {
+          const items = listMtbGeneral();
           mtbLayer = buildVenueLayer(
             items,
-            { radius: 5.5, color: '#0b1220', weight: 1.5, fillColor: '#22c55e', fillOpacity: 0.85 },
+            MAP_MARKER.mtbGeneral,
             (v) => {
               const name = safeText(v.name || 'Bike park');
               const url = v.url || v.osmUrl;
-              return '<b>VTT</b> · ' + name + (url ? ('<br><a href="' + url + '" target="_blank" rel="noopener">OpenStreetMap</a>') : '');
+              let s = '<strong style="font-size:1.02em;color:#0f172a;">' + name + '</strong>';
+              s += venuePopupLocationHtml(v);
+              if (url) s += '<div style="margin-top:.5rem;"><a href="' + url + '" target="_blank" rel="noopener" style="color:#0d9488;font-size:.86rem;">Voir sur OpenStreetMap</a></div>';
+              return s;
+            },
+            (v) => {
+              const name = safeText(v.name || 'Bike park');
+              return '<div class="tt-kind">VTT · Bike park</div><div class="tt-name">' + name + '</div>' +
+                venueTooltipLocalityLineOnly(v);
             }
           ).addTo(leafletMap);
         }
 
-        if (showBmx && Array.isArray(venues.bmxTracks) && venues.bmxTracks.length) {
-          const items = restrictToRegion ? venues.bmxTracks.filter(isVenueInSelectedRegion) : venues.bmxTracks;
-          bmxLayer = buildVenueLayer(
+        if (showMtbDh && listMtbDownhill().length) {
+          const items = listMtbDownhill();
+          mtbDownhillLayer = buildVenueLayer(
             items,
-            { radius: 5.5, color: '#0b1220', weight: 1.5, fillColor: '#ef4444', fillOpacity: 0.85 },
+            MAP_MARKER.mtbDownhill,
+            (v) => {
+              const name = safeText(v.name || 'Bike park descente');
+              const url = v.url || v.osmUrl;
+              const curated = v.source === 'curated_nominatim';
+              let s = '<strong style="font-size:1.02em;color:#0f172a;">' + name + '</strong>';
+              s += venuePopupLocationHtml(v);
+              if (!curated && (v.mtbType || v.mtbLift === 'yes')) {
+                s += '<div style="margin-top:.35rem;font-size:.78rem;color:#64748b;">';
+                if (v.mtbType) s += 'mtb:type=<b>' + safeText(v.mtbType) + '</b>';
+                if (v.mtbLift === 'yes') s += (v.mtbType ? ' · ' : '') + 'mtb:lift=<b>yes</b>';
+                s += '</div>';
+              }
+              if (url) {
+                const lab = curated ? 'Site ou infos' : 'Voir sur OpenStreetMap';
+                s += '<div style="margin-top:.5rem;"><a href="' + url + '" target="_blank" rel="noopener" style="color:#0d9488;font-size:.86rem;">' + lab + '</a></div>';
+              }
+              return s;
+            },
+            (v) => {
+              const name = safeText(v.name || 'Bike park descente');
+              return '<div class="tt-kind">VTT · Descente montagne</div><div class="tt-name">' + name + '</div>' +
+                mtbDownhillTooltipDetailHtml(v) +
+                venueTooltipLocalityLineOnly(v);
+            }
+          ).addTo(leafletMap);
+        }
+
+        if (showPump && listPumptracks().length) {
+          const items = listPumptracks();
+          pumptrackLayer = buildVenueLayer(
+            items,
+            MAP_MARKER.pumptrack,
             (v) => {
               const name = safeText(v.name || 'Pumptrack');
               const url = v.url || v.osmUrl;
-              return '<b>BMX pumptrack</b> · ' + name + (url ? ('<br><a href="' + url + '" target="_blank" rel="noopener">OpenStreetMap</a>') : '');
+              let s = '<strong style="font-size:1.02em;color:#0f172a;">' + name + '</strong>';
+              s += venuePopupLocationHtml(v);
+              if (url) s += '<div style="margin-top:.5rem;"><a href="' + url + '" target="_blank" rel="noopener" style="color:#0d9488;font-size:.86rem;">Voir sur OpenStreetMap</a></div>';
+              return s;
+            },
+            (v) => {
+              const name = safeText(v.name || 'Pumptrack');
+              return '<div class="tt-kind">Pumptrack</div><div class="tt-name">' + name + '</div>' +
+                venueTooltipLocalityLineOnly(v);
             }
           ).addTo(leafletMap);
+        }
+
+        if (showBmxPiste && listBmxPistes().length) {
+          const items = listBmxPistes();
+          bmxTrackLayer = buildVenueLayer(
+            items,
+            MAP_MARKER.bmx,
+            (v) => {
+              const name = safeText(v.name || 'Piste BMX');
+              const url = v.url || v.osmUrl;
+              let s = '<strong style="font-size:1.02em;color:#0f172a;">' + name + '</strong>';
+              s += venuePopupLocationHtml(v);
+              if (url) s += '<div style="margin-top:.5rem;"><a href="' + url + '" target="_blank" rel="noopener" style="color:#0d9488;font-size:.86rem;">Voir sur OpenStreetMap</a></div>';
+              return s;
+            },
+            (v) => {
+              const name = safeText(v.name || 'Piste BMX');
+              return '<div class="tt-kind">Piste BMX</div><div class="tt-name">' + name + '</div>' +
+                venueTooltipLocalityLineOnly(v);
+            }
+          ).addTo(leafletMap);
+        }
+
+        if (showYelloh && listYellohVillageCampings().length) {
+          const items = listYellohVillageCampings();
+          const noteScale = computeYellohNoteScale(items);
+          const baseTip = {
+            permanent: false,
+            sticky: false,
+            direction: 'top',
+            opacity: 1,
+            className: 'venue-tooltip'
+          };
+          const tipOpts = Object.assign({}, baseTip, { className: 'venue-tooltip venue-tooltip--camping' });
+          const markers = [];
+          for (let yi = 0; yi < items.length; yi++) {
+            const v = items[yi];
+            const lat = Number(v.lat), lng = Number(v.lng);
+            if (!Number.isFinite(lat) || !Number.isFinite(lng)) continue;
+            const style = yellohCircleStyleForVenue(v, noteScale);
+            const m = L.circleMarker([lat, lng], style);
+            const name = safeText(v.name || 'Camping');
+            const url = v.url || v.osmUrl;
+            const official = v.source === 'Yelloh! GraphQL';
+            let headerY = '<b>Camping · Yelloh! Village</b><br>';
+            if (!official) {
+              headerY +=
+                '<span style="font-size:.88em;opacity:.92">Réseau Yelloh! Village — point OpenStreetMap (operator / brand).</span><br>';
+            }
+            headerY += name + '<br>' + venuePopupLocationHtml(v);
+            let linkY = '';
+            if (url) {
+              const lab = official ? 'Fiche sur yellohvillage.fr' : 'Site / fiche OSM';
+              linkY = '<br><a href="' + url + '" target="_blank" rel="noopener">' + lab + '</a>';
+            }
+            let s;
+            let popupOpts = null;
+            if (official) {
+              const imgInner = yellohGraphqlPopupImageInnerHtml(v);
+              if (imgInner) {
+                const bodyBlock = yellohGraphqlPopupBodyHtml(v, { omitImage: true });
+                s =
+                  '<div class="yelloh-popup yelloh-popup--has-image">' +
+                  '<div class="yelloh-popup__media">' + imgInner + '</div>' +
+                  '<div class="yelloh-popup__main">' + headerY + bodyBlock + linkY + '</div></div>';
+                popupOpts = { maxWidth: 380, className: 'leaflet-popup-yelloh' };
+              } else {
+                s = headerY + yellohGraphqlPopupBodyHtml(v) + linkY;
+              }
+            } else {
+              s = headerY + linkY;
+            }
+            if (popupOpts) m.bindPopup(s, popupOpts);
+            else m.bindPopup(s);
+            const extra = official ? yellohGraphqlTooltipEnrichedHtml(v) : '';
+            const tip =
+              '<div class="tt-kind">Camping · Yelloh! Village</div><div class="tt-name">' + name + '</div>' +
+              venueTooltipLocalityLineOnly(v) +
+              extra;
+            m.bindTooltip(tip, tipOpts);
+            m.on('popupopen', function () {
+              if (typeof this.closeTooltip === 'function') this.closeTooltip();
+            });
+            markers.push(m);
+          }
+          yellohVillageLayer = L.layerGroup(markers).addTo(leafletMap);
+        }
+
+        if (showSandaya && listSandayaCampings().length) {
+          const items = listSandayaCampings();
+          const baseTip = {
+            permanent: false,
+            sticky: false,
+            direction: 'top',
+            opacity: 1,
+            className: 'venue-tooltip'
+          };
+          const tipOpts = Object.assign({}, baseTip, { className: 'venue-tooltip venue-tooltip--camping' });
+          const markers = [];
+          for (let si = 0; si < items.length; si++) {
+            const v = items[si];
+            const lat = Number(v.lat), lng = Number(v.lng);
+            if (!Number.isFinite(lat) || !Number.isFinite(lng)) continue;
+            const style = sandayaCircleStyle(v);
+            const m = L.circleMarker([lat, lng], style);
+            const name = safeText(v.name || 'Camping');
+            const url = v.url || '';
+            let s =
+              '<b>Camping · Sandaya</b><br>' +
+              name +
+              '<br>' +
+              venuePopupLocationHtml(v);
+            s += sandayaPopupBodyHtml(v);
+            if (url) {
+              s += '<br><a href="' + safeText(url) + '" target="_blank" rel="noopener">Fiche sur sandaya.fr</a>';
+            }
+            m.bindPopup(s);
+            const tip =
+              '<div class="tt-kind">Camping · Sandaya</div><div class="tt-name">' + name + '</div>' +
+              venueTooltipLocalityLineOnly(v) +
+              sandayaTooltipExtraHtml(v);
+            m.bindTooltip(tip, tipOpts);
+            m.on('popupopen', function () {
+              if (typeof this.closeTooltip === 'function') this.closeTooltip();
+            });
+            markers.push(m);
+          }
+          sandayaLayer = L.layerGroup(markers).addTo(leafletMap);
         }
       }
 
@@ -356,13 +1543,7 @@
           const homePerM2 = liv.homePriceEurPerM2 ?? liv.medianPriceEurPerM2 ?? null;
           const popup = '<b>' + safeText(c.name) + '</b><br>' + safeText(data.nameFr) +
             '<br>Immobilier : ' + (homePerM2 != null ? fmtEurPerM2(homePerM2) : fmtEurApprox(liv.medianHomeValue));
-          markers.push(L.circleMarker([ll[0], ll[1]], {
-            radius: 7,
-            color: '#0b1220',
-            weight: 2,
-            fillColor: '#7c3aed',
-            fillOpacity: 0.9
-          }).bindPopup(popup));
+          markers.push(L.circleMarker([ll[0], ll[1]], MAP_MARKER.cityRegion).bindPopup(popup));
         });
 
         if (!markers.length) return;
@@ -373,7 +1554,12 @@
         regionLayer.eachLayer(l => {
           regionLayer.resetStyle(l);
         });
-        layer.setStyle({ weight: 3, color: '#e2e8f0', fillOpacity: 0.75 });
+        layer.setStyle({
+          weight: 2.5,
+          color: '#00d4aa',
+          fillColor: 'rgba(0, 212, 170, 0)',
+          fillOpacity: 0
+        });
         selectedRegionCode = regionCode;
         renderPanel(regionCode);
         drawCities(regionCode);
@@ -392,8 +1578,10 @@
         }
         leafletMap = L.map('leafletMap', {
           zoomControl: true,
-          scrollWheelZoom: true
+          scrollWheelZoom: true,
+          attributionControl: false
         });
+        L.control.attribution({ position: 'bottomleft' }).addTo(leafletMap);
 
         const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 19,
@@ -410,15 +1598,23 @@
           { position: 'topright' }
         ).addTo(leafletMap);
 
-        function styleFeature(f) {
-          const code = String(f.properties && f.properties.code);
-          const data = regionMap && regionMap[code];
-          const cost = data && data.stats && data.stats.cout;
+        L.control
+          .scale({
+            position: 'bottomright',
+            maxWidth: 140,
+            metric: true,
+            imperial: false,
+            updateWhenIdle: true
+          })
+          .addTo(leafletMap);
+
+        /** Contours des régions uniquement (pas de voile / overlay sur le fond carte). */
+        function styleFeature() {
           return {
-            color: '#0b1220',
+            color: 'rgba(148, 163, 184, 0.35)',
             weight: 1,
-            fillColor: costColor(cost),
-            fillOpacity: 0.55
+            fillColor: 'rgba(30, 41, 59, 0)',
+            fillOpacity: 0
           };
         }
 
@@ -427,45 +1623,22 @@
           onEachFeature: function (feature, layer) {
             const code = String(feature.properties && feature.properties.code);
             const nom = safeText(feature.properties && feature.properties.nom);
-            layer.bindTooltip(nom + ' (' + code + ')', { sticky: true, direction: 'top', opacity: 0.95 });
+            layer.bindTooltip(
+              '<div class="tt-kind">Région</div><div class="tt-name">' + nom + '</div>',
+              { sticky: false, direction: 'top', opacity: 1, className: 'venue-tooltip' }
+            );
             layer.on('click', function () { highlightRegion(layer, code); });
           }
         }).addTo(leafletMap);
 
+        leafletMap.on('zoomstart', function () {
+          closeAllTooltipsOnMap();
+        });
+
         leafletMap.fitBounds(regionLayer.getBounds(), { padding: [18, 18] });
-      }
-
-      function initD3Mini(geojson) {
-        const svg = d3.select('#d3Mini');
-        const w = 240, h = 220;
-        svg.attr('viewBox', '0 0 ' + w + ' ' + h);
-        svg.selectAll('*').remove();
-
-        const projection = d3.geoMercator().fitSize([w, h], geojson);
-        const path = d3.geoPath(projection);
-
-        svg.append('rect').attr('x', 0).attr('y', 0).attr('width', w).attr('height', h).attr('fill', 'transparent');
-
-        svg.selectAll('path')
-          .data(geojson.features)
-          .enter()
-          .append('path')
-          .attr('d', path)
-          .attr('fill', d => {
-            const code = String(d.properties && d.properties.code);
-            const data = regionMap && regionMap[code];
-            const cost = data && data.stats && data.stats.cout;
-            return costColor(cost);
-          })
-          .attr('stroke', 'rgba(226,232,240,0.25)')
-          .attr('stroke-width', 0.7)
-          .style('cursor', 'pointer')
-          .on('click', function (ev, d) {
-            const code = String(d.properties && d.properties.code);
-            renderPanel(code);
-            drawCities(code);
-            // Leaflet highlight is handled separately; keep D3 as quick selector
-          });
+        window.setTimeout(function () {
+          if (leafletMap && leafletMap.invalidateSize) leafletMap.invalidateSize({ animate: false });
+        }, 100);
       }
 
       Promise.all([
@@ -480,19 +1653,29 @@
         const geoPath = (manifest.geo && manifest.geo.regionsGeoJson) ? manifest.geo.regionsGeoJson : 'geo/regions-fr.geojson';
         return fetch(geoPath, { cache: 'no-cache' }).then(r => r.json()).then(geojson => {
           initLeaflet(geojson);
-          initD3Mini(geojson);
+          const frPanelToggle = document.getElementById('frPanelToggle');
+          const frPanelShell = document.getElementById('frPanelShell');
+          if (frPanelToggle && frPanelShell) {
+            frPanelToggle.addEventListener('click', function () {
+              setFrPanelCollapsed(!frPanelShell.classList.contains('panel-shell--collapsed'));
+            });
+            frPanelRefreshToggleUi();
+          }
           // Venue filters
           const filterCityPoints = document.getElementById('filterCityPoints');
           const filterMtb = document.getElementById('filterMtb');
-          const filterBmx = document.getElementById('filterBmx');
-          const filterSelectedRegion = document.getElementById('filterSelectedRegion');
+          const filterMtbDownhill = document.getElementById('filterMtbDownhill');
+          const filterPumptrack = document.getElementById('filterPumptrack');
+          const filterBmxTrack = document.getElementById('filterBmxTrack');
+          const filterYellohVillage = document.getElementById('filterYellohVillage');
+          const filterSandaya = document.getElementById('filterSandaya');
           if (filterCityPoints) filterCityPoints.addEventListener('change', applyCityPointsFilter);
           if (filterMtb) filterMtb.addEventListener('change', applyVenueFilters);
-          if (filterBmx) filterBmx.addEventListener('change', applyVenueFilters);
-          if (filterSelectedRegion) filterSelectedRegion.addEventListener('change', function () {
-            applyVenueFilters();
-            applyCityPointsFilter();
-          });
+          if (filterMtbDownhill) filterMtbDownhill.addEventListener('change', applyVenueFilters);
+          if (filterPumptrack) filterPumptrack.addEventListener('change', applyVenueFilters);
+          if (filterBmxTrack) filterBmxTrack.addEventListener('change', applyVenueFilters);
+          if (filterYellohVillage) filterYellohVillage.addEventListener('change', applyVenueFilters);
+          if (filterSandaya) filterSandaya.addEventListener('change', applyVenueFilters);
           applyVenueFilters();
           applyCityPointsFilter();
         });
@@ -501,6 +1684,24 @@
         const panelEmpty = document.getElementById('panelEmpty');
         panelEmpty.textContent = 'Erreur de chargement. Ouvre cette page via un serveur local (npm start).';
       });
+    })();
+  </script>
+  <script>
+    (function () {
+      var dlg = document.getElementById('frInfoDialog');
+      if (!dlg) return;
+      function openDlg() {
+        if (typeof dlg.showModal === 'function') dlg.showModal();
+      }
+      function closeDlg() {
+        if (typeof dlg.close === 'function') dlg.close();
+      }
+      ['frInfoOpenMap', 'frInfoOpenFooter'].forEach(function (id) {
+        var btn = document.getElementById(id);
+        if (btn) btn.addEventListener('click', openDlg);
+      });
+      var closeBtn = document.getElementById('frInfoDialogClose');
+      if (closeBtn) closeBtn.addEventListener('click', closeDlg);
     })();
   </script>
 </body>

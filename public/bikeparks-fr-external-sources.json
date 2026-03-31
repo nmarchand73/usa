@@ -1,0 +1,105 @@
+{
+  "title": "Sources hors OpenStreetMap — bike parks VTT / descente (France)",
+  "updated": "2026-03-31",
+  "note": "Liste indicative pour enrichissement manuel, veille ou citation. Pas d’API propriétaire intégrée — respecter CGU et droits des sites. OSM reste la base géolocalisée du projet.",
+  "sources": [
+    {
+      "id": "kelbikepark",
+      "type": "annuaire",
+      "title": "KelBikePark — observatoire et classement des bike parks VTT (France)",
+      "url": "https://www.kelbikepark.fr/fr/classement-des-bike-parks-vtt",
+      "lang": "fr"
+    },
+    {
+      "id": "utcawa-landing",
+      "type": "annuaire",
+      "title": "KelBikePark — accueil et recherche par critères",
+      "url": "https://www.kelbikepark.fr/fr",
+      "lang": "fr"
+    },
+    {
+      "id": "ffc-sites-vtt",
+      "type": "institution",
+      "title": "Fédération française de cyclisme — Sites VTT-FFC (carte et labellisation)",
+      "url": "https://sitesvtt.ffc.fr/",
+      "lang": "fr"
+    },
+    {
+      "id": "ffc-velo-vtt",
+      "type": "institution",
+      "title": "FFC — discipline VTT et randonnées",
+      "url": "https://velo.ffc.fr/disciplines-cyclistes/vtt/",
+      "lang": "fr"
+    },
+    {
+      "id": "owlaps",
+      "type": "carto",
+      "title": "Owlaps — cartographie bike parks et spots VTT",
+      "url": "https://owlaps.fr/",
+      "lang": "fr"
+    },
+    {
+      "id": "owlaps-region",
+      "type": "carto",
+      "title": "Owlaps — France (vue régionale)",
+      "url": "https://owlaps.com/fr/region/france/",
+      "lang": "fr"
+    },
+    {
+      "id": "sport-tourisme-kelbikepark",
+      "type": "media",
+      "title": "sport-et-tourisme.fr — article sur KelBikePark et classement",
+      "url": "https://www.sport-et-tourisme.fr/sports/bike-parks-classement/",
+      "lang": "fr"
+    },
+    {
+      "id": "skiinfo-bikepark-guide",
+      "type": "media",
+      "title": "Skiinfo — guide bike parks en station",
+      "url": "http://www.skiinfo.fr/news/bike-park-station-guide-meilleures-destinations/",
+      "lang": "fr"
+    },
+    {
+      "id": "petit-montagnard",
+      "type": "media",
+      "title": "Le Petit Montagnard — sélection bike parks en stations",
+      "url": "https://petit-montagnard.fr/vtt-10-bike-parks-incontournables-a-tester-dans-nos-stations-cet-ete/",
+      "lang": "fr"
+    },
+    {
+      "id": "goall-bikeparks",
+      "type": "media",
+      "title": "Goall — meilleurs bike parks France (VTT descente)",
+      "url": "https://www.goall.fr/les-meilleurs-bike-parks-en-france-pour-pratiquer-le-vtt-descente/",
+      "lang": "fr"
+    },
+    {
+      "id": "example-tignes",
+      "type": "station",
+      "title": "Office / station — exemple Tignes bike park (Savoie)",
+      "url": "https://www.tignes.net/activites/ete/bike-park/domaine-vtt",
+      "lang": "fr"
+    },
+    {
+      "id": "example-alpe-huez",
+      "type": "station",
+      "title": "Alpe d’Huez — domaine VTT été (Skipass / station)",
+      "url": "https://skipass.alpedhuez.com/ete/decouvrez-lalpe-dhuez-grand-domaine-vtt/vtt/",
+      "lang": "fr"
+    },
+    {
+      "id": "example-grand-massif",
+      "type": "station",
+      "title": "Grand Massif — VTT été et bike parks",
+      "url": "https://www.grand-massif.com/votre-sejour/activites-ete/vtt/",
+      "lang": "fr"
+    },
+    {
+      "id": "wiki-mtb-downhill",
+      "type": "reference",
+      "title": "OpenStreetMap Wiki — mtb:type=downhill (référence technique utile si import vers OSM)",
+      "url": "https://wiki.openstreetmap.org/wiki/Tag:mtb:type%3Ddownhill",
+      "lang": "en"
+    }
+  ]
+}

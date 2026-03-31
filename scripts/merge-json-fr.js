@@ -16,7 +16,13 @@ const PUBLIC = path.join(BASE, 'public');
 const FILES = {
   regionMap: path.join(MAP_DATA, 'region-map.json'),
   cityCoordinates: path.join(MAP_DATA, 'city-coordinates-fr.json'),
-  venues: path.join(MAP_DATA, 'venues-map-fr.json')
+  venues: path.join(MAP_DATA, 'venues-map-fr.json'),
+  /** Géocodage Nominatim depuis scripts/geocode-mtb-downhill-curated-fr.js */
+  mtbDownhillCurated: path.join(MAP_DATA, 'mtb-downhill-fr-curated.json'),
+  /** Données officielles réseau : scripts/fetch-yellohvillage-official-fr.js */
+  yellohOfficial: path.join(MAP_DATA, 'yellohvillage-official-fr.json'),
+  /** Liste France : scripts/fetch-sandaya-fr.js (page nos-campings, hors étranger) */
+  sandayaFr: path.join(MAP_DATA, 'sandaya-fr.json')
 };
 
 const OUT_FILE = path.join(PUBLIC, 'app-data-fr.json');
@@ -34,6 +40,25 @@ function readJson(filePath, fallback) {
 const regionMap = readJson(FILES.regionMap, {});
 const cityCoordinates = readJson(FILES.cityCoordinates, {});
 const venues = readJson(FILES.venues, {});
+const mtbCuratedRaw = readJson(FILES.mtbDownhillCurated, null);
+const mtbDownCurated = Array.isArray(mtbCuratedRaw) ? mtbCuratedRaw : [];
+if (mtbDownCurated.length) {
+  venues.mtbDownhillCurated = mtbDownCurated;
+}
+
+const yellohOfficialFile = readJson(FILES.yellohOfficial, null);
+const yellohFromOfficial = yellohOfficialFile && Array.isArray(yellohOfficialFile.campings)
+  ? yellohOfficialFile.campings
+  : [];
+if (yellohFromOfficial.length) {
+  venues.yellohVillageCampings = yellohFromOfficial;
+}
+
+const sandayaFile = readJson(FILES.sandayaFr, null);
+const sandayaCampings = sandayaFile && Array.isArray(sandayaFile.campings) ? sandayaFile.campings : [];
+if (sandayaCampings.length) {
+  venues.sandayaCampings = sandayaCampings;
+}
 
 const appData = {
   manifest: {

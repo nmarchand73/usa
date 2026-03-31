@@ -1,7 +1,17 @@
 /**
- * Fetch FR MTB bike parks and BMX pumptracks from OpenStreetMap (Overpass).
+ * Fetch FR MTB bike parks, pumptracks et pistes BMX from OpenStreetMap (Overpass).
  *
- * Output: map-data/venues-map-fr.json
+ * Output: map-data/venues-map-fr.json — clés :
+ *   mtbBikeParks, pumptracks (cycling=pump_track), bmxTracks (sport=bmx + leisure track/pitch).
+ *   Campings Yelloh! Village : npm run fetch:fr-yelloh-official → yellohvillage-official-fr.json (fusion build:fr).
+ *
+ * Bike parks « descente montagne » (OSM) : voir wiki
+ *   https://wiki.openstreetmap.org/wiki/Tag:mtb:type%3Ddownhill
+ *   et https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dbike_park
+ * On exporte mtbProfile=downhill si mtb:type ∈ downhill|freeride|bikepark ou mtb:lift=yes.
+ *
+ * Sources non-OSM (annuaires, FFC, médias) pour veille ou saisie manuelle :
+ *   public/bikeparks-fr-external-sources.json
  *
  * Notes:
  * - This is a best-effort extraction; OSM tagging varies by place.
@@ -15,9 +25,10 @@ const https = require('https');
 const BASE = path.join(__dirname, '..');
 const OUT_FILE = path.join(BASE, 'map-data', 'venues-map-fr.json');
 
+/** Kumi en tête : souvent moins saturé que overpass-api.de. */
 const OVERPASS_URLS = [
-  'https://overpass-api.de/api/interpreter',
   'https://overpass.kumi.systems/api/interpreter',
+  'https://overpass-api.de/api/interpreter',
   'https://overpass.nchc.org.tw/api/interpreter'
 ];
 
@@ -75,17 +86,73 @@ function pick(obj, keys) {
   return null;
 }
 
+/** Profil affichage : downhill = bike park / zone VTT montagne (descente, freeride, lift). */
+function mtbProfileFromTags(t) {
+  if (!t) return 'general';
+  const mt = String(t['mtb:type'] || t.mtb_type || '').toLowerCase().trim();
+  if (mt === 'downhill' || mt === 'freeride' || mt === 'bikepark') return 'downhill';
+  if (t['mtb:lift'] === 'yes' || t.mtb_lift === 'yes') return 'downhill';
+  return 'general';
+}
+
 function normalizeMtbBikeParks(elements) {
   const out = [];
   for (const el of elements) {
     const f = toFeature(el);
     if (!f) continue;
     const t = f.tags;
+    const mtbType = t['mtb:type'] || t.mtb_type || null;
+    const mtbLift = t['mtb:lift'] || t.mtb_lift || null;
     const item = {
       name: f.name || pick(t, ['brand', 'operator']) || 'Bike park',
-      city: pick(t, ['addr:city', 'is_in:city', 'is_in']),
+      city: pick(t, [
+        'addr:city',
+        'addr:municipality',
+        'addr:place',
+        'addr:suburb',
+        'is_in:city',
+        'is_in:municipality',
+        'is_in:town',
+        'is_in:village',
+        'is_in'
+      ]),
       lat: f.lat,
       lng: f.lng,
+      url: pick(t, ['website', 'contact:website']) || f.osmUrl,
+      source: 'OSM/Overpass',
+      osmUrl: f.osmUrl,
+      mtbType: mtbType || null,
+      mtbLift: mtbLift || null,
+      mtbProfile: mtbProfileFromTags(t)
+    };
+    out.push(item);
+  }
+  return out;
+}
+
+function normalizePumptracks(elements) {
+  const out = [];
+  for (const el of elements) {
+    const f = toFeature(el);
+    if (!f) continue;
+    const t = f.tags;
+    const item = {
+      name: f.name || 'Pumptrack',
+      city: pick(t, [
+        'addr:city',
+        'addr:municipality',
+        'addr:place',
+        'addr:suburb',
+        'is_in:city',
+        'is_in:municipality',
+        'is_in:town',
+        'is_in:village',
+        'is_in'
+      ]),
+      lat: f.lat,
+      lng: f.lng,
+      type: 'pumptrack',
+      venueKind: 'pumptrack',
       url: pick(t, ['website', 'contact:website']) || f.osmUrl,
       source: 'OSM/Overpass',
       osmUrl: f.osmUrl
@@ -95,18 +162,29 @@ function normalizeMtbBikeParks(elements) {
   return out;
 }
 
-function normalizeBmxPumptracks(elements) {
+function normalizeBmxTracks(elements) {
   const out = [];
   for (const el of elements) {
     const f = toFeature(el);
     if (!f) continue;
     const t = f.tags;
     const item = {
-      name: f.name || 'Pumptrack',
-      city: pick(t, ['addr:city', 'is_in:city', 'is_in']),
+      name: f.name || 'Piste BMX',
+      city: pick(t, [
+        'addr:city',
+        'addr:municipality',
+        'addr:place',
+        'addr:suburb',
+        'is_in:city',
+        'is_in:municipality',
+        'is_in:town',
+        'is_in:village',
+        'is_in'
+      ]),
       lat: f.lat,
       lng: f.lng,
-      type: 'pumptrack',
+      type: 'bmx_track',
+      venueKind: 'bmx_track',
       url: pick(t, ['website', 'contact:website']) || f.osmUrl,
       source: 'OSM/Overpass',
       osmUrl: f.osmUrl
@@ -123,11 +201,9 @@ async function runQuery(overpassUrl, query) {
 
 async function main() {
   // Overpass QL:
-  // - Get area for France
-  // - Query MTB bike parks via leisure=bike_park and sport=cycling + name, etc.
-  // - Query pumptracks via cycling=pump_track OR leisure=track + sport=bmx OR sport=cycling + pumptrack tag
-  //
-  // We keep queries permissive and dedupe by osmUrl.
+  // - MTB : leisure=bike_park, sport=cycling+mtb, et points sport=cycling+mtb:type=downhill (sentiers / accès);
+  // - Pumptracks / BMX : inchangé.
+  // Réf. wiki : Tag:mtb:type=downhill, leisure=bike_park.
   const q = `
 [out:json][timeout:120];
 area["ISO3166-1"="FR"][admin_level=2]->.fr;
@@ -135,6 +211,7 @@ area["ISO3166-1"="FR"][admin_level=2]->.fr;
 (
   nwr["leisure"="bike_park"](area.fr);
   nwr["sport"="cycling"]["mtb"~"."](area.fr);
+  node["sport"="cycling"]["mtb:type"="downhill"](area.fr);
 )->.mtb;
 
 (
@@ -144,6 +221,17 @@ area["ISO3166-1"="FR"][admin_level=2]->.fr;
 )->.pump;
 
 (.mtb; .pump;);
+out center tags;
+  `.trim();
+
+  const qYelloh = `
+[out:json][timeout:90];
+area["ISO3166-1"="FR"][admin_level=2]->.fr;
+(
+  nwr["tourism"="camp_site"]["operator"~"Yelloh",i](area.fr);
+  nwr["tourism"="camp_site"]["brand"~"Yelloh",i](area.fr);
+  nwr["tourism"="camp_site"]["network"~"Yelloh",i](area.fr);
+);
 out center tags;
   `.trim();
 
@@ -162,12 +250,25 @@ out center tags;
   if (!json) throw lastErr || new Error('All Overpass endpoints failed');
   const els = Array.isArray(json.elements) ? json.elements : [];
 
-  // Split by tags
-  const mtbEls = els.filter((e) => e.tags && (e.tags.leisure === 'bike_park' || (e.tags.sport === 'cycling' && e.tags.mtb)));
-  const pumpEls = els.filter((e) => e.tags && (e.tags.cycling === 'pump_track' || (e.tags.leisure === 'track' && e.tags.sport === 'bmx') || e.tags.sport === 'bmx'));
+  const mtbEls = els.filter(
+    (e) =>
+      e.tags &&
+      (e.tags.leisure === 'bike_park' ||
+        (e.tags.sport === 'cycling' && e.tags.mtb) ||
+        (e.tags.sport === 'cycling' && e.tags['mtb:type'] === 'downhill'))
+  );
+  /** Pumptracks : boucles bitumées / modules — tag standard OSM cycling=pump_track */
+  const pumpTrackEls = els.filter((e) => e.tags && e.tags.cycling === 'pump_track');
+  /** Pistes BMX : stade / piste — pas les pumptracks */
+  const bmxTrackEls = els.filter((e) => {
+    const t = e.tags;
+    if (!t || t.sport !== 'bmx' || t.cycling === 'pump_track') return false;
+    return t.leisure === 'track' || t.leisure === 'pitch';
+  });
 
   const mtb = normalizeMtbBikeParks(mtbEls);
-  const pump = normalizeBmxPumptracks(pumpEls);
+  const pumptracks = normalizePumptracks(pumpTrackEls);
+  const bmxTracks = normalizeBmxTracks(bmxTrackEls);
 
   function dedupe(items) {
     const seen = new Set();
@@ -183,13 +284,17 @@ out center tags;
 
   const outJson = {
     mtbBikeParks: dedupe(mtb).sort((a, b) => (a.name || '').localeCompare(b.name || '')),
-    bmxTracks: dedupe(pump).sort((a, b) => (a.name || '').localeCompare(b.name || ''))
+    pumptracks: dedupe(pumptracks).sort((a, b) => (a.name || '').localeCompare(b.name || '')),
+    bmxTracks: dedupe(bmxTracks).sort((a, b) => (a.name || '').localeCompare(b.name || ''))
   };
 
   fs.writeFileSync(OUT_FILE, JSON.stringify(outJson, null, 2), 'utf-8');
+  const mtbDh = outJson.mtbBikeParks.filter((x) => x.mtbProfile === 'downhill').length;
   console.log('Written:', OUT_FILE);
-  console.log('mtbBikeParks:', outJson.mtbBikeParks.length);
-  console.log('bmxTracks(pumptracks):', outJson.bmxTracks.length);
+  console.log('mtbBikeParks:', outJson.mtbBikeParks.length, '(profil descente/montagne:', mtbDh + ')');
+  console.log('pumptracks:', outJson.pumptracks.length);
+  console.log('bmxTracks (pistes BMX):', outJson.bmxTracks.length);
+  console.log('Yelloh! Village : lancer npm run fetch:fr-yelloh-official puis npm run build:fr');
 }
 
 main().catch((e) => {
