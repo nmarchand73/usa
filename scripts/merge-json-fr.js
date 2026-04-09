@@ -17,12 +17,16 @@ const FILES = {
   regionMap: path.join(MAP_DATA, 'region-map.json'),
   cityCoordinates: path.join(MAP_DATA, 'city-coordinates-fr.json'),
   venues: path.join(MAP_DATA, 'venues-map-fr.json'),
+  /** Motocross FR : node scripts/fetch-fr-mx-only.js (prioritaire sur venues-map-fr.mxTracks si présent) */
+  mxOverpass: path.join(MAP_DATA, 'mx-fr-overpass.json'),
   /** Géocodage Nominatim depuis scripts/geocode-mtb-downhill-curated-fr.js */
   mtbDownhillCurated: path.join(MAP_DATA, 'mtb-downhill-fr-curated.json'),
   /** Données officielles réseau : scripts/fetch-yellohvillage-official-fr.js */
   yellohOfficial: path.join(MAP_DATA, 'yellohvillage-official-fr.json'),
   /** Liste France : scripts/fetch-sandaya-fr.js (page nos-campings, hors étranger) */
-  sandayaFr: path.join(MAP_DATA, 'sandaya-fr.json')
+  sandayaFr: path.join(MAP_DATA, 'sandaya-fr.json'),
+  /** Circuits TT FFM : scripts/fetch-ffm-circuits-tt-fr.js (par ligue, ex. NA 62995) */
+  ffmCircuitsTt: path.join(MAP_DATA, 'ffm-circuits-tt-nouvelle-aquitaine.json')
 };
 
 const OUT_FILE = path.join(PUBLIC, 'app-data-fr.json');
@@ -40,6 +44,13 @@ function readJson(filePath, fallback) {
 const regionMap = readJson(FILES.regionMap, {});
 const cityCoordinates = readJson(FILES.cityCoordinates, {});
 const venues = readJson(FILES.venues, {});
+const mxOverlay = readJson(FILES.mxOverpass, null);
+const mxFromOverlay = mxOverlay && Array.isArray(mxOverlay.mxTracks) ? mxOverlay.mxTracks : [];
+if (mxFromOverlay.length) {
+  venues.mxTracks = mxFromOverlay;
+} else if (!Array.isArray(venues.mxTracks)) {
+  venues.mxTracks = [];
+}
 const mtbCuratedRaw = readJson(FILES.mtbDownhillCurated, null);
 const mtbDownCurated = Array.isArray(mtbCuratedRaw) ? mtbCuratedRaw : [];
 if (mtbDownCurated.length) {
@@ -58,6 +69,31 @@ const sandayaFile = readJson(FILES.sandayaFr, null);
 const sandayaCampings = sandayaFile && Array.isArray(sandayaFile.campings) ? sandayaFile.campings : [];
 if (sandayaCampings.length) {
   venues.sandayaCampings = sandayaCampings;
+}
+
+const ffmFile = readJson(FILES.ffmCircuitsTt, null);
+const ffmRaw = ffmFile && Array.isArray(ffmFile.circuits) ? ffmFile.circuits : [];
+const ffmTtCircuits = [];
+for (const c of ffmRaw) {
+  const lat = c.lat != null ? Number(c.lat) : NaN;
+  const lng = c.lng != null ? Number(c.lng) : NaN;
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) continue;
+  ffmTtCircuits.push({
+    name: c.name || c.slug || 'Circuit TT',
+    city: c.cityLine || null,
+    lat,
+    lng,
+    type: 'mx_track',
+    venueKind: 'mx_track',
+    url: c.url || null,
+    source: 'FFM Engage',
+    circuitType: c.circuitType || null,
+    ffmLigueId: ffmFile.ligueId != null ? String(ffmFile.ligueId) : null,
+    ffmLigueLabel: ffmFile.ligueLabel || null
+  });
+}
+if (ffmTtCircuits.length) {
+  venues.ffmTtCircuits = ffmTtCircuits;
 }
 
 const appData = {

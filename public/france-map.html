@@ -173,6 +173,7 @@
     .venue-filters-row label{
       display:inline-flex;
       align-items:center;
+      flex-wrap:wrap;
       gap:0.35rem;
       font-size:0.8rem;
       color:var(--text);
@@ -199,6 +200,10 @@
     .venue-swatch--mtb-downhill{ background:#f97316; border-color:#431407; }
     .venue-swatch--pumptrack{ background:#c084fc; border-color:#4c1d95; }
     .venue-swatch--bmx{ background:#f43f5e; border-color:#500724; }
+    /* OSM motocross : ambre / or — éloigné de l’orange « descente VTT » et du teal de l’UI */
+    .venue-swatch--mx{ background:#d97706; border-color:#78350f; }
+    /* FFM : violet saturé — complémentaire de l’ambre, distinct du violet clair pumptrack */
+    .venue-swatch--ffm-tt{ background:#9333ea; border-color:#581c87; }
     .venue-swatch--yelloh{ background:#facc15; border-color:#713f12; }
     .venue-swatch--sandaya{ background:#34d399; border-color:#065f46; }
     .venue-swatch--city-region{ background:#6366f1; border-color:#312e81; }
@@ -301,7 +306,7 @@
       background:rgba(10,14,23,.94) !important; color:var(--text) !important;
       border:1px solid var(--border) !important; border-radius:10px !important;
       padding:.45rem .65rem !important; font-size:.82rem !important; line-height:1.35 !important;
-      box-shadow:0 10px 28px rgba(0,0,0,.45) !important; max-width:280px;
+      box-shadow:0 10px 28px rgba(0,0,0,.45) !important; max-width:min(320px,92vw);
     }
     .leaflet-tooltip.venue-tooltip--camping{
       max-width:min(320px,92vw) !important;
@@ -312,6 +317,22 @@
     .leaflet-tooltip.venue-tooltip .tt-name{ font-weight:600; }
     .leaflet-tooltip.venue-tooltip .tt-city{ color:var(--text-dim); font-size:.78rem; margin-top:.2rem; }
     .leaflet-tooltip.venue-tooltip .tt-region{ color:var(--text-dim); font-size:.72rem; margin-top:.12rem; opacity:.95; }
+    .leaflet-tooltip.venue-tooltip .tt-mx-club{
+      font-weight:600;
+      font-size:.8rem;
+      margin-top:.22rem;
+      color:var(--text);
+      line-height:1.3;
+    }
+    .leaflet-tooltip.venue-tooltip .tt-desc{
+      font-size:.74rem;
+      line-height:1.42;
+      color:var(--text-dim);
+      margin-top:.3rem;
+      padding-top:.3rem;
+      border-top:1px solid rgba(148,163,184,.22);
+      opacity:.96;
+    }
     .leaflet-tooltip-top.venue-tooltip::before,
     .leaflet-tooltip-bottom.venue-tooltip::before{ border-top-color:rgba(10,14,23,.94) !important; border-bottom-color:rgba(10,14,23,.94) !important; }
     /* Popup Yelloh! (photo + liste) : bandeau visuel = 30 % de la hauteur, le reste défile */
@@ -531,12 +552,13 @@
             <div class="venue-filters-title">Afficher sur la carte</div>
             <div class="venue-filters-row">
               <label><input type="checkbox" id="filterCityPoints"><span class="venue-swatch venue-swatch--city-points" title="Turquoise"></span> Points villes (toutes régions)</label>
-              <label><input type="checkbox" id="filterMtb" checked><span class="venue-swatch venue-swatch--mtb-general" title="Bleu ciel"></span> VTT · bike parks (hors descente)</label>
-              <label><input type="checkbox" id="filterMtbDownhill" checked><span class="venue-swatch venue-swatch--mtb-downhill" title="Orange"></span> VTT · descente / bike park montagne</label>
-              <label><input type="checkbox" id="filterPumptrack" checked><span class="venue-swatch venue-swatch--pumptrack" title="Violet"></span> Pumptracks</label>
-              <label><input type="checkbox" id="filterBmxTrack" checked><span class="venue-swatch venue-swatch--bmx" title="Rose / rouge"></span> Pistes BMX</label>
-              <label><input type="checkbox" id="filterYellohVillage" checked><span class="venue-swatch venue-swatch--yelloh" title="Jaune / ambre"></span> Campings Yelloh! Village</label>
-              <label><input type="checkbox" id="filterSandaya" checked><span class="venue-swatch venue-swatch--sandaya" title="Vert émeraude"></span> Campings Sandaya (France)</label>
+              <label><input type="checkbox" id="filterMtb"><span class="venue-swatch venue-swatch--mtb-general" title="Bleu ciel"></span> VTT · bike parks (hors descente)</label>
+              <label><input type="checkbox" id="filterMtbDownhill"><span class="venue-swatch venue-swatch--mtb-downhill" title="Orange"></span> VTT · descente / bike park montagne</label>
+              <label><input type="checkbox" id="filterPumptrack"><span class="venue-swatch venue-swatch--pumptrack" title="Violet"></span> Pumptracks</label>
+              <label><input type="checkbox" id="filterBmxTrack"><span class="venue-swatch venue-swatch--bmx" title="Rose / rouge"></span> Pistes BMX</label>
+              <label><input type="checkbox" id="filterMxTrack" checked><span class="venue-swatch venue-swatch--mx" title="OSM · ambre"></span><span class="venue-swatch venue-swatch--ffm-tt" title="FFM · violet"></span> Motocross · OSM (ambre) + FFM circuit TT (violet)</label>
+              <label><input type="checkbox" id="filterYellohVillage"><span class="venue-swatch venue-swatch--yelloh" title="Jaune / ambre"></span> Campings Yelloh! Village</label>
+              <label><input type="checkbox" id="filterSandaya"><span class="venue-swatch venue-swatch--sandaya" title="Vert émeraude"></span> Campings Sandaya (France)</label>
             </div>
           </div>
         </div>
@@ -577,7 +599,7 @@
         <p>V1 — 13 régions métropolitaines. La fiche (panneau de droite) est <strong>repliée par défaut</strong> ; ouvrez-la avec le bandeau « Fiche » ou en cliquant une région.</p>
         <p>Contours des régions — coût de la vie, climat et villes : la fiche à droite résume la région sélectionnée.</p>
         <p class="note-dim">Bike parks <strong>descente montagne</strong> : données OSM (<code>mtb:type=downhill</code>, <code>mtb:lift=yes</code>) — <a href="https://wiki.openstreetmap.org/wiki/Tag:mtb:type%3Ddownhill" target="_blank" rel="noopener">wiki OSM</a> · <a href="https://www.kelbikepark.fr/" target="_blank" rel="noopener">KelBikePark</a>.</p>
-        <p class="note-dim">Couches : une pastille par type. <strong>Yelloh!</strong> : taille des points selon la note satisfaction. <strong>Sandaya</strong> : taille légère selon les étoiles (pas de note dans la source). Après clic sur une région, les villes de la fiche peuvent apparaître en points <strong>indigo</strong> sur la carte (couche distincte des cases ci-dessus).</p>
+        <p class="note-dim">Couches : une pastille par type. <strong>Motocross</strong> : terrains OpenStreetMap (<code>sport=motocross</code>) en <strong>ambre</strong> ; annuaire FFM (circuits tout-terrain) en <strong>violet</strong>, lien « FFM » dans l’infobulle — carte officielle&nbsp;: <a href="https://carte.ffmoto.org/" target="_blank" rel="noopener">carte.ffmoto.org</a>. <strong>Yelloh!</strong> : taille des points selon la note satisfaction. <strong>Sandaya</strong> : taille légère selon les étoiles. Après clic sur une région, les villes de la fiche peuvent apparaître en points <strong>indigo</strong>.</p>
 
         <h3>Données &amp; actualisation</h3>
         <p>Géolocalisation des lieux : <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap</a> (Overpass).</p>
@@ -610,6 +632,9 @@
         mtbDownhill: { radius: 6, color: '#431407', weight: 1.5, fillColor: '#f97316', fillOpacity: 0.9 },
         pumptrack: { radius: 5.5, color: '#4c1d95', weight: 1.5, fillColor: '#c084fc', fillOpacity: 0.9 },
         bmx: { radius: 5.5, color: '#500724', weight: 1.5, fillColor: '#f43f5e', fillOpacity: 0.9 },
+        mx: { radius: 6, color: '#78350f', weight: 1.5, fillColor: '#d97706', fillOpacity: 0.92 },
+        /** FFM : violet vs OSM ambre ; distinct du pumptrack (lavande) et de l’indigo villes-région */
+        ffmTt: { radius: 6, color: '#581c87', weight: 1.5, fillColor: '#9333ea', fillOpacity: 0.92 },
         yelloh: { radius: 8, color: '#713f12', weight: 1.5, fillColor: '#facc15', fillOpacity: 0.9 },
         sandaya: { radius: 6.5, color: '#065f46', weight: 1.5, fillColor: '#34d399', fillOpacity: 0.9 },
         cityRegion: { radius: 7, color: '#312e81', weight: 2, fillColor: '#6366f1', fillOpacity: 0.92 },
@@ -747,6 +772,7 @@
       let mtbDownhillLayer = null;
       let pumptrackLayer = null;
       let bmxTrackLayer = null;
+      let mxTrackLayer = null;
       let yellohVillageLayer = null;
       let sandayaLayer = null;
       let selectedRegionCode = null;
@@ -953,6 +979,12 @@
           leafletMap.removeLayer(bmxTrackLayer);
           bmxTrackLayer = null;
         }
+        if (mxTrackLayer) {
+          closeTooltipsRecursively(mxTrackLayer);
+          mxTrackLayer.clearLayers();
+          leafletMap.removeLayer(mxTrackLayer);
+          mxTrackLayer = null;
+        }
         if (yellohVillageLayer) {
           closeTooltipsRecursively(yellohVillageLayer);
           yellohVillageLayer.clearLayers();
@@ -985,6 +1017,19 @@
 
       function listBmxPistes() {
         return venues && Array.isArray(venues.bmxTracks) ? venues.bmxTracks : [];
+      }
+
+      function listMxTracks() {
+        const osm = venues && Array.isArray(venues.mxTracks) ? venues.mxTracks : [];
+        const ffm = venues && Array.isArray(venues.ffmTtCircuits) ? venues.ffmTtCircuits : [];
+        if (!ffm.length) return osm;
+        const out = osm.slice();
+        for (let i = 0; i < ffm.length; i++) {
+          const v = ffm[i];
+          const la = Number(v.lat), ln = Number(v.lng);
+          if (Number.isFinite(la) && Number.isFinite(ln)) out.push(v);
+        }
+        return out;
       }
 
       /** Bike park / site VTT « montagne » : tags OSM mtb:type (DH, freeride, bikepark) ou mtb:lift=yes. */
@@ -1054,6 +1099,33 @@
           return '<div class="tt-region"><span style="opacity:.85;font-size:.78rem">' + lat.toFixed(3) + ', ' + lng.toFixed(3) + '</span></div>';
         }
         return '';
+      }
+
+      /** Phrase d’explication sous le lieu (source, précision du point) — infobulles plus lisibles. */
+      function venueTooltipExplain(sentenceFr) {
+        if (!sentenceFr || !String(sentenceFr).trim()) return '';
+        return '<div class="tt-desc">' + sentenceFr + '</div>';
+      }
+
+      /** Google Maps centré sur le point, calque satellite (data=!3m1!1e3). */
+      function googleMapsSatelliteUrl(lat, lng, zoom) {
+        const z = zoom != null ? Number(zoom) : 18;
+        const zz = Number.isFinite(z) ? Math.min(21, Math.max(10, Math.round(z))) : 18;
+        return 'https://www.google.com/maps/@' + lat + ',' + lng + ',' + zz + 'z/data=!3m1!1e3';
+      }
+
+      /** Infobulle motocross : nom du terrain en premier, club (operator OSM) si pertinent. */
+      function mxTooltipNameBlockHtml(v) {
+        const rawName = v.name != null && String(v.name).trim() ? String(v.name).trim() : '';
+        const rawOp = v.operator != null && String(v.operator).trim() ? String(v.operator).trim() : '';
+        const name = rawName ? safeText(rawName) : '';
+        const op = rawOp ? safeText(rawOp) : '';
+        if (name && op && op !== name) {
+          return '<div class="tt-name">' + name + '</div><div class="tt-mx-club">Club : ' + op + '</div>';
+        }
+        if (name) return '<div class="tt-name">' + name + '</div>';
+        if (op) return '<div class="tt-name">' + op + '</div>';
+        return '<div class="tt-name">Terrain motocross</div>';
       }
 
       function yellohBadgesLineHtml(v) {
@@ -1290,6 +1362,20 @@
               '<br>Immobilier : ' + (homePerM2 != null ? fmtEurPerM2(homePerM2) : fmtEurApprox(liv.medianHomeValue));
 
             const m = L.circleMarker([ll[0], ll[1]], MAP_MARKER.cityPoints).bindPopup(popup);
+            const cityTip =
+              '<div class="tt-kind">Ville · fiche région</div><div class="tt-name">' + safeText(c.name) + '</div>' +
+              '<div class="tt-region">' + safeText(r.nameFr) + '</div>' +
+              venueTooltipExplain('Ville d’exemple liée à la fiche de la région (coût de la vie, etc.) : ce point n’est pas un lieu sportif ni un camping.');
+            m.bindTooltip(cityTip, {
+              permanent: false,
+              sticky: false,
+              direction: 'top',
+              opacity: 1,
+              className: 'venue-tooltip'
+            });
+            m.on('popupopen', function () {
+              if (typeof this.closeTooltip === 'function') this.closeTooltip();
+            });
 
             m.on('click', function () {
               // Select the region (and refresh filters/panel)
@@ -1323,6 +1409,7 @@
         const showMtbDh = !!document.getElementById('filterMtbDownhill')?.checked;
         const showPump = !!document.getElementById('filterPumptrack')?.checked;
         const showBmxPiste = !!document.getElementById('filterBmxTrack')?.checked;
+        const showMxTrack = !!document.getElementById('filterMxTrack')?.checked;
         const showYelloh = !!document.getElementById('filterYellohVillage')?.checked;
         const showSandaya = !!document.getElementById('filterSandaya')?.checked;
 
@@ -1341,8 +1428,9 @@
             },
             (v) => {
               const name = safeText(v.name || 'Bike park');
-              return '<div class="tt-kind">VTT · Bike park</div><div class="tt-name">' + name + '</div>' +
-                venueTooltipLocalityLineOnly(v);
+              return '<div class="tt-kind">VTT · Bike park (hors grande descente)</div><div class="tt-name">' + name + '</div>' +
+                venueTooltipLocalityLineOnly(v) +
+                venueTooltipExplain('OpenStreetMap : zones VTT / bike parks sans être classés ici en « descente montagne » (voir la couche orange pour DH / bike park montagne).');
             }
           ).addTo(leafletMap);
         }
@@ -1372,9 +1460,14 @@
             },
             (v) => {
               const name = safeText(v.name || 'Bike park descente');
-              return '<div class="tt-kind">VTT · Descente montagne</div><div class="tt-name">' + name + '</div>' +
+              const curated = v.source === 'curated_nominatim';
+              const explain = curated
+                ? 'Liste relue : position obtenue par géocodage (commune ou lieu-dit), pas un tracé de piste.'
+                : 'OpenStreetMap : piste DH, freeride, bike park « montagne » ou site avec remontées (tags mtb:type / mtb:lift).';
+              return '<div class="tt-kind">VTT · Descente / bike park montagne</div><div class="tt-name">' + name + '</div>' +
                 mtbDownhillTooltipDetailHtml(v) +
-                venueTooltipLocalityLineOnly(v);
+                venueTooltipLocalityLineOnly(v) +
+                venueTooltipExplain(explain);
             }
           ).addTo(leafletMap);
         }
@@ -1395,7 +1488,8 @@
             (v) => {
               const name = safeText(v.name || 'Pumptrack');
               return '<div class="tt-kind">Pumptrack</div><div class="tt-name">' + name + '</div>' +
-                venueTooltipLocalityLineOnly(v);
+                venueTooltipLocalityLineOnly(v) +
+                venueTooltipExplain('OpenStreetMap : anneau ou parcours pump track (sport=pump_track). Clic : fiche OSM.');
             }
           ).addTo(leafletMap);
         }
@@ -1416,9 +1510,64 @@
             (v) => {
               const name = safeText(v.name || 'Piste BMX');
               return '<div class="tt-kind">Piste BMX</div><div class="tt-name">' + name + '</div>' +
-                venueTooltipLocalityLineOnly(v);
+                venueTooltipLocalityLineOnly(v) +
+                venueTooltipExplain('OpenStreetMap : piste de BMX (cyclisme), tag sport=bmx. Clic : fiche OSM.');
             }
           ).addTo(leafletMap);
+        }
+
+        if (showMxTrack && listMxTracks().length) {
+          const items = listMxTracks();
+          const baseTipMx = {
+            permanent: false,
+            sticky: false,
+            direction: 'top',
+            opacity: 1,
+            className: 'venue-tooltip'
+          };
+          const markersMx = [];
+          items.forEach(function (v) {
+            const lat = Number(v.lat), lng = Number(v.lng);
+            if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+            const ffm = v.source === 'FFM Engage';
+            const style = ffm ? MAP_MARKER.ffmTt : MAP_MARKER.mx;
+            const m = L.circleMarker([lat, lng], style);
+            const rawName = v.name != null && String(v.name).trim() ? String(v.name).trim() : '';
+            const rawOp = v.operator != null && String(v.operator).trim() ? String(v.operator).trim() : '';
+            const dispName = rawName ? safeText(rawName) : (rawOp ? safeText(rawOp) : 'Terrain motocross');
+            const op = rawOp ? safeText(rawOp) : '';
+            const url = v.url || v.osmUrl;
+            let s = '<strong style="font-size:1.02em;color:#0f172a;">' + dispName + '</strong>';
+            if (op && rawName && op !== dispName) {
+              s += '<div style="font-size:.9rem;font-weight:600;color:#334155;margin-top:.2rem;">Club : ' + op + '</div>';
+            }
+            s += venuePopupLocationHtml(v);
+            const gSat = googleMapsSatelliteUrl(lat, lng, 18);
+            s += '<div style="margin-top:.5rem;line-height:1.55;">' +
+              '<a href="' + gSat + '" target="_blank" rel="noopener" style="color:#0d9488;font-size:.86rem;">Google Maps — vue satellite</a>';
+            if (url) {
+              const linkLabel = ffm ? 'Fiche annuaire FFM' : 'OpenStreetMap';
+              s += '<br><a href="' + url + '" target="_blank" rel="noopener" style="color:#0d9488;font-size:.86rem;">' + linkLabel + '</a>';
+            }
+            s += '</div>';
+            m.bindPopup(s);
+            const kind = ffm ? 'Motocross · FFM (circuit TT)' : 'Motocross · OSM';
+            let mxExplain = ffm
+              ? 'Point sur la commune (géocodage). Vérifier sur la vue satellite.'
+              : 'Données OpenStreetMap (sport=motocross).';
+            if (ffm && v.ffmLigueLabel) {
+              mxExplain += ' Ligue : ' + safeText(v.ffmLigueLabel) + '.';
+            }
+            const tip = '<div class="tt-kind">' + kind + '</div>' + mxTooltipNameBlockHtml(v) +
+              venueTooltipLocalityLineOnly(v) +
+              venueTooltipExplain(mxExplain);
+            m.bindTooltip(tip, baseTipMx);
+            m.on('popupopen', function () {
+              if (typeof this.closeTooltip === 'function') this.closeTooltip();
+            });
+            markersMx.push(m);
+          });
+          mxTrackLayer = L.layerGroup(markersMx).addTo(leafletMap);
         }
 
         if (showYelloh && listYellohVillageCampings().length) {
@@ -1473,9 +1622,13 @@
             if (popupOpts) m.bindPopup(s, popupOpts);
             else m.bindPopup(s);
             const extra = official ? yellohGraphqlTooltipEnrichedHtml(v) : '';
+            const yExplain = official
+              ? 'Données du site Yelloh! Village (disponibilité, services, note satisfaction).'
+              : 'Position OpenStreetMap : camping relié au réseau par marque ou opérateur (emplacement approximatif possible).';
             const tip =
               '<div class="tt-kind">Camping · Yelloh! Village</div><div class="tt-name">' + name + '</div>' +
               venueTooltipLocalityLineOnly(v) +
+              venueTooltipExplain(yExplain) +
               extra;
             m.bindTooltip(tip, tipOpts);
             m.on('popupopen', function () {
@@ -1518,6 +1671,7 @@
             const tip =
               '<div class="tt-kind">Camping · Sandaya</div><div class="tt-name">' + name + '</div>' +
               venueTooltipLocalityLineOnly(v) +
+              venueTooltipExplain('Liste « Nos campings » sur sandaya.fr (France métropolitaine et Corse) ; coordonnées géocodées (commune ou adresse).') +
               sandayaTooltipExtraHtml(v);
             m.bindTooltip(tip, tipOpts);
             m.on('popupopen', function () {
@@ -1543,7 +1697,22 @@
           const homePerM2 = liv.homePriceEurPerM2 ?? liv.medianPriceEurPerM2 ?? null;
           const popup = '<b>' + safeText(c.name) + '</b><br>' + safeText(data.nameFr) +
             '<br>Immobilier : ' + (homePerM2 != null ? fmtEurPerM2(homePerM2) : fmtEurApprox(liv.medianHomeValue));
-          markers.push(L.circleMarker([ll[0], ll[1]], MAP_MARKER.cityRegion).bindPopup(popup));
+          const cm = L.circleMarker([ll[0], ll[1]], MAP_MARKER.cityRegion).bindPopup(popup);
+          const panelTip =
+            '<div class="tt-kind">Ville · région affichée</div><div class="tt-name">' + safeText(c.name) + '</div>' +
+            '<div class="tt-region">' + safeText(data.nameFr) + '</div>' +
+            venueTooltipExplain('Une des villes de la fiche région ouverte à droite (prix immo indicatifs). Pas un lieu sportif.');
+          cm.bindTooltip(panelTip, {
+            permanent: false,
+            sticky: false,
+            direction: 'top',
+            opacity: 1,
+            className: 'venue-tooltip'
+          });
+          cm.on('popupopen', function () {
+            if (typeof this.closeTooltip === 'function') this.closeTooltip();
+          });
+          markers.push(cm);
         });
 
         if (!markers.length) return;
@@ -1624,7 +1793,8 @@
             const code = String(feature.properties && feature.properties.code);
             const nom = safeText(feature.properties && feature.properties.nom);
             layer.bindTooltip(
-              '<div class="tt-kind">Région</div><div class="tt-name">' + nom + '</div>',
+              '<div class="tt-kind">Région administrative</div><div class="tt-name">' + nom + '</div>' +
+                venueTooltipExplain('Contour INSEE (fonds Etalab). Clic : fiche région — climat, coût de la vie, villes mises en avant.'),
               { sticky: false, direction: 'top', opacity: 1, className: 'venue-tooltip' }
             );
             layer.on('click', function () { highlightRegion(layer, code); });
@@ -1667,6 +1837,7 @@
           const filterMtbDownhill = document.getElementById('filterMtbDownhill');
           const filterPumptrack = document.getElementById('filterPumptrack');
           const filterBmxTrack = document.getElementById('filterBmxTrack');
+          const filterMxTrack = document.getElementById('filterMxTrack');
           const filterYellohVillage = document.getElementById('filterYellohVillage');
           const filterSandaya = document.getElementById('filterSandaya');
           if (filterCityPoints) filterCityPoints.addEventListener('change', applyCityPointsFilter);
@@ -1674,6 +1845,7 @@
           if (filterMtbDownhill) filterMtbDownhill.addEventListener('change', applyVenueFilters);
           if (filterPumptrack) filterPumptrack.addEventListener('change', applyVenueFilters);
           if (filterBmxTrack) filterBmxTrack.addEventListener('change', applyVenueFilters);
+          if (filterMxTrack) filterMxTrack.addEventListener('change', applyVenueFilters);
           if (filterYellohVillage) filterYellohVillage.addEventListener('change', applyVenueFilters);
           if (filterSandaya) filterSandaya.addEventListener('change', applyVenueFilters);
           applyVenueFilters();
