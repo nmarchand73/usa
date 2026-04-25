@@ -1,0 +1,743 @@
+{
+  "fetchedAt": "2026-04-25T00:00:00.000Z",
+  "sources": {
+    "actu": {
+      "title": "Classement : voici les 20 communes \"de rêve\" où habiter près de Lyon",
+      "url": "https://actu.fr/auvergne-rhone-alpes/lyon_69123/classement-voici-les-20-communes-de-reve-ou-habiter-pres-de-lyon_60673554.html"
+    },
+    "citycrunch": {
+      "title": "Où habiter à Lyon en 2025 ? Notre avis sur chaque arrondissement",
+      "url": "https://lyon.citycrunch.fr/ou-habiter-a-lyon-en-2025-notre-avis-sur-chaque-arrondissement/2025/06/11/"
+    }
+  },
+  "items": [
+    {
+      "id": "commune|ecully",
+      "kind": "commune",
+      "name": "Écully",
+      "lat": 45.7754498,
+      "lng": 4.7785644,
+      "scores": {
+        "actu": 66,
+        "citycrunch": null,
+        "combined": 66
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 66/100 — note la plus haute du classement banlieue.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Écully, Métropole de Lyon, France",
+        "displayName": "Écully, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69130, France",
+        "placeId": 81896258
+      }
+    },
+    {
+      "id": "commune|francheville",
+      "kind": "commune",
+      "name": "Francheville",
+      "lat": 45.735748,
+      "lng": 4.7647304,
+      "scores": {
+        "actu": 64,
+        "citycrunch": null,
+        "combined": 64
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 64/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Francheville, Métropole de Lyon, France",
+        "displayName": "Francheville, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69340, France",
+        "placeId": 80705599
+      }
+    },
+    {
+      "id": "commune|chaponnay",
+      "kind": "commune",
+      "name": "Chaponnay",
+      "lat": 45.7580403,
+      "lng": 4.8438287,
+      "scores": {
+        "actu": 64,
+        "citycrunch": null,
+        "combined": 64
+      },
+      "labels": {
+        "verdict": null
+      },
+      "sourceNotes": {
+        "actuName": "Chaponost"
+      },
+      "why": {
+        "actu": "L’article Actu cite « Chaponost » (forme erronée) : le point est géolocalisé sur Chaponnay (Rhône), en conservant la note Actu d’origine.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Chaponnay, Métropole de Lyon, France",
+        "displayName": "Rue Chaponnay, Préfecture, Lyon 3e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69003, France",
+        "placeId": 80859009
+      }
+    },
+    {
+      "id": "commune|tassin-la-demi-lune",
+      "kind": "commune",
+      "name": "Tassin-la-Demi-Lune",
+      "lat": 45.7598386,
+      "lng": 4.7657747,
+      "scores": {
+        "actu": 63,
+        "citycrunch": null,
+        "combined": 63
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 63/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Tassin-la-Demi-Lune, Métropole de Lyon, France",
+        "displayName": "Tassin-la-Demi-Lune, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69160, France",
+        "placeId": 81056090
+      }
+    },
+    {
+      "id": "commune|caluire-et-cuire",
+      "kind": "commune",
+      "name": "Caluire-et-Cuire",
+      "lat": 45.7969952,
+      "lng": 4.8423304,
+      "scores": {
+        "actu": 63,
+        "citycrunch": null,
+        "combined": 63
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 63/100 — proximité Rhône / péri-lyonnais.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Caluire-et-Cuire, Métropole de Lyon, France",
+        "displayName": "Caluire-et-Cuire, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69300, France",
+        "placeId": 81768924
+      }
+    },
+    {
+      "id": "commune|sainte-foy-les-lyon",
+      "kind": "commune",
+      "name": "Sainte-Foy-lès-Lyon",
+      "lat": 45.7362255,
+      "lng": 4.7934767,
+      "scores": {
+        "actu": 62,
+        "citycrunch": null,
+        "combined": 62
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 62/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Sainte-Foy-lès-Lyon, Métropole de Lyon, France",
+        "displayName": "Sainte-Foy-lès-Lyon, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69110, France",
+        "placeId": 82013090
+      }
+    },
+    {
+      "id": "commune|dardilly",
+      "kind": "commune",
+      "name": "Dardilly",
+      "lat": 45.8064992,
+      "lng": 4.7537701,
+      "scores": {
+        "actu": 62,
+        "citycrunch": null,
+        "combined": 62
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 62/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Dardilly, Métropole de Lyon, France",
+        "displayName": "Dardilly, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69570, France",
+        "placeId": 81964117
+      }
+    },
+    {
+      "id": "commune|saint-didier-au-mont-dor",
+      "kind": "commune",
+      "name": "Saint-Didier-au-Mont-d'Or",
+      "lat": 45.8115147,
+      "lng": 4.7979353,
+      "scores": {
+        "actu": 61,
+        "citycrunch": null,
+        "combined": 61
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 61/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Saint-Didier-au-Mont-d'Or, Métropole de Lyon, France",
+        "displayName": "Saint-Didier-au-Mont-d'Or, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69370, France",
+        "placeId": 81792803
+      }
+    },
+    {
+      "id": "commune|oullins",
+      "kind": "commune",
+      "name": "Oullins",
+      "lat": 45.7153254,
+      "lng": 4.8039331,
+      "scores": {
+        "actu": 61,
+        "citycrunch": null,
+        "combined": 61
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 61/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Oullins, Métropole de Lyon, France",
+        "displayName": "Oullins, Oullins-Pierre-Bénite, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69600, France",
+        "placeId": 81081501
+      }
+    },
+    {
+      "id": "commune|saint-romain-au-mont-dor",
+      "kind": "commune",
+      "name": "Saint-Romain-au-Mont-d'Or",
+      "lat": 45.8378038,
+      "lng": 4.8238973,
+      "scores": {
+        "actu": 60,
+        "citycrunch": null,
+        "combined": 60
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 60/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Saint-Romain-au-Mont-d'Or, Métropole de Lyon, France",
+        "displayName": "Saint-Romain-au-Mont-d'Or, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69270, France",
+        "placeId": 82008534
+      }
+    },
+    {
+      "id": "commune|saint-genis-laval",
+      "kind": "commune",
+      "name": "Saint-Genis-Laval",
+      "lat": 45.6950021,
+      "lng": 4.7928827,
+      "scores": {
+        "actu": 60,
+        "citycrunch": null,
+        "combined": 60
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 60/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Saint-Genis-Laval, Métropole de Lyon, France",
+        "displayName": "Saint-Genis-Laval, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69230, France",
+        "placeId": 81727690
+      }
+    },
+    {
+      "id": "commune|sathonay-village",
+      "kind": "commune",
+      "name": "Sathonay-Village",
+      "lat": 45.8318096,
+      "lng": 4.8789977,
+      "scores": {
+        "actu": 59,
+        "citycrunch": null,
+        "combined": 59
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 59/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Sathonay-Village, Métropole de Lyon, France",
+        "displayName": "Sathonay-Village, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69580, France",
+        "placeId": 82022522
+      }
+    },
+    {
+      "id": "commune|venissieux",
+      "kind": "commune",
+      "name": "Vénissieux",
+      "lat": 45.6977109,
+      "lng": 4.8855966,
+      "scores": {
+        "actu": 59,
+        "citycrunch": null,
+        "combined": 59
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 59/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Vénissieux, Métropole de Lyon, France",
+        "displayName": "Vénissieux, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69200, France",
+        "placeId": 81692415
+      }
+    },
+    {
+      "id": "commune|saint-cyr-au-mont-dor",
+      "kind": "commune",
+      "name": "Saint-Cyr-au-Mont-d'Or",
+      "lat": 45.8156548,
+      "lng": 4.8175958,
+      "scores": {
+        "actu": 59,
+        "citycrunch": null,
+        "combined": 59
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 59/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Saint-Cyr-au-Mont-d'Or, Métropole de Lyon, France",
+        "displayName": "Saint-Cyr-au-Mont-d'Or, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69450, France",
+        "placeId": 82211218
+      }
+    },
+    {
+      "id": "commune|irigny",
+      "kind": "commune",
+      "name": "Irigny",
+      "lat": 45.6733141,
+      "lng": 4.8216902,
+      "scores": {
+        "actu": 59,
+        "citycrunch": null,
+        "combined": 59
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 59/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Irigny, Métropole de Lyon, France",
+        "displayName": "Irigny, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69540, France",
+        "placeId": 81122847
+      }
+    },
+    {
+      "id": "commune|craponne",
+      "kind": "commune",
+      "name": "Craponne",
+      "lat": 45.743476,
+      "lng": 4.7231057,
+      "scores": {
+        "actu": 59,
+        "citycrunch": null,
+        "combined": 59
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 59/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Craponne, Métropole de Lyon, France",
+        "displayName": "Craponne, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69290, France",
+        "placeId": 82203750
+      }
+    },
+    {
+      "id": "commune|bron",
+      "kind": "commune",
+      "name": "Bron",
+      "lat": 45.7337532,
+      "lng": 4.9092352,
+      "scores": {
+        "actu": 59,
+        "citycrunch": null,
+        "combined": 59
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 59/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Bron, Métropole de Lyon, France",
+        "displayName": "Bron, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69500, France",
+        "placeId": 88682236
+      }
+    },
+    {
+      "id": "commune|saint-priest",
+      "kind": "commune",
+      "name": "Saint-Priest",
+      "lat": 45.6965347,
+      "lng": 4.9441635,
+      "scores": {
+        "actu": 58,
+        "citycrunch": null,
+        "combined": 58
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 58/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Saint-Priest, Métropole de Lyon, France",
+        "displayName": "Saint-Priest, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69800, France",
+        "placeId": 89962280
+      }
+    },
+    {
+      "id": "commune|rillieux-la-pape",
+      "kind": "commune",
+      "name": "Rillieux-la-Pape",
+      "lat": 45.823514,
+      "lng": 4.8994366,
+      "scores": {
+        "actu": 57,
+        "citycrunch": null,
+        "combined": 57
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 57/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Rillieux-la-Pape, Métropole de Lyon, France",
+        "displayName": "Rillieux-la-Pape, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69140, France",
+        "placeId": 90251542
+      }
+    },
+    {
+      "id": "commune|marcy-etoile",
+      "kind": "commune",
+      "name": "Marcy-l'Étoile",
+      "lat": 45.7816572,
+      "lng": 4.7071338,
+      "scores": {
+        "actu": 57,
+        "citycrunch": null,
+        "combined": 57
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Ville de rêve (Actu.fr) : 57/100.",
+        "citycrunch": null
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Marcy-l'Étoile, Métropole de Lyon, France",
+        "displayName": "Marcy-l'Étoile, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69280, France",
+        "placeId": 81519596
+      }
+    },
+    {
+      "id": "arr|lyon-1",
+      "kind": "arrondissement",
+      "name": "Lyon 1er",
+      "lat": 45.7701426,
+      "lng": 4.8297127,
+      "scores": {
+        "actu": null,
+        "citycrunch": 85,
+        "combined": 85
+      },
+      "labels": {
+        "verdict": "Très recommandé"
+      },
+      "why": {
+        "actu": null,
+        "citycrunch": "Presqu'île et pentes de la Croix-Rousse côté centre : bohème, culturel, très vivant — bruit et dénivelé possibles."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Lyon 1er arrondissement, France",
+        "displayName": "Lyon 1er Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69001, France",
+        "placeId": 90104903
+      }
+    },
+    {
+      "id": "arr|lyon-2",
+      "kind": "arrondissement",
+      "name": "Lyon 2e",
+      "lat": 45.7511118,
+      "lng": 4.8273739,
+      "scores": {
+        "actu": null,
+        "citycrunch": 95,
+        "combined": 95
+      },
+      "labels": {
+        "verdict": "Coup de cœur (CityCrunch)"
+      },
+      "why": {
+        "actu": null,
+        "citycrunch": "Cœur de Presqu'île : commerces, BFM, animation — emplacement recherché, budget souvent élevé."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Lyon 2e arrondissement, France",
+        "displayName": "Lyon 2e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69002, France",
+        "placeId": 81882064
+      }
+    },
+    {
+      "id": "arr|lyon-3",
+      "kind": "arrondissement",
+      "name": "Lyon 3e",
+      "lat": 45.7555548,
+      "lng": 4.8622856,
+      "scores": {
+        "actu": null,
+        "citycrunch": 70,
+        "combined": 70
+      },
+      "labels": {
+        "verdict": "Bien / pratique"
+      },
+      "why": {
+        "actu": null,
+        "citycrunch": "Part-Dieu et alentours : TGV, bureaux, commerces — efficace, moins « village » que le sommet des collines."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Lyon 3e arrondissement, France",
+        "displayName": "Lyon 3e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69003, France",
+        "placeId": 420695389
+      }
+    },
+    {
+      "id": "arr|lyon-4",
+      "kind": "arrondissement",
+      "name": "Lyon 4e",
+      "lat": 45.7784877,
+      "lng": 4.8255086,
+      "scores": {
+        "actu": null,
+        "citycrunch": 95,
+        "combined": 95
+      },
+      "labels": {
+        "verdict": "Coup de cœur (CityCrunch)"
+      },
+      "why": {
+        "actu": null,
+        "citycrunch": "Croix-Rousse : esprit de village, vues, vie de quartier — côtes à gravir, stationnement parfois tendu."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Lyon 4e arrondissement, France",
+        "displayName": "Lyon 4e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69004, France",
+        "placeId": 81714364
+      }
+    },
+    {
+      "id": "arr|lyon-5",
+      "kind": "arrondissement",
+      "name": "Lyon 5e",
+      "lat": 45.7563067,
+      "lng": 4.8068266,
+      "scores": {
+        "actu": null,
+        "citycrunch": 85,
+        "combined": 85
+      },
+      "labels": {
+        "verdict": "Très recommandé"
+      },
+      "why": {
+        "actu": null,
+        "citycrunch": "Vieux Lyon et Saint-Just : patrimoine, charme, tourisme — ruelles pavées, forte saisonnière le week-end."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Lyon 5e arrondissement, France",
+        "displayName": "Lyon 5e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69005, France",
+        "placeId": 422988237
+      }
+    },
+    {
+      "id": "arr|lyon-6",
+      "kind": "arrondissement",
+      "name": "Lyon 6e",
+      "lat": 45.7681444,
+      "lng": 4.8528227,
+      "scores": {
+        "actu": null,
+        "citycrunch": 85,
+        "combined": 85
+      },
+      "labels": {
+        "verdict": "Très recommandé"
+      },
+      "why": {
+        "actu": null,
+        "citycrunch": "Brotteaux / tête d’or : adresses bourgeoises, parc, calme relatif — prix élevés."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Lyon 6e arrondissement, France",
+        "displayName": "Lyon 6e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69006, France",
+        "placeId": 420859695
+      }
+    },
+    {
+      "id": "arr|lyon-7",
+      "kind": "arrondissement",
+      "name": "Lyon 7e",
+      "lat": 45.737442,
+      "lng": 4.8366972,
+      "scores": {
+        "actu": null,
+        "citycrunch": 70,
+        "combined": 70
+      },
+      "labels": {
+        "verdict": "Bien / pratique"
+      },
+      "why": {
+        "actu": null,
+        "citycrunch": "Gerland et Confluence : neuf, offre culturelle, berges — encore en évolution, quartiers inégaux."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Lyon 7e arrondissement, France",
+        "displayName": "Lyon 7e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69007, France",
+        "placeId": 82084128
+      }
+    },
+    {
+      "id": "arr|lyon-8",
+      "kind": "arrondissement",
+      "name": "Lyon 8e",
+      "lat": 45.7351227,
+      "lng": 4.8707197,
+      "scores": {
+        "actu": null,
+        "citycrunch": 55,
+        "combined": 55
+      },
+      "labels": {
+        "verdict": "Mitigé"
+      },
+      "why": {
+        "actu": null,
+        "citycrunch": "Tissu résidentiel plus diffus, moins central : intérêt selon le micro-quartier et le budget."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Lyon 8e arrondissement, France",
+        "displayName": "Lyon 8e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69008, France",
+        "placeId": 81605407
+      }
+    },
+    {
+      "id": "arr|lyon-9",
+      "kind": "arrondissement",
+      "name": "Lyon 9e",
+      "lat": 45.7815392,
+      "lng": 4.8007449,
+      "scores": {
+        "actu": null,
+        "citycrunch": 40,
+        "combined": 40
+      },
+      "labels": {
+        "verdict": "Peu recommandé (sauf cas ciblé)"
+      },
+      "why": {
+        "actu": null,
+        "citycrunch": "Nord-ouest / Duchère / gares : hétérogène, zones moins recherchées en « standing global » — vérifier rue par rue."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Lyon 9e arrondissement, France",
+        "displayName": "Lyon 9e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69009, France",
+        "placeId": 90421626
+      }
+    }
+  ]
+}
