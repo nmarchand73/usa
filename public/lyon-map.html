@@ -108,6 +108,49 @@
     .venue-swatch--mx{ background:#d97706; border-color:#78350f; }
     .venue-swatch--pump{ background:#c084fc; border-color:#4c1d95; }
     .venue-swatch--bmx{ background:#f43f5e; border-color:#500724; }
+    .iso-scale{
+      display:flex;
+      gap:.6rem;
+      align-items:flex-start;
+      flex-wrap:wrap;
+      margin-top:.35rem;
+    }
+    .iso-scale__block{
+      display:flex;
+      flex-direction:row;
+      gap:.45rem;
+      align-items:stretch;
+      padding:.35rem .45rem;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:rgba(26,34,53,.25);
+    }
+    .iso-scale__bar{
+      width:12px;
+      border-radius:8px;
+      border:1px solid rgba(148,163,184,.35);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    .iso-scale__seg{ flex:1 1 0; }
+    .iso-scale__labels{
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      font-size:.72rem;
+      color:var(--text-dim);
+      line-height:1.2;
+      min-width:66px;
+    }
+    .iso-scale__title{
+      font-family:'JetBrains Mono',monospace;
+      font-size:.68rem;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      color:var(--text-dim);
+      margin-bottom:.15rem;
+    }
     .map-leaflet-stack{ position:relative; flex:1 1 auto; min-height:0; }
     #lyonLeafletMap{ width:100%; height:560px; min-height:360px; background:var(--bg3); border-radius:0 0 12px 12px; }
     .panel-shell{
@@ -237,6 +280,46 @@
                 <label><input type="checkbox" id="lyonFilterIsoA"><span class="venue-swatch" style="background:rgba(34,197,94,.55);border-color:rgba(34,197,94,.85)"></span> Isochrones A (10/20/30/45/60 min)</label>
                 <label><input type="checkbox" id="lyonFilterIsoB"><span class="venue-swatch" style="background:rgba(74,222,128,.55);border-color:rgba(74,222,128,.85)"></span> Isochrones B (5/10/15/20/30 min)</label>
                 <span class="detail-note" id="lyonIsoNote" style="margin:0">Isochrones voiture (OSRM) : chargement…</span>
+              </div>
+              <div class="iso-scale" aria-label="Échelle isochrones (minutes)">
+                <div class="iso-scale__block" title="Isochrones A : 10/20/30/45/60 min (voiture)">
+                  <div>
+                    <div class="iso-scale__title">A (min)</div>
+                    <div class="iso-scale__bar" style="height:92px">
+                      <div class="iso-scale__seg" style="background:rgba(34,197,94,.55)"></div>
+                      <div class="iso-scale__seg" style="background:rgba(132,204,22,.55)"></div>
+                      <div class="iso-scale__seg" style="background:rgba(251,191,36,.55)"></div>
+                      <div class="iso-scale__seg" style="background:rgba(249,115,22,.55)"></div>
+                      <div class="iso-scale__seg" style="background:rgba(239,68,68,.55)"></div>
+                    </div>
+                  </div>
+                  <div class="iso-scale__labels" style="padding-top:14px;padding-bottom:2px">
+                    <div>≤ 10</div>
+                    <div>20</div>
+                    <div>30</div>
+                    <div>45</div>
+                    <div>60+</div>
+                  </div>
+                </div>
+                <div class="iso-scale__block" title="Isochrones B : 5/10/15/20/30 min (voiture)">
+                  <div>
+                    <div class="iso-scale__title">B (min)</div>
+                    <div class="iso-scale__bar" style="height:92px">
+                      <div class="iso-scale__seg" style="background:rgba(34,197,94,.55)"></div>
+                      <div class="iso-scale__seg" style="background:rgba(74,222,128,.55)"></div>
+                      <div class="iso-scale__seg" style="background:rgba(251,191,36,.55)"></div>
+                      <div class="iso-scale__seg" style="background:rgba(249,115,22,.55)"></div>
+                      <div class="iso-scale__seg" style="background:rgba(239,68,68,.55)"></div>
+                    </div>
+                  </div>
+                  <div class="iso-scale__labels" style="padding-top:14px;padding-bottom:2px">
+                    <div>≤ 5</div>
+                    <div>10</div>
+                    <div>15</div>
+                    <div>20</div>
+                    <div>30+</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
