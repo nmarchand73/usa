@@ -148,6 +148,45 @@
     .leaflet-tooltip.lyon-tt .tt-name{ font-weight:700; color:#e2e8f0; margin:0.15rem 0 0.1rem; }
     .leaflet-tooltip.lyon-tt .tt-meta{ color:#cbd5e1; line-height:1.35; margin-top:0.2rem; }
     .leaflet-tooltip.lyon-tt .tt-why{ color:#cbd5e1; line-height:1.35; margin-top:0.35rem; opacity:.92; }
+
+    /* Pins (lieux de vie) — plus lisibles que des cercles en zone dense */
+    .leaflet-div-icon.lyon-pin-icon{
+      background:transparent !important;
+      border:none !important;
+    }
+    .lyon-pin{
+      width:22px; height:22px;
+      transform:rotate(45deg);
+      border-radius:22px 22px 22px 0;
+      position:relative;
+      box-shadow:0 10px 22px rgba(0,0,0,.38);
+      border:2px solid rgba(15,23,42,.92);
+    }
+    .lyon-pin::after{
+      content:'';
+      position:absolute;
+      width:9px; height:9px;
+      background:rgba(255,255,255,.92);
+      border-radius:50%;
+      top:50%; left:50%;
+      transform:translate(-50%,-50%) rotate(-45deg);
+      opacity:.9;
+    }
+    .lyon-pin--top10{
+      box-shadow:0 14px 26px rgba(0,0,0,.52);
+      border-width:3px;
+    }
+    .lyon-pin-label{
+      position:absolute;
+      top:50%; left:50%;
+      transform:translate(-50%,-50%) rotate(-45deg);
+      font-family:'JetBrains Mono',monospace;
+      font-weight:800;
+      font-size:10px;
+      color:#0a0e17;
+      text-shadow:0 1px 0 rgba(255,255,255,.25);
+      pointer-events:none;
+    }
     @media (max-width: 960px){
       #lyonLeafletMap{ min-height:300px; height:480px; }
       .main-split{ flex-direction:column; }
@@ -357,12 +396,32 @@
       layerBmx.addTo(map);
 
       // Origin marker (Interpol)
-      const originMarker = L.circleMarker([ORIGIN.lat, ORIGIN.lng], {
-        radius: 8,
-        color: '#0f172a',
-        weight: 2,
-        fillColor: '#00d4aa',
-        fillOpacity: 0.95
+      function pinIconHtml(opts) {
+        const fill = opts.fill || '#22c55e';
+        const border = opts.border || 'rgba(15,23,42,.92)';
+        const top10 = !!opts.top10;
+        const label = opts.label != null ? String(opts.label) : '';
+        const cls = 'lyon-pin' + (top10 ? ' lyon-pin--top10' : '');
+        const labelHtml = label ? '<div class="lyon-pin-label">' + esc(label) + '</div>' : '';
+        return '<div class="' + cls + '" style="background:' + fill + ';border-color:' + border + ';">' + labelHtml + '</div>';
+      }
+
+      function createPinMarker(lat, lng, opts) {
+        const icon = L.divIcon({
+          className: 'lyon-pin-icon',
+          html: pinIconHtml(opts || {}),
+          iconSize: [26, 26],
+          iconAnchor: [13, 24],
+          popupAnchor: [0, -20],
+          tooltipAnchor: [0, -14]
+        });
+        return L.marker([lat, lng], { icon: icon, keyboard: false });
+      }
+
+      const originMarker = createPinMarker(ORIGIN.lat, ORIGIN.lng, {
+        fill: '#00d4aa',
+        border: 'rgba(15,23,42,.92)',
+        label: 'I'
       }).addTo(map);
       originMarker.bindTooltip(
         '<div class="tt-kind">Origine (Interpol)</div><div class="tt-name">' + esc(ORIGIN.label) + '</div>',
@@ -499,11 +558,28 @@
         const fa = document.getElementById('lyonFilterArr').checked;
         const tonly = document.getElementById('lyonFilterTop10').checked;
         markers.forEach(function (m) {
+          // Update Top10 visual (star + thicker border) without recreating layers
+          const it = byId[m.itemId];
+          if (it && m.marker && typeof m.marker.setIcon === 'function') {
+            const isC = it.kind === 'commune';
+            const inTop = topIds && topIds.has(it.id);
+            const pinFill = isC ? communesColor(it.scores.actu) : arrColor(it.scores.citycrunch);
+            const pinBorder = isC ? '#14532d' : '#1e1b4b';
+            const icon = L.divIcon({
+              className: 'lyon-pin-icon',
+              html: pinIconHtml({ fill: pinFill, border: pinBorder, top10: inTop, label: inTop ? '★' : '' }),
+              iconSize: [26, 26],
+              iconAnchor: [13, 24],
+              popupAnchor: [0, -20],
+              tooltipAnchor: [0, -14]
+            });
+            m.marker.setIcon(icon);
+          }
           if (m.g === 'c' && !fc) return;
           if (m.g === 'a' && !fa) return;
           if (tonly && !topIds.has(m.itemId)) return;
-          if (m.g === 'c') m.circle.addTo(layerCommunes);
-          else m.circle.addTo(layerArr);
+          if (m.g === 'c') m.marker.addTo(layerCommunes);
+          else m.marker.addTo(layerArr);
         });
         refreshTopList();
       }
@@ -535,21 +611,22 @@
           byId[item.id] = item;
           const isC = item.kind === 'commune';
           const combined = item.scores.combined;
-          const fill = isC ? communesColor(item.scores.actu) : arrColor(item.scores.citycrunch);
           const g = isC ? 'c' : 'a';
-          const c = L.circleMarker([item.lat, item.lng], {
-            radius: markerRadius(item.kind, combined),
-            color: isC ? '#14532d' : '#1e1b4b',
-            weight: 2,
-            fillColor: fill,
-            fillOpacity: 0.9
+          const pinFill = isC ? communesColor(item.scores.actu) : arrColor(item.scores.citycrunch);
+          const pinBorder = isC ? '#14532d' : '#1e1b4b';
+          const inTop = topIds && topIds.has(item.id);
+          const m = createPinMarker(item.lat, item.lng, {
+            fill: pinFill,
+            border: pinBorder,
+            top10: inTop,
+            label: inTop ? '★' : ''
           });
-          c.bindTooltip(tooltipText(item), { direction: 'top', className: 'lyon-tt', sticky: true });
-          c.bindPopup(function () { return popupHtml(item); });
-          c.on('click', function () { selectItem(item, false); });
-          c.itemId = item.id;
-          item._marker = c;
-          markers.push({ circle: c, itemId: item.id, g: g });
+          m.bindTooltip(tooltipText(item), { direction: 'top', className: 'lyon-tt', sticky: true });
+          m.bindPopup(function () { return popupHtml(item); });
+          m.on('click', function () { selectItem(item, false); });
+          m.itemId = item.id;
+          item._marker = m;
+          markers.push({ marker: m, itemId: item.id, g: g });
         });
         setMarkerVisibility();
       }
@@ -766,6 +843,17 @@
           // keep the origin marker in sync if origin overridden by data
           if (originMarker && originMarker.setLatLng) {
             originMarker.setLatLng([ORIGIN.lat, ORIGIN.lng]);
+          }
+          // also refresh the origin icon (in case label/colors change later)
+          if (originMarker && originMarker.setIcon) {
+            originMarker.setIcon(L.divIcon({
+              className: 'lyon-pin-icon',
+              html: pinIconHtml({ fill: '#00d4aa', border: 'rgba(15,23,42,.92)', label: 'I' }),
+              iconSize: [26, 26],
+              iconAnchor: [13, 24],
+              popupAnchor: [0, -20],
+              tooltipAnchor: [0, -14]
+            }));
           }
           addMarkers(data.items || []);
           refreshTopList();
