@@ -504,17 +504,18 @@
         div.id = 'lyonIsoLegend';
         div.style.display = 'none';
         div.innerHTML =
-          '<div class="iso-scale__block" title="Isochrones (voiture) : 5/10/15/20/30/45/60+ min">' +
+          '<div class="iso-scale__block" title="Isochrones (voiture, OSRM) : ≤5 / 10 / 15 / 20 / 30 / 45 / 60 / 60+ min">' +
             '<div>' +
               '<div class="iso-scale__title">Minutes</div>' +
               '<div class="iso-scale__bar" style="height:92px">' +
-                '<div class="iso-scale__seg" style="background:rgba(34,197,94,.55)"></div>' +
-                '<div class="iso-scale__seg" style="background:rgba(74,222,128,.55)"></div>' +
-                '<div class="iso-scale__seg" style="background:rgba(251,191,36,.55)"></div>' +
-                '<div class="iso-scale__seg" style="background:rgba(249,115,22,.55)"></div>' +
-                '<div class="iso-scale__seg" style="background:rgba(239,68,68,.55)"></div>' +
-                '<div class="iso-scale__seg" style="background:rgba(239,68,68,.38)"></div>' +
-                '<div class="iso-scale__seg" style="background:rgba(239,68,68,.26)"></div>' +
+                '<div class="iso-scale__seg" style="background:rgba(34,197,94,.62)"></div>' +  // ≤5
+                '<div class="iso-scale__seg" style="background:rgba(74,222,128,.62)"></div>' + // 10
+                '<div class="iso-scale__seg" style="background:rgba(251,191,36,.62)"></div>' + // 15
+                '<div class="iso-scale__seg" style="background:rgba(249,115,22,.62)"></div>' + // 20
+                '<div class="iso-scale__seg" style="background:rgba(239,68,68,.62)"></div>' +  // 30
+                '<div class="iso-scale__seg" style="background:rgba(239,68,68,.46)"></div>' +  // 45
+                '<div class="iso-scale__seg" style="background:rgba(239,68,68,.34)"></div>' +  // 60
+                '<div class="iso-scale__seg" style="background:rgba(239,68,68,.22)"></div>' +  // 60+
               '</div>' +
             '</div>' +
             '<div class="iso-scale__labels" style="padding-top:14px;padding-bottom:2px">' +
@@ -524,6 +525,7 @@
               '<div>20</div>' +
               '<div>30</div>' +
               '<div>45</div>' +
+              '<div>60</div>' +
               '<div>60+</div>' +
             '</div>' +
           '</div>';
