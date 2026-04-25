@@ -60,13 +60,42 @@
     }
     .btn-fullscreen:hover{ color:var(--text); border-color:var(--accent); }
     .map-wrap.fullscreen .btn-fullscreen{ background:var(--accent); color:var(--bg); border-color:var(--accent); }
+    /* Plein écran : même principe que france-map — la zone Leaflet doit être en flex colonne avec hauteur résolue */
     .map-wrap.fullscreen{
-      position:fixed !important; inset:0 !important; z-index:10000 !important;
-      width:100vw !important; height:100vh !important; border-radius:0 !important;
-      display:flex !important; flex-direction:column !important;
+      position:fixed !important;
+      inset:0 !important;
+      z-index:10000 !important;
+      width:100vw !important;
+      height:100vh !important;
+      max-width:none !important;
+      max-height:none !important;
+      min-width:0 !important;
+      min-height:0 !important;
+      flex:none !important;
+      border-radius:0 !important;
+      border:none !important;
+      margin:0 !important;
+      padding:0 !important;
+      display:flex !important;
+      flex-direction:column !important;
+      overflow:visible !important;
     }
-    .map-wrap.fullscreen .map-leaflet-stack{ flex:1 1 0; min-height:0; }
-    .map-wrap.fullscreen #lyonLeafletMap{ flex:1 1 0; height:0 !important; min-height:0; border-radius:0; }
+    .map-wrap.fullscreen .map-legend{
+      flex:0 0 auto !important;
+      border-radius:0 !important;
+    }
+    .map-wrap.fullscreen .map-leaflet-stack{
+      flex:1 1 0 !important;
+      min-height:0 !important;
+      display:flex !important;
+      flex-direction:column !important;
+    }
+    .map-wrap.fullscreen #lyonLeafletMap{
+      flex:1 1 0 !important;
+      height:0 !important;
+      min-height:0 !important;
+      border-radius:0 !important;
+    }
     .venue-filters{ margin-top:0.35rem; padding-top:0.65rem; border-top:1px solid var(--border); }
     .venue-filters .venue-filters-title{
       font-family:'JetBrains Mono',monospace; font-size:0.7rem; text-transform:uppercase;
@@ -404,13 +433,15 @@
           fsWrap.classList.remove('fullscreen');
           document.body.style.overflow = '';
           btn.textContent = '⛶';
-          setTimeout(function () { map.invalidateSize(); }, 120);
+          window.setTimeout(function () { if (map && map.invalidateSize) map.invalidateSize({ animate: false }); }, 100);
+          window.setTimeout(function () { if (map && map.invalidateSize) map.invalidateSize({ animate: false }); }, 300);
         }
         function enter() {
           fsWrap.classList.add('fullscreen');
           document.body.style.overflow = 'hidden';
           btn.textContent = '✕';
-          setTimeout(function () { map.invalidateSize(); }, 120);
+          window.setTimeout(function () { if (map && map.invalidateSize) map.invalidateSize({ animate: false }); }, 100);
+          window.setTimeout(function () { if (map && map.invalidateSize) map.invalidateSize({ animate: false }); }, 300);
         }
         btn.addEventListener('click', function () {
           if (fsWrap.classList.contains('fullscreen')) exit();
