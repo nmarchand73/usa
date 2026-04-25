@@ -143,7 +143,8 @@
     }
     .leaflet-tooltip.lyon-tt .tt-kind{ font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; }
     .leaflet-tooltip.lyon-tt .tt-name{ font-weight:700; color:#e2e8f0; margin:0.15rem 0 0.1rem; }
-    .leaflet-tooltip.lyon-tt .tt-desc{ color:#cbd5e1; line-height:1.35; margin-top:0.2rem; }
+    .leaflet-tooltip.lyon-tt .tt-meta{ color:#cbd5e1; line-height:1.35; margin-top:0.2rem; }
+    .leaflet-tooltip.lyon-tt .tt-why{ color:#cbd5e1; line-height:1.35; margin-top:0.35rem; opacity:.92; }
     @media (max-width: 960px){
       #lyonLeafletMap{ min-height:300px; height:480px; }
       .main-split{ flex-direction:column; }
@@ -336,18 +337,24 @@
         const isC = item.kind === 'commune';
         const head = isC ? 'Commune (Actu.fr)' : 'Arrondissement (CityCrunch)';
         const scoreLine = isC
-          ? 'Actu : ' + item.scores.actu + '/100'
-          : 'CityCrunch : ' + item.scores.citycrunch + '/100' + (item.labels && item.labels.verdict ? ' — ' + item.labels.verdict : '');
+          ? ('Actu : ' + item.scores.actu + '/100')
+          : ('CityCrunch : ' + item.scores.citycrunch + '/100' + (item.labels && item.labels.verdict ? ' — ' + item.labels.verdict : ''));
         const why = isC ? (item.why && item.why.actu) : (item.why && item.why.citycrunch);
-        const dist = travelLineHtml(item);
+        let timeLine = '';
+        if (Number.isFinite(item.lat) && Number.isFinite(item.lng)) {
+          const t = travelMinutesEstimate(item.lat, item.lng);
+          const osrm = item && item.durations && item.durations.carOsrm && item.durations.carOsrm.status === 'ok'
+            ? item.durations.carOsrm
+            : null;
+          const carMin = osrm && Number.isFinite(osrm.minutes) ? osrm.minutes : t.car;
+          const carTag = osrm && Number.isFinite(osrm.minutes) ? 'OSRM' : 'estim.';
+          timeLine = '<b>' + carMin + ' min</b> voiture <span style="opacity:.85">(' + carTag + ')</span> · <b>' + t.tc + ' min</b> TC <span style="opacity:.85">(estim.)</span>';
+        }
         return (
           '<div class="tt-kind">' + esc(head) + '</div>' +
           '<div class="tt-name">' + esc(item.name) + '</div>' +
-          '<div class="tt-desc">' +
-            esc(scoreLine) +
-            (why ? '<br>' + esc(why) : '') +
-            (dist ? '<br>' + dist : '') +
-          '</div>'
+          '<div class="tt-meta">' + esc(scoreLine) + (timeLine ? '<br>' + timeLine : '') + '</div>' +
+          (why ? '<div class="tt-why">' + esc(why) + '</div>' : '')
         );
       }
 
