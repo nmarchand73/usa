@@ -137,6 +137,7 @@
     .venue-swatch--mx{ background:#d97706; border-color:#78350f; }
     .venue-swatch--pump{ background:#c084fc; border-color:#4c1d95; }
     .venue-swatch--bmx{ background:#f43f5e; border-color:#500724; }
+    .venue-swatch--mall{ background:#38bdf8; border-color:#075985; border-radius:4px; }
     .iso-scale{ display:flex; gap:.6rem; align-items:flex-start; flex-wrap:wrap; margin-top:.35rem; }
     .iso-scale__block{
       display:flex;
@@ -351,6 +352,10 @@
                 <label><input type="checkbox" id="lyonFilterPump" checked><span class="venue-swatch venue-swatch--pump" title="Pumptrack"></span> Pumptracks (OSM)</label>
                 <label><input type="checkbox" id="lyonFilterBmx" checked><span class="venue-swatch venue-swatch--bmx" title="BMX"></span> BMX (OSM)</label>
               </div>
+              <div class="venue-filters-title" style="margin-top:.65rem">Grand shopping (≤ 35 km)</div>
+              <div class="venue-filters-row">
+                <label><input type="checkbox" id="lyonFilterMalls" checked><span class="venue-swatch venue-swatch--mall" title="Centres commerciaux"></span> Centres commerciaux</label>
+              </div>
               <div class="venue-filters-title" style="margin-top:.65rem">Temps de trajet (voiture) — zones</div>
               <div class="venue-filters-row">
                 <label><input type="checkbox" id="lyonFilterIso"><span class="venue-swatch" style="background:rgba(74,222,128,.55);border-color:rgba(74,222,128,.85)"></span> Isochrones (OSRM, base 5/10/15/20/30 + extensions)</label>
@@ -497,6 +502,7 @@
       const layerMx = L.layerGroup();
       const layerPump = L.layerGroup();
       const layerBmx = L.layerGroup();
+      const layerMalls = L.layerGroup();
       const byId = {};
       let dataPayload = null;
       let isoGrid = null;
@@ -579,6 +585,7 @@
       layerMx.addTo(map);
       layerPump.addTo(map);
       layerBmx.addTo(map);
+      layerMalls.addTo(map);
 
       // Origin marker (Interpol)
       function pinIconHtml(opts) {
@@ -817,7 +824,7 @@
       }
 
       function wireFilters() {
-        ['lyonFilterCommunes', 'lyonFilterArr', 'lyonFilterTop10', 'lyonFilterIso', 'lyonFilterMx', 'lyonFilterPump', 'lyonFilterBmx'].forEach(function (id) {
+        ['lyonFilterCommunes', 'lyonFilterArr', 'lyonFilterTop10', 'lyonFilterIso', 'lyonFilterMx', 'lyonFilterPump', 'lyonFilterBmx', 'lyonFilterMalls'].forEach(function (id) {
           const el = document.getElementById(id);
           if (el) el.addEventListener('change', function () { recomputeTop(); setMarkerVisibility(); });
         });
@@ -1016,6 +1023,53 @@
         map.removeLayer(layerBmx);
       }
 
+      function applyMallsLayer() {
+        layerMalls.clearLayers();
+        map.removeLayer(layerMalls);
+        const show = !!document.getElementById('lyonFilterMalls')?.checked;
+        if (!show) return;
+
+        const R_KM = 35; // around Lyon origin
+        const malls = [
+          { name: 'Westfield La Part-Dieu', lat: 45.76139, lng: 4.85583, kind: 'centre' },
+          { name: 'Westfield Confluence', lat: 45.741405, lng: 4.815853, kind: 'centre' },
+          { name: 'Carré de Soie', lat: 45.7642, lng: 4.9219, kind: 'centre' },
+          { name: 'Grand Parilly (pôle commercial)', lat: 45.7186, lng: 4.8814, kind: 'retail' },
+          { name: 'Porte des Alpes (zone commerciale)', lat: 45.721667, lng: 4.925833, kind: 'retail' }, // 45°43'18"N 4°55'33"E
+          { name: 'Saint-Genis 2', lat: 45.6806, lng: 4.7920, kind: 'centre' }, // 45°40'50"N 4°47'31"E
+          { name: 'Porte de Lyon (Dardilly)', lat: 45.819167, lng: 4.767222, kind: 'retail' }, // 45°49'9"N 4°46'2"E
+          { name: 'The Village — outlet', lat: 45.62605, lng: 5.160324, kind: 'outlet' }
+        ];
+
+        malls.forEach(function (m) {
+          const lat = Number(m.lat), lng = Number(m.lng);
+          if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+          if (!isNearOrigin(lat, lng, R_KM)) return;
+          const label =
+            m.kind === 'outlet' ? 'Outlet' :
+            m.kind === 'retail' ? 'Zone commerciale' :
+            'Centre commercial';
+
+          const marker = L.circleMarker([lat, lng], {
+            radius: 7,
+            color: '#075985',
+            weight: 2,
+            fillColor: '#38bdf8',
+            fillOpacity: 0.92
+          });
+          marker.bindTooltip(
+            sportVenueTooltipHtml(label, m.name, { lat: lat, lng: lng }),
+            { direction: 'top', className: 'lyon-tt', sticky: true }
+          );
+          marker.bindPopup(
+            sportVenuePopupHtml(label, m.name, lat, lng, null)
+          );
+          marker.addTo(layerMalls);
+        });
+
+        layerMalls.addTo(map);
+      }
+
       function sportVenueTooltipHtml(kindLabel, name, itemLike) {
         const city =
           (itemLike && itemLike.city != null && String(itemLike.city).trim()) ? String(itemLike.city).trim()
@@ -1197,14 +1251,20 @@
         .then(function (fr) {
           const venuesFr = fr && fr.venues ? fr.venues : null;
           applySportLayers(venuesFr);
+          applyMallsLayer();
           // re-apply when toggles change
-          ['lyonFilterMx', 'lyonFilterPump', 'lyonFilterBmx'].forEach(function (id) {
+          ['lyonFilterMx', 'lyonFilterPump', 'lyonFilterBmx', 'lyonFilterMalls'].forEach(function (id) {
             const el = document.getElementById(id);
-            if (el) el.addEventListener('change', function () { applySportLayers(venuesFr); });
+            if (el) el.addEventListener('change', function () {
+              applySportLayers(venuesFr);
+              applyMallsLayer();
+            });
           });
         })
         .catch(function () {
           // silently ignore (lyon map still works without these layers)
+          // malls layer still works without FR venues
+          applyMallsLayer();
         });
 
       // Isochrone grid (OSRM) is optional: page works without it.
