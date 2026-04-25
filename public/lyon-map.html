@@ -206,6 +206,12 @@
     (function () {
       const ACTU = 'https://actu.fr/auvergne-rhone-alpes/lyon_69123/classement-voici-les-20-communes-de-reve-ou-habiter-pres-de-lyon_60673554.html';
       const CCR = 'https://lyon.citycrunch.fr/ou-habiter-a-lyon-en-2025-notre-avis-sur-chaque-arrondissement/2025/06/11/';
+      /** Origine (toujours affichée) : 200 Quai Charles de Gaulle, 69006 Lyon (Interpol) */
+      const ORIGIN = {
+        label: '200 Quai Charles de Gaulle, 69006 Lyon',
+        lat: 45.7821579,
+        lng: 4.8481081
+      };
 
       function esc(s) {
         if (s == null) return '';
@@ -243,6 +249,37 @@
         return 'https://www.google.com/maps/@' + lat + ',' + lng + ',16z/data=!3m1!1e3';
       }
 
+      function haversineKm(lat1, lng1, lat2, lng2) {
+        const R = 6371;
+        const toRad = (d) => d * Math.PI / 180;
+        const dLat = toRad(lat2 - lat1);
+        const dLon = toRad(lng2 - lng1);
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+          Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+      }
+
+      /**
+       * Pas d’API “temps de trajet” (Google/Navitia) : estimation lisible et stable.
+       * - voiture : vitesse urbaine moyenne ~28 km/h + 5 min (stationnement/feux)
+       * - TC : vitesse moyenne ~20 km/h + 12 min (attente + correspondances)
+       */
+      function travelMinutesEstimate(lat, lng) {
+        const km = haversineKm(ORIGIN.lat, ORIGIN.lng, lat, lng);
+        const car = Math.max(3, Math.round((km / 28) * 60 + 5));
+        const tc = Math.max(6, Math.round((km / 20) * 60 + 12));
+        return { km, car, tc };
+      }
+
+      function travelLineHtml(item) {
+        if (!Number.isFinite(item.lat) || !Number.isFinite(item.lng)) return '';
+        const t = travelMinutesEstimate(item.lat, item.lng);
+        return 'Depuis ' + ORIGIN.label + ' : <b>' + t.car + ' min</b> voiture · <b>' + t.tc + ' min</b> TC <span style=\"opacity:.85\">(estim.)</span>';
+      }
+
       const layerCommunes = L.layerGroup();
       const layerArr = L.layerGroup();
       const byId = {};
@@ -274,10 +311,15 @@
           ? 'Actu : ' + item.scores.actu + '/100'
           : 'CityCrunch : ' + item.scores.citycrunch + '/100' + (item.labels && item.labels.verdict ? ' — ' + item.labels.verdict : '');
         const why = isC ? (item.why && item.why.actu) : (item.why && item.why.citycrunch);
+        const dist = travelLineHtml(item);
         return (
           '<div class="tt-kind">' + esc(head) + '</div>' +
           '<div class="tt-name">' + esc(item.name) + '</div>' +
-          '<div class="tt-desc">' + esc(scoreLine) + (why ? '<br>' + esc(why) : '') + '</div>'
+          '<div class="tt-desc">' +
+            esc(scoreLine) +
+            (why ? '<br>' + esc(why) : '') +
+            (dist ? '<br>' + dist : '') +
+          '</div>'
         );
       }
 
@@ -287,6 +329,7 @@
         const lng = item.lng;
         const g = googleSatUrl(lat, lng);
         const isC = item.kind === 'commune';
+        const dist = travelLineHtml(item);
         const bullets = [];
         if (isC) {
           bullets.push('Note Actu.fr (classement) : ' + item.scores.actu + '/100');
@@ -305,6 +348,7 @@
           '<div style="line-height:1.45; font-size:0.9rem; color:#0f172a">' +
             '<div style="font-weight:700; margin-bottom:0.4rem; color:#1e293b">' + esc(item.name) + '</div>' +
             '<ul style="padding-left:1.1rem; margin:0.2rem 0 0.6rem">' + bullets.map(function (b) { return '<li>' + b + '</li>'; }).join('') + '</ul>' +
+            (dist ? '<div style="margin:0.25rem 0 0.55rem;padding:.45rem .55rem;border:1px solid rgba(15,23,42,.18);border-radius:10px;background:rgba(15,23,42,.04)">' + dist + '</div>' : '') +
             '<a href="' + esc(u) + '" target="_blank" rel="noopener" style="color:#0d9488">Article source</a><br>' +
             '<a href="' + g + '" target="_blank" rel="noopener" style="color:#0d9488">Google Maps — vue satellite</a>' +
           '</div>'
@@ -379,10 +423,12 @@
         const cont = document.getElementById('lyonDetailContent');
         if (!cont) return;
         if (title) title.textContent = item.name;
+        const dist = travelLineHtml(item);
         cont.innerHTML =
           '<p><b>Score combiné (tri global) :</b> ' + esc(String(item.scores.combined)) + '/100</p>' +
           (item.kind === 'commune' ? '<p>Actu.fr : ' + esc(String(item.scores.actu)) + '/100</p>' : '<p>CityCrunch (dérivé) : ' + esc(String(item.scores.citycrunch)) + '/100' +
             (item.labels && item.labels.verdict ? ' — ' + esc(item.labels.verdict) : '') + '</p>') +
+          (dist ? '<p style="margin-top:0.45rem;padding-top:0.35rem;border-top:1px solid var(--border)">' + dist + '</p>' : '') +
           (item.why && (item.kind === 'commune' ? item.why.actu : item.why.citycrunch) ? '<p style="margin-top:0.5rem">' + esc(item.kind === 'commune' ? item.why.actu : item.why.citycrunch) + '</p>' : '') +
           '<div class="detail-actions">' +
             '<a href="' + esc(getSourceUrl(item)) + '" target="_blank" rel="noopener">Article source</a>' +
