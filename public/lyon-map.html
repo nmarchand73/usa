@@ -336,6 +336,26 @@
       layerArr.addTo(map);
       // isochrones off by default (toggle in legend)
 
+      // Origin marker (Interpol)
+      const originMarker = L.circleMarker([ORIGIN.lat, ORIGIN.lng], {
+        radius: 8,
+        color: '#0f172a',
+        weight: 2,
+        fillColor: '#00d4aa',
+        fillOpacity: 0.95
+      }).addTo(map);
+      originMarker.bindTooltip(
+        '<div class="tt-kind">Origine (Interpol)</div><div class="tt-name">' + esc(ORIGIN.label) + '</div>',
+        { direction: 'top', className: 'lyon-tt', sticky: true }
+      );
+      originMarker.bindPopup(
+        '<div style="line-height:1.45; font-size:0.9rem; color:#0f172a">' +
+          '<div style="font-weight:700; margin-bottom:0.4rem; color:#1e293b">Origine (Interpol)</div>' +
+          '<div style="margin-bottom:.35rem;">' + esc(ORIGIN.label) + '</div>' +
+          '<a href="' + googleSatUrl(ORIGIN.lat, ORIGIN.lng) + '" target="_blank" rel="noopener" style="color:#0d9488">Google Maps — vue satellite</a>' +
+        '</div>'
+      );
+
       function getSourceUrl(item) {
         if (dataPayload && dataPayload.sources) {
           if (item.kind === 'commune' && dataPayload.sources.actu) return dataPayload.sources.actu.url || ACTU;
@@ -642,6 +662,10 @@
             ORIGIN.label = String(data.origin.label || ORIGIN.label);
             ORIGIN.lat = Number(data.origin.lat);
             ORIGIN.lng = Number(data.origin.lng);
+          }
+          // keep the origin marker in sync if origin overridden by data
+          if (originMarker && originMarker.setLatLng) {
+            originMarker.setLatLng([ORIGIN.lat, ORIGIN.lng]);
           }
           addMarkers(data.items || []);
           refreshTopList();
