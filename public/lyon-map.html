@@ -185,12 +185,44 @@
     .leaflet-tooltip.lyon-tt{
       background:rgba(10,14,23,.94) !important; color:var(--text) !important;
       border:1px solid var(--border) !important; border-radius:10px !important;
-      padding:0.5rem 0.7rem !important; font-size:0.8rem; max-width:min(300px,90vw);
+      padding:0.52rem 0.72rem !important;
+      font-size:0.82rem;
+      max-width:min(320px,92vw);
+      box-shadow:0 10px 28px rgba(0,0,0,.45) !important;
     }
     .leaflet-tooltip.lyon-tt .tt-kind{ font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; }
-    .leaflet-tooltip.lyon-tt .tt-name{ font-weight:700; color:#e2e8f0; margin:0.15rem 0 0.1rem; }
-    .leaflet-tooltip.lyon-tt .tt-meta{ color:#cbd5e1; line-height:1.35; margin-top:0.2rem; }
-    .leaflet-tooltip.lyon-tt .tt-why{ color:#cbd5e1; line-height:1.35; margin-top:0.35rem; opacity:.92; }
+    .leaflet-tooltip.lyon-tt .tt-name{
+      font-weight:750;
+      color:#e2e8f0;
+      margin:0.18rem 0 0.12rem;
+      letter-spacing:.01em;
+    }
+    .leaflet-tooltip.lyon-tt .tt-city{
+      color:#cbd5e1;
+      opacity:.9;
+      font-size:.78rem;
+      margin-top:.08rem;
+    }
+    .leaflet-tooltip.lyon-tt .tt-meta{
+      color:#cbd5e1;
+      line-height:1.35;
+      margin-top:0.22rem;
+    }
+    .leaflet-tooltip.lyon-tt .tt-times{
+      color:#cbd5e1;
+      font-size:.76rem;
+      margin-top:.26rem;
+      padding-top:.26rem;
+      border-top:1px solid rgba(148,163,184,.18);
+      opacity:.92;
+      white-space:nowrap;
+    }
+    .leaflet-tooltip.lyon-tt .tt-why{
+      color:#cbd5e1;
+      line-height:1.35;
+      margin-top:0.32rem;
+      opacity:.9;
+    }
 
     /* Pins (lieux de vie) — plus lisibles que des cercles en zone dense */
     .leaflet-div-icon.lyon-pin-icon{
@@ -425,6 +457,17 @@
           ? ('<b>' + osrm.minutes + ' min</b> voiture <span style=\"opacity:.85\">(OSRM)</span>')
           : ('<b>' + t.car + ' min</b> voiture <span style=\"opacity:.85\">(estim.)</span>');
         return 'Depuis ' + ORIGIN.label + ' : ' + carPart + ' · <b>' + t.tc + ' min</b> TC <span style=\"opacity:.85\">(estim.)</span>';
+      }
+
+      function travelLineCompactHtml(item) {
+        if (!Number.isFinite(item.lat) || !Number.isFinite(item.lng)) return '';
+        const t = travelMinutesEstimate(item.lat, item.lng);
+        const osrm = item && item.durations && item.durations.carOsrm && item.durations.carOsrm.status === 'ok'
+          ? item.durations.carOsrm
+          : null;
+        const carMin = osrm && Number.isFinite(osrm.minutes) ? osrm.minutes : t.car;
+        const carTag = osrm && Number.isFinite(osrm.minutes) ? 'OSRM' : 'estim.';
+        return '<b>' + carMin + ' min</b> voiture <span style=\"opacity:.8\">(' + carTag + ')</span> · <b>' + t.tc + ' min</b> TC <span style=\"opacity:.8\">(estim.)</span>';
       }
 
       const layerCommunes = L.layerGroup();
@@ -790,7 +833,6 @@
       }
 
       function sportVenueTooltipHtml(kindLabel, name, itemLike) {
-        const dist = travelLineHtml(itemLike);
         const city =
           (itemLike && itemLike.city != null && String(itemLike.city).trim()) ? String(itemLike.city).trim()
           : (itemLike && itemLike.commune != null && String(itemLike.commune).trim()) ? String(itemLike.commune).trim()
@@ -799,11 +841,12 @@
           : (itemLike && itemLike.town != null && String(itemLike.town).trim()) ? String(itemLike.town).trim()
           : (itemLike && itemLike.village != null && String(itemLike.village).trim()) ? String(itemLike.village).trim()
           : '';
+        const times = travelLineCompactHtml(itemLike);
         return (
           '<div class="tt-kind">' + esc(kindLabel) + '</div>' +
           '<div class="tt-name">' + esc(name) + '</div>' +
-          (city ? '<div class="tt-meta">' + esc(city) + '</div>' : '') +
-          (dist ? '<div class="tt-meta">' + dist + '</div>' : '')
+          (city ? '<div class="tt-city">' + esc(city) + '</div>' : '') +
+          (times ? '<div class="tt-times">' + times + '</div>' : '')
         );
       }
 
