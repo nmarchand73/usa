@@ -791,9 +791,18 @@
 
       function sportVenueTooltipHtml(kindLabel, name, itemLike) {
         const dist = travelLineHtml(itemLike);
+        const city =
+          (itemLike && itemLike.city != null && String(itemLike.city).trim()) ? String(itemLike.city).trim()
+          : (itemLike && itemLike.commune != null && String(itemLike.commune).trim()) ? String(itemLike.commune).trim()
+          : (itemLike && itemLike.locality != null && String(itemLike.locality).trim()) ? String(itemLike.locality).trim()
+          : (itemLike && itemLike.place != null && String(itemLike.place).trim()) ? String(itemLike.place).trim()
+          : (itemLike && itemLike.town != null && String(itemLike.town).trim()) ? String(itemLike.town).trim()
+          : (itemLike && itemLike.village != null && String(itemLike.village).trim()) ? String(itemLike.village).trim()
+          : '';
         return (
           '<div class="tt-kind">' + esc(kindLabel) + '</div>' +
           '<div class="tt-name">' + esc(name) + '</div>' +
+          (city ? '<div class="tt-meta">' + esc(city) + '</div>' : '') +
           (dist ? '<div class="tt-meta">' + dist + '</div>' : '')
         );
       }
