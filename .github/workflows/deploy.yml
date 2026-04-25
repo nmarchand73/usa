@@ -36,6 +36,9 @@ jobs:
       - name: Regenerate public/lyon-iso-grid.json (OSRM)
         run: node scripts/build-lyon-isochrone-grid-osrm.js
 
+      - name: Regenerate public/lyon-dvf-heatmap.json (DVF Rhône)
+        run: node scripts/build-lyon-dvf-heatmap.js
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

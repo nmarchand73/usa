@@ -75,9 +75,11 @@ $env:NOMINATIM_UA="usa-interactive-map/2.0 (Lyon zones; local dev)"
 npm run geocode:lyon
 npm run fetch:lyon-dvf
 npm run build:lyon
+# optionnel : heatmap DVF (€/m²) — génère `public/lyon-dvf-heatmap.json` (télécharge les CSV DVF 69)
+npm run build:lyon-dvf-heat
 ```
 
-Puis lancer le site et ouvrir [http://localhost:3000/lyon-map.html](http://localhost:3000/lyon-map.html) (fichier `public/lyon-map.html`, données `public/lyon-data.json` générées par `build:lyon`).
+Puis lancer le site et ouvrir [http://localhost:3000/lyon-map.html](http://localhost:3000/lyon-map.html) (fichier `public/lyon-map.html`, données `public/lyon-data.json` générées par `build:lyon` ; calque heatmap DVF : `lyon-dvf-heatmap.json`).
 
 ## Publication GitHub Pages
 

@@ -193,6 +193,16 @@
       padding:.45rem .55rem;
     }
     .lyon-iso-legend .iso-scale__labels{ min-width:64px; }
+    .lyon-dvf-heat-grad{
+      width:120px; height:10px; border-radius:8px;
+      background:linear-gradient(90deg,#22c55e 0%,#fbbf24 50%,#ef4444 100%);
+      border:1px solid rgba(148,163,184,.35);
+      box-shadow:0 0 0 1px rgba(0,0,0,.2) inset;
+    }
+    .lyon-dvf-heat-legend .dvf-heat-legend__foot{
+      font-size:.64rem; color:var(--text-dim); line-height:1.3; margin-top:.35rem; max-width:200px;
+    }
+    .lyon-dvf-heat-legend .iso-scale__block{ flex-direction:column; align-items:stretch; gap:.35rem; }
     .map-leaflet-stack{ position:relative; flex:1 1 auto; min-height:0; }
     #lyonLeafletMap{ width:100%; height:560px; min-height:360px; background:var(--bg3); border-radius:0 0 12px 12px; }
     .panel-shell{
@@ -372,6 +382,14 @@
                 <label><input type="checkbox" id="lyonFilterIso"><span class="venue-swatch" style="background:rgba(74,222,128,.55);border-color:rgba(74,222,128,.85)"></span> Isochrones (OSRM, base 5/10/15/20/30 + extensions)</label>
                 <span class="detail-note" id="lyonIsoNote" style="margin:0">Isochrones voiture (OSRM) : chargement…</span>
               </div>
+              <div class="venue-filters-title" style="margin-top:.65rem">Prix maisons (DVF 69)</div>
+              <div class="venue-filters-row">
+                <label title="Médiane €/m² par case (raster généré ; ventes « Maison » DVF, plusieurs années).">
+                  <input type="checkbox" id="lyonFilterDvfHeat">
+                  <span class="venue-swatch" style="background:linear-gradient(90deg,#22c55e,#fbbf24,#ef4444);border-color:#14532d"></span> Heatmap €/m²
+                </label>
+                <span class="detail-note" id="lyonDvfHeatNote" style="margin:0">Heatmap DVF : chargement…</span>
+              </div>
               <!-- Scale moved to map right-side legend -->
             </div>
             </div>
@@ -517,6 +535,7 @@
       const byId = {};
       let dataPayload = null;
       let isoGrid = null;
+      let dvfHeatGrid = null;
       let topIds = new Set();
       const markers = [];
       let venuesFrCache = null;
@@ -588,6 +607,32 @@
 
       function setIsoLegendVisible(visible) {
         const el = document.getElementById('lyonIsoLegend');
+        if (!el) return;
+        el.style.display = visible ? '' : 'none';
+      }
+
+      const dvfHeatLegend = L.control({ position: 'topleft' });
+      dvfHeatLegend.onAdd = function () {
+        const div = L.DomUtil.create('div', 'lyon-iso-legend lyon-dvf-heat-legend');
+        div.id = 'lyonDvfHeatLegend';
+        div.style.display = 'none';
+        div.innerHTML =
+          '<div class="iso-scale__block" title="Heatmap DVF (maisons) : couleur = position relative (p10–p90)">' +
+            '<div class="iso-scale__title">DVF — €/m²</div>' +
+            '<div class="lyon-dvf-heat-grad" role="img" aria-label="Échelle de prix bas à élevé"></div>' +
+            '<div class="iso-scale__labels" style="flex-direction:row; min-width:120px; justify-content:space-between; padding:0; margin:0.15rem 0 0; font-size:0.72rem">' +
+              '<span id="lyonDvfHeatL" style="color:var(--text)">—</span>' +
+              '<span id="lyonDvfHeatH" style="color:var(--text)">—</span>' +
+            '</div>' +
+            '<div class="dvf-heat-legend__foot">Médianes par cellule (5 ventes min.), années agrégées. Indicatif.</div>' +
+          '</div>';
+        L.DomEvent.disableClickPropagation(div);
+        return div;
+      };
+      dvfHeatLegend.addTo(map);
+
+      function setDvfHeatLegendVisible(visible) {
+        const el = document.getElementById('lyonDvfHeatLegend');
         if (!el) return;
         el.style.display = visible ? '' : 'none';
       }
@@ -991,7 +1036,7 @@
       }
 
       function wireFilters() {
-        ['lyonFilterCommunes', 'lyonFilterArr', 'lyonFilterTop10', 'lyonFilterIso', 'lyonFilterMx', 'lyonFilterPump', 'lyonFilterBmx', 'lyonFilterMalls', 'lyonFilterHouseFit'].forEach(function (id) {
+        ['lyonFilterCommunes', 'lyonFilterArr', 'lyonFilterTop10', 'lyonFilterIso', 'lyonFilterDvfHeat', 'lyonFilterMx', 'lyonFilterPump', 'lyonFilterBmx', 'lyonFilterMalls', 'lyonFilterHouseFit'].forEach(function (id) {
           const el = document.getElementById(id);
           if (el) el.addEventListener('change', function () {
             const hn = document.getElementById('lyonHouseFitNote');
@@ -1104,6 +1149,105 @@
           map.removeLayer(isoRasterOverlay);
           isoRasterOverlay = null;
         }
+      }
+
+      let dvfHeatRasterOverlay = null;
+      function clearDvfHeatRaster() {
+        if (dvfHeatRasterOverlay) {
+          map.removeLayer(dvfHeatRasterOverlay);
+          dvfHeatRasterOverlay = null;
+        }
+      }
+
+      function dvfHeatColorRgb(t) {
+        if (!Number.isFinite(t)) t = 0.5;
+        t = Math.max(0, Math.min(1, t));
+        const c0 = [0x22, 0xc5, 0x5e];
+        const c1 = [0xfb, 0xbf, 0x24];
+        const c2 = [0xef, 0x44, 0x44];
+        if (t <= 0.5) {
+          const s = t * 2;
+          return [
+            Math.round(c0[0] + (c1[0] - c0[0]) * s),
+            Math.round(c0[1] + (c1[1] - c0[1]) * s),
+            Math.round(c0[2] + (c1[2] - c0[2]) * s)
+          ];
+        }
+        const s = (t - 0.5) * 2;
+        return [
+          Math.round(c1[0] + (c2[0] - c1[0]) * s),
+          Math.round(c1[1] + (c2[1] - c1[1]) * s),
+          Math.round(c1[2] + (c2[2] - c1[2]) * s)
+        ];
+      }
+
+      function renderDvfHeatmap() {
+        if (!dvfHeatGrid || dvfHeatGrid.kind !== 'lyonDvfHouseHeatmap' || !Array.isArray(dvfHeatGrid.eurM2)) {
+          clearDvfHeatRaster();
+          setDvfHeatLegendVisible(false);
+          return;
+        }
+        clearDvfHeatRaster();
+        const show = !!document.getElementById('lyonFilterDvfHeat')?.checked;
+        setDvfHeatLegendVisible(show);
+        if (!show) return;
+
+        const nx = dvfHeatGrid.grid.nx;
+        const ny = dvfHeatGrid.grid.ny;
+        const vals = dvfHeatGrid.eurM2;
+        if (vals.length !== nx * ny) return;
+
+        let p10 = dvfHeatGrid.summary && Number.isFinite(dvfHeatGrid.summary.p10) ? dvfHeatGrid.summary.p10 : null;
+        let p90 = dvfHeatGrid.summary && Number.isFinite(dvfHeatGrid.summary.p90) ? dvfHeatGrid.summary.p90 : null;
+        if (!Number.isFinite(p10) || !Number.isFinite(p90) || p90 <= p10) {
+          const s = [];
+          for (let j = 0; j < vals.length; j++) {
+            const v = vals[j] == null ? null : Number(vals[j]);
+            if (Number.isFinite(v)) s.push(v);
+          }
+          s.sort(function (a, b) { return a - b; });
+          if (s.length > 0) {
+            p10 = s[Math.max(0, Math.floor(0.1 * (s.length - 1)))];
+            p90 = s[Math.min(s.length - 1, Math.floor(0.9 * (s.length - 1)))];
+          }
+        }
+        if (!Number.isFinite(p10) || !Number.isFinite(p90) || p90 <= p10) {
+          p10 = 2000; p90 = 6000;
+        }
+
+        const lEl = document.getElementById('lyonDvfHeatL');
+        const hEl = document.getElementById('lyonDvfHeatH');
+        if (lEl) lEl.textContent = '≈ ' + Math.round(p10) + ' €/m²';
+        if (hEl) hEl.textContent = '≈ ' + Math.round(p90) + ' €/m²';
+
+        const canvas = document.createElement('canvas');
+        canvas.width = nx;
+        canvas.height = ny;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        const img = ctx.createImageData(nx, ny);
+        for (let i = 0; i < vals.length; i++) {
+          const v = vals[i] == null ? null : Number(vals[i]);
+          const o = i * 4;
+          if (v == null || !Number.isFinite(v)) {
+            img.data[o + 3] = 0;
+            continue;
+          }
+          const t = (v - p10) / (p90 - p10);
+          const rgb = dvfHeatColorRgb(t);
+          img.data[o] = rgb[0];
+          img.data[o + 1] = rgb[1];
+          img.data[o + 2] = rgb[2];
+          img.data[o + 3] = Math.round(255 * 0.74);
+        }
+        ctx.putImageData(img, 0, 0);
+
+        const b = dvfHeatGrid.bbox;
+        if (!b || !Number.isFinite(b.minLat)) return;
+        const bounds = L.latLngBounds([b.minLat, b.minLng], [b.maxLat, b.maxLng]);
+        dvfHeatRasterOverlay = L.imageOverlay(canvas.toDataURL('image/png'), bounds, { opacity: 0.88, interactive: false });
+        dvfHeatRasterOverlay.addTo(map);
       }
 
       function renderIsochrones() {
@@ -1465,12 +1609,31 @@
           if (el) el.textContent = 'Isochrones : indisponibles (grille non générée).';
         });
 
-      // Re-render isochrones when toggles change
+      // DVF heatmap (raster) — optional
+      fetch('lyon-dvf-heatmap.json')
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(function (g) {
+          dvfHeatGrid = g;
+          const el = document.getElementById('lyonDvfHeatNote');
+          if (el && g && g.grid && g.summary) {
+            el.textContent = 'Heatmap DVF : ' + g.grid.nx + '×' + g.grid.ny + (g.summary.nonEmptyCells != null ? ' — ' + g.summary.nonEmptyCells + ' cases.' : '.');
+          }
+          window.setTimeout(renderDvfHeatmap, 0);
+        })
+        .catch(function () {
+          dvfHeatGrid = null;
+          const el = document.getElementById('lyonDvfHeatNote');
+          if (el) el.textContent = 'Heatmap DVF : indisponible (fichier non généré — npm run build:lyon-dvf-heat).';
+        });
+
+      // Re-render isochrones / DVF heat when toggles change
       document.addEventListener('change', function (e) {
         const id = e && e.target && e.target.id;
         if (id === 'lyonFilterIso') {
-          // ensure grid loaded
           window.setTimeout(renderIsochrones, 0);
+        }
+        if (id === 'lyonFilterDvfHeat') {
+          window.setTimeout(renderDvfHeatmap, 0);
         }
       });
     })();
