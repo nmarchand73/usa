@@ -287,7 +287,13 @@
       function travelLineHtml(item) {
         if (!Number.isFinite(item.lat) || !Number.isFinite(item.lng)) return '';
         const t = travelMinutesEstimate(item.lat, item.lng);
-        return 'Depuis ' + ORIGIN.label + ' : <b>' + t.car + ' min</b> voiture · <b>' + t.tc + ' min</b> TC <span style=\"opacity:.85\">(estim.)</span>';
+        const osrm = item && item.durations && item.durations.carOsrm && item.durations.carOsrm.status === 'ok'
+          ? item.durations.carOsrm
+          : null;
+        const carPart = osrm && Number.isFinite(osrm.minutes)
+          ? ('<b>' + osrm.minutes + ' min</b> voiture <span style=\"opacity:.85\">(OSRM)</span>')
+          : ('<b>' + t.car + ' min</b> voiture <span style=\"opacity:.85\">(estim.)</span>');
+        return 'Depuis ' + ORIGIN.label + ' : ' + carPart + ' · <b>' + t.tc + ' min</b> TC <span style=\"opacity:.85\">(estim.)</span>';
       }
 
       const layerCommunes = L.layerGroup();
@@ -549,6 +555,11 @@
         })
         .then(function (data) {
           dataPayload = data;
+          if (data && data.origin && Number.isFinite(data.origin.lat) && Number.isFinite(data.origin.lng)) {
+            ORIGIN.label = String(data.origin.label || ORIGIN.label);
+            ORIGIN.lat = Number(data.origin.lat);
+            ORIGIN.lng = Number(data.origin.lng);
+          }
           addMarkers(data.items || []);
           refreshTopList();
         })

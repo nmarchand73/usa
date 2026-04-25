@@ -1,5 +1,10 @@
 {
   "fetchedAt": "2026-04-25T00:00:00.000Z",
+  "origin": {
+    "label": "200 Quai Charles de Gaulle, 69006 Lyon",
+    "lat": 45.7821579,
+    "lng": 4.8481081
+  },
   "sources": {
     "actu": {
       "title": "Classement : voici les 20 communes \"de rêve\" où habiter près de Lyon",
@@ -34,6 +39,16 @@
         "query": "Écully, Métropole de Lyon, France",
         "displayName": "Écully, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69130, France",
         "placeId": 81896258
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 15,
+          "distanceKm": 7.1,
+          "fetchedAt": "2026-04-25T08:39:17.859Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7785644,45.7754498?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -59,6 +74,16 @@
         "query": "Francheville, Métropole de Lyon, France",
         "displayName": "Francheville, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69340, France",
         "placeId": 80705599
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 20,
+          "distanceKm": 15,
+          "fetchedAt": "2026-04-25T08:39:18.857Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7647304,45.735748?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -87,6 +112,16 @@
         "query": "Chaponnay, Métropole de Lyon, France",
         "displayName": "Rue Chaponnay, Préfecture, Lyon 3e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69003, France",
         "placeId": 80859009
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 6,
+          "distanceKm": 3.3,
+          "fetchedAt": "2026-04-25T08:39:19.856Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8438287,45.7580403?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -112,6 +147,16 @@
         "query": "Tassin-la-Demi-Lune, Métropole de Lyon, France",
         "displayName": "Tassin-la-Demi-Lune, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69160, France",
         "placeId": 81056090
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 17,
+          "distanceKm": 13,
+          "fetchedAt": "2026-04-25T08:39:20.857Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7657747,45.7598386?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -137,6 +182,16 @@
         "query": "Caluire-et-Cuire, Métropole de Lyon, France",
         "displayName": "Caluire-et-Cuire, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69300, France",
         "placeId": 81768924
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 7,
+          "distanceKm": 3.7,
+          "fetchedAt": "2026-04-25T08:39:21.860Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8423304,45.7969952?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -162,6 +217,16 @@
         "query": "Sainte-Foy-lès-Lyon, Métropole de Lyon, France",
         "displayName": "Sainte-Foy-lès-Lyon, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69110, France",
         "placeId": 82013090
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 19,
+          "distanceKm": 9.7,
+          "fetchedAt": "2026-04-25T08:39:22.858Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7934767,45.7362255?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -187,6 +252,16 @@
         "query": "Dardilly, Métropole de Lyon, France",
         "displayName": "Dardilly, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69570, France",
         "placeId": 81964117
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 25,
+          "distanceKm": 11.1,
+          "fetchedAt": "2026-04-25T08:39:23.865Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7537701,45.8064992?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -212,6 +287,16 @@
         "query": "Saint-Didier-au-Mont-d'Or, Métropole de Lyon, France",
         "displayName": "Saint-Didier-au-Mont-d'Or, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69370, France",
         "placeId": 81792803
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 17,
+          "distanceKm": 9.1,
+          "fetchedAt": "2026-04-25T08:39:24.857Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7979353,45.8115147?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -237,6 +322,16 @@
         "query": "Oullins, Métropole de Lyon, France",
         "displayName": "Oullins, Oullins-Pierre-Bénite, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69600, France",
         "placeId": 81081501
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 17,
+          "distanceKm": 9.3,
+          "fetchedAt": "2026-04-25T08:39:25.858Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8039331,45.7153254?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -262,6 +357,16 @@
         "query": "Saint-Romain-au-Mont-d'Or, Métropole de Lyon, France",
         "displayName": "Saint-Romain-au-Mont-d'Or, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69270, France",
         "placeId": 82008534
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 17,
+          "distanceKm": 11.5,
+          "fetchedAt": "2026-04-25T08:39:26.856Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8238973,45.8378038?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -287,6 +392,16 @@
         "query": "Saint-Genis-Laval, Métropole de Lyon, France",
         "displayName": "Saint-Genis-Laval, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69230, France",
         "placeId": 81727690
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 21,
+          "distanceKm": 12.7,
+          "fetchedAt": "2026-04-25T08:39:27.857Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7928827,45.6950021?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -312,6 +427,16 @@
         "query": "Sathonay-Village, Métropole de Lyon, France",
         "displayName": "Sathonay-Village, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69580, France",
         "placeId": 82022522
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 14,
+          "distanceKm": 9,
+          "fetchedAt": "2026-04-25T08:39:28.858Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8789977,45.8318096?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -337,6 +462,16 @@
         "query": "Vénissieux, Métropole de Lyon, France",
         "displayName": "Vénissieux, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69200, France",
         "placeId": 81692415
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 20,
+          "distanceKm": 11.3,
+          "fetchedAt": "2026-04-25T08:39:29.857Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8855966,45.6977109?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -362,6 +497,16 @@
         "query": "Saint-Cyr-au-Mont-d'Or, Métropole de Lyon, France",
         "displayName": "Saint-Cyr-au-Mont-d'Or, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69450, France",
         "placeId": 82211218
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 17,
+          "distanceKm": 9.5,
+          "fetchedAt": "2026-04-25T08:39:30.856Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8175958,45.8156548?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -387,6 +532,16 @@
         "query": "Irigny, Métropole de Lyon, France",
         "displayName": "Irigny, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69540, France",
         "placeId": 81122847
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 21,
+          "distanceKm": 14.2,
+          "fetchedAt": "2026-04-25T08:39:31.858Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8216902,45.6733141?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -412,6 +567,16 @@
         "query": "Craponne, Métropole de Lyon, France",
         "displayName": "Craponne, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69290, France",
         "placeId": 82203750
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 25,
+          "distanceKm": 16.6,
+          "fetchedAt": "2026-04-25T08:39:32.856Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7231057,45.743476?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -437,6 +602,16 @@
         "query": "Bron, Métropole de Lyon, France",
         "displayName": "Bron, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69500, France",
         "placeId": 88682236
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 14,
+          "distanceKm": 10.8,
+          "fetchedAt": "2026-04-25T08:39:33.857Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.9092352,45.7337532?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -462,6 +637,16 @@
         "query": "Saint-Priest, Métropole de Lyon, France",
         "displayName": "Saint-Priest, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69800, France",
         "placeId": 89962280
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 23,
+          "distanceKm": 17.1,
+          "fetchedAt": "2026-04-25T08:39:34.858Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.9441635,45.6965347?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -487,6 +672,16 @@
         "query": "Rillieux-la-Pape, Métropole de Lyon, France",
         "displayName": "Rillieux-la-Pape, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69140, France",
         "placeId": 90251542
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 13,
+          "distanceKm": 8,
+          "fetchedAt": "2026-04-25T08:39:35.858Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8994366,45.823514?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -512,6 +707,16 @@
         "query": "Marcy-l'Étoile, Métropole de Lyon, France",
         "displayName": "Marcy-l'Étoile, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69280, France",
         "placeId": 81519596
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 25,
+          "distanceKm": 17.5,
+          "fetchedAt": "2026-04-25T08:39:36.856Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7071338,45.7816572?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -537,6 +742,16 @@
         "query": "Lyon 1er arrondissement, France",
         "displayName": "Lyon 1er Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69001, France",
         "placeId": 90104903
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 8,
+          "distanceKm": 3.7,
+          "fetchedAt": "2026-04-25T08:39:37.859Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8297127,45.7701426?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -562,6 +777,16 @@
         "query": "Lyon 2e arrondissement, France",
         "displayName": "Lyon 2e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69002, France",
         "placeId": 81882064
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 9,
+          "distanceKm": 4.7,
+          "fetchedAt": "2026-04-25T08:39:38.857Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8273739,45.7511118?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -587,6 +812,16 @@
         "query": "Lyon 3e arrondissement, France",
         "displayName": "Lyon 3e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69003, France",
         "placeId": 420695389
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 9,
+          "distanceKm": 4.2,
+          "fetchedAt": "2026-04-25T08:39:39.858Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8622856,45.7555548?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -612,6 +847,16 @@
         "query": "Lyon 4e arrondissement, France",
         "displayName": "Lyon 4e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69004, France",
         "placeId": 81714364
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 7,
+          "distanceKm": 3.2,
+          "fetchedAt": "2026-04-25T08:39:40.858Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8255086,45.7784877?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -637,6 +882,16 @@
         "query": "Lyon 5e arrondissement, France",
         "displayName": "Lyon 5e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69005, France",
         "placeId": 422988237
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 14,
+          "distanceKm": 6.9,
+          "fetchedAt": "2026-04-25T08:39:41.856Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8068266,45.7563067?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -662,6 +917,16 @@
         "query": "Lyon 6e arrondissement, France",
         "displayName": "Lyon 6e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69006, France",
         "placeId": 420859695
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 5,
+          "distanceKm": 2.5,
+          "fetchedAt": "2026-04-25T08:39:42.857Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8528227,45.7681444?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -687,6 +952,16 @@
         "query": "Lyon 7e arrondissement, France",
         "displayName": "Lyon 7e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69007, France",
         "placeId": 82084128
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 12,
+          "distanceKm": 6,
+          "fetchedAt": "2026-04-25T08:39:43.861Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8366972,45.737442?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -712,6 +987,16 @@
         "query": "Lyon 8e arrondissement, France",
         "displayName": "Lyon 8e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69008, France",
         "placeId": 81605407
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 14,
+          "distanceKm": 6.9,
+          "fetchedAt": "2026-04-25T08:39:44.858Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8707197,45.7351227?overview=false&alternatives=false&steps=false"
+        }
       }
     },
     {
@@ -737,6 +1022,16 @@
         "query": "Lyon 9e arrondissement, France",
         "displayName": "Lyon 9e Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, 69009, France",
         "placeId": 90421626
+      },
+      "durations": {
+        "carOsrm": {
+          "status": "ok",
+          "minutes": 10,
+          "distanceKm": 5.1,
+          "fetchedAt": "2026-04-25T08:39:45.857Z",
+          "source": "OSRM",
+          "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8007449,45.7815392?overview=false&alternatives=false&steps=false"
+        }
       }
     }
   ]
