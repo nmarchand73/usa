@@ -74,6 +74,11 @@
     }
     .btn-legend:hover{ color:var(--text); border-color:var(--accent); }
     .map-wrap.fullscreen .btn-legend{ background:var(--bg3); color:var(--text-dim); border-color:var(--border); }
+    .btn-legend.btn-legend--active{
+      background:rgba(0,212,170,.16);
+      border-color:rgba(0,212,170,.6);
+      color:var(--text);
+    }
     .map-legend-top{ display:flex; flex-wrap:wrap; align-items:center; gap:0.5rem 1rem; }
     .map-legend-label{ font-family:'JetBrains Mono',monospace; font-size:0.85rem; color:var(--text-dim); }
     .map-legend-actions{ margin-left:auto; display:flex; align-items:center; gap:0.5rem; }
@@ -319,6 +324,7 @@
             <div class="map-legend-top">
               <span class="map-legend-label">Carte &amp; calques</span>
               <div class="map-legend-actions">
+                <button type="button" id="lyonBtnRuler" class="btn-legend" aria-pressed="false" title="Règle (mesurer des distances)">📏</button>
                 <button type="button" id="lyonBtnLegend" class="btn-legend" title="Replier / déplier la légende">▾</button>
                 <button type="button" id="lyonBtnFullscreen" class="btn-fullscreen" title="Plein écran (Échap)">⛶</button>
               </div>
@@ -817,8 +823,9 @@
         });
       }
 
-      // Simple dynamic ruler: click 2 points to measure distance (km)
+      // Simple dynamic ruler: toggle + click 2 points to measure distance (km)
       (function initRuler() {
+        let enabled = false;
         let a = null;
         let b = null;
         let line = null;
@@ -830,15 +837,43 @@
           a = null; b = null;
         }
 
+        function setEnabled(v) {
+          enabled = !!v;
+          clear();
+          const btn = document.getElementById('lyonBtnRuler');
+          if (btn) {
+            btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+            btn.classList.toggle('btn-legend--active', enabled);
+            btn.title = enabled ? 'Règle active — clique 2 points (clic droit : effacer)' : 'Règle (mesurer des distances)';
+          }
+          if (enabled) {
+            const startTip = L.tooltip({ permanent: false, direction: 'top', className: 'lyon-tt', opacity: 1 })
+              .setLatLng(map.getCenter())
+              .setContent('<div class="tt-kind">Règle</div><div class="tt-name">Activée</div><div class="tt-meta">Clique 2 points pour mesurer<br><span style="opacity:.8">Clic droit : effacer · Re-clique 📏 : quitter</span></div>');
+            startTip.addTo(map);
+            window.setTimeout(function () { map.closeTooltip(startTip); }, 1700);
+          }
+        }
+
+        (function wireButton() {
+          const btn = document.getElementById('lyonBtnRuler');
+          if (!btn) return;
+          btn.addEventListener('click', function () {
+            setEnabled(!enabled);
+          });
+        })();
+
         function kmBetween(ll1, ll2) {
           return haversineKm(ll1.lat, ll1.lng, ll2.lat, ll2.lng);
         }
 
         map.on('contextmenu', function () { // right click to clear
+          if (!enabled) return;
           clear();
         });
 
         map.on('click', function (e) {
+          if (!enabled) return;
           // ignore if user clicked a marker (Leaflet sets originalEvent.target inside marker pane)
           const t = e && e.originalEvent && e.originalEvent.target;
           if (t && t.closest && (t.closest('.leaflet-marker-pane') || t.closest('.leaflet-popup-pane'))) return;
