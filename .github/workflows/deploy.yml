@@ -30,6 +30,9 @@ jobs:
       - name: Regenerate public/app-data-fr.json from map-data
         run: node scripts/merge-json-fr.js
 
+      - name: Regenerate public/lyon-data.json from map-data
+        run: node scripts/build-lyon-data.js
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

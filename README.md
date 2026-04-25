@@ -65,6 +65,19 @@ Puis ouvrir [http://localhost:3000/usa-map.html](http://localhost:3000/usa-map.h
 
 > Sous Windows : double-cliquer `launch-site.bat`
 
+### Carte Lyon (métropole : Actu + CityCrunch)
+
+Les points et scores viennent de `map-data/lyon-zones.json`. Après toute édition manuelle des noms ou des scores, regéocodez les coordonnées (Nominatim, ~1 requête/s, User-Agent identifié) puis publiez le JSON côté `public/` :
+
+```powershell
+$env:NOMINATIM_UA="usa-interactive-map/2.0 (Lyon zones; local dev)"
+# optionnel (recommandé) : $env:NOMINATIM_EMAIL="contact@exemple.com"
+npm run geocode:lyon
+npm run build:lyon
+```
+
+Puis lancer le site et ouvrir [http://localhost:3000/lyon-map.html](http://localhost:3000/lyon-map.html) (fichier `public/lyon-map.html`, données `public/lyon-data.json` générées par `build:lyon`).
+
 ## Publication GitHub Pages
 
 Le dépôt est configuré pour publier automatiquement `public/` via GitHub Pages (workflow `.github/workflows/deploy.yml`) à chaque `push` sur `master`.

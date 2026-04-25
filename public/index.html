@@ -29,7 +29,7 @@
       margin-bottom:.5rem;
     }
     p{color:var(--text-dim);max-width:72ch}
-    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:1.6rem}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-top:1.6rem}
     .card{
       display:block;
       border:1px solid var(--border);
@@ -45,13 +45,13 @@
     .badge{display:inline-flex;align-items:center;gap:.4rem;margin-top:.8rem;padding:.2rem .55rem;border:1px solid var(--border);border-radius:999px;color:var(--text-dim);font-size:.85rem}
     footer{margin-top:2rem;color:var(--text-dim);border-top:1px solid var(--border);padding-top:1rem;text-align:center}
     a{color:inherit}
-    @media(max-width:840px){.grid{grid-template-columns:1fr}}
+    @media(max-width:520px){.grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <div class="wrap">
     <h1>Cartes interactives</h1>
-    <p>Choisis une carte. Version France : 13 régions métropolitaines (V1). Version USA : carte par États + couche dynamique.</p>
+    <p>Choisis une carte. Version France : 13 régions métropolitaines (V1). Lyon : communes (Actu) + arrondissements (CityCrunch). Version USA : carte par États + couche dynamique.</p>
 
     <div class="grid">
       <a class="card" href="usa-map.html">
@@ -63,6 +63,11 @@
         <div class="title">France</div>
         <div class="desc">13 régions métropolitaines — fiches + villes + carte Leaflet/D3.</div>
         <div class="badge">Fichier : <code>france-map.html</code></div>
+      </a>
+      <a class="card" href="lyon-map.html">
+        <div class="title">Lyon</div>
+        <div class="desc">Métropole : 20 communes (Actu.fr) + 9 arrondissements (CityCrunch) — repères d’habitat.</div>
+        <div class="badge">Fichier : <code>lyon-map.html</code> · <code>lyon-data.json</code></div>
       </a>
     </div>
 

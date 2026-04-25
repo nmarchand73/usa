@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lyon — où habiter (Actu + CityCrunch)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root{
+      --bg:#0a0e17; --bg2:#111827; --bg3:#1a2235;
+      --accent:#00d4aa; --accent2:#7c3aed;
+      --green:#22c55e; --yellow:#fbbf24; --red:#ef4444;
+      --text:#e2e8f0; --text-dim:#94a3b8; --border:#1e293b;
+      --code-bg:#0d1117;
+    }
+    body{ background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; line-height:1.65; min-height:100vh; }
+    body::before{
+      content:''; position:fixed; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events:none; z-index:9999;
+    }
+    a{ color:var(--accent); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+    .app{ display:flex; flex-direction:column; min-height:100vh; }
+    .hero{ text-align:center; padding:2rem 1.5rem 1.25rem; }
+    .hero h1{
+      font-family:'JetBrains Mono',monospace;
+      font-size:clamp(1.5rem,4vw,2.2rem);
+      font-weight:700;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      margin-bottom:.4rem;
+    }
+    .hero-line{ height:2px; width:200px; margin:1rem auto 0; background:linear-gradient(90deg,transparent,var(--accent),transparent); }
+    .main{ flex:1; display:flex; flex-direction:column; padding:1rem 1.5rem 0; width:100%; max-width:none; margin:0; }
+    .main-split{ display:flex; flex-direction:row; align-items:stretch; gap:1rem; width:100%; flex:1; min-height:0; }
+    .map-wrap{
+      flex:1 1 0; min-width:min(100%,320px);
+      background:var(--bg2);
+      border:1px solid var(--border);
+      border-radius:12px;
+      overflow:hidden;
+      display:flex; flex-direction:column; padding:0; position:relative;
+    }
+    .map-legend{
+      flex:0 0 auto; display:flex; flex-direction:column; gap:0.5rem;
+      padding:0.75rem 1rem; background:var(--bg2); border-bottom:1px solid var(--border);
+    }
+    .map-legend-top{ display:flex; flex-wrap:wrap; align-items:center; gap:0.5rem 1rem; }
+    .map-legend-label{ font-family:'JetBrains Mono',monospace; font-size:0.85rem; color:var(--text-dim); }
+    .map-legend-actions{ margin-left:auto; display:flex; align-items:center; gap:0.5rem; }
+    .btn-fullscreen{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:30px; height:30px; background:var(--bg3); border:1px solid var(--border);
+      border-radius:6px; color:var(--text-dim); cursor:pointer; font-size:1rem; line-height:1;
+    }
+    .btn-fullscreen:hover{ color:var(--text); border-color:var(--accent); }
+    .map-wrap.fullscreen .btn-fullscreen{ background:var(--accent); color:var(--bg); border-color:var(--accent); }
+    .map-wrap.fullscreen{
+      position:fixed !important; inset:0 !important; z-index:10000 !important;
+      width:100vw !important; height:100vh !important; border-radius:0 !important;
+      display:flex !important; flex-direction:column !important;
+    }
+    .map-wrap.fullscreen .map-leaflet-stack{ flex:1 1 0; min-height:0; }
+    .map-wrap.fullscreen #lyonLeafletMap{ flex:1 1 0; height:0 !important; min-height:0; border-radius:0; }
+    .venue-filters{ margin-top:0.35rem; padding-top:0.65rem; border-top:1px solid var(--border); }
+    .venue-filters .venue-filters-title{
+      font-family:'JetBrains Mono',monospace; font-size:0.7rem; text-transform:uppercase;
+      letter-spacing:1px; color:var(--text-dim); margin-bottom:0.4rem;
+    }
+    .venue-filters-row{ display:flex; flex-wrap:wrap; gap:0.5rem 0.75rem; align-items:center; }
+    .venue-filters-row label{ display:inline-flex; align-items:center; gap:0.35rem; font-size:0.8rem; cursor:pointer; }
+    .venue-filters-row input{ accent-color:var(--accent); }
+    .venue-swatch{ width:12px; height:12px; border-radius:50%; border:2px solid; }
+    .map-leaflet-stack{ position:relative; flex:1 1 auto; min-height:0; }
+    #lyonLeafletMap{ width:100%; height:560px; min-height:360px; background:var(--bg3); border-radius:0 0 12px 12px; }
+    .panel-shell{
+      display:flex; flex-direction:row; flex:0 0 min(380px,36vw);
+      max-width:min(400px,40vw); min-width:0; min-height:0; border-radius:14px; overflow:hidden;
+      border:1px solid var(--border);
+      background:linear-gradient(180deg,var(--bg2),rgba(17,24,39,.75));
+    }
+    .panel-edge{
+      flex:0 0 44px; width:44px; writing-mode:vertical-rl; transform:rotate(180deg);
+      border:0; border-right:1px solid var(--border); background:rgba(15,23,42,.92);
+      color:var(--text); font-family:'JetBrains Mono',monospace; font-size:0.65rem;
+      font-weight:600; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer;
+    }
+    .panel-edge:hover{ color:var(--accent); }
+    .panel-shell--collapsed{
+      flex:0 0 44px !important; max-width:44px !important; min-width:44px !important;
+    }
+    .panel-shell--collapsed .panel{ display:none; }
+    .panel{ flex:1; overflow:auto; padding:1rem 1.1rem; }
+    .panel h2{ font-size:1.15rem; margin-bottom:0.5rem; }
+    .panel h3{ font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--accent); margin:0.8rem 0 0.4rem; }
+    .top-list{ list-style:none; }
+    .top-list li{ padding:0.45rem 0.5rem; margin-bottom:0.35rem; border:1px solid var(--border); border-radius:8px; cursor:pointer; }
+    .top-list li:hover{ border-color:var(--accent); }
+    .top-list .name{ font-weight:700; }
+    .top-list .sub{ color:var(--text-dim); font-size:0.85rem; }
+    .detail-note{ color:var(--text-dim); font-size:0.88rem; margin:0.4rem 0; }
+    .detail-actions{ display:flex; flex-direction:column; gap:0.4rem; margin-top:0.6rem; }
+    .detail-actions a{ font-size:0.9rem; }
+    footer{ color:var(--text-dim); padding:0.75rem 1.25rem 1rem; text-align:center; border-top:1px solid var(--border); font-size:0.92rem; }
+    .leaflet-tooltip.lyon-tt{
+      background:rgba(10,14,23,.94) !important; color:var(--text) !important;
+      border:1px solid var(--border) !important; border-radius:10px !important;
+      padding:0.5rem 0.7rem !important; font-size:0.8rem; max-width:min(300px,90vw);
+    }
+    .leaflet-tooltip.lyon-tt .tt-kind{ font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; }
+    .leaflet-tooltip.lyon-tt .tt-name{ font-weight:700; color:#e2e8f0; margin:0.15rem 0 0.1rem; }
+    .leaflet-tooltip.lyon-tt .tt-desc{ color:#cbd5e1; line-height:1.35; margin-top:0.2rem; }
+    @media (max-width: 960px){
+      #lyonLeafletMap{ min-height:300px; height:480px; }
+      .main-split{ flex-direction:column; }
+      .panel-shell{ flex:0 0 auto; max-width:none; min-height:min(48vh,420px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="hero">
+      <h1>Lyon + métropole — repères “où habiter”</h1>
+      <p class="text-dim" style="color:var(--text-dim); max-width:52ch; margin:0.5rem auto 0; font-size:0.95rem;">Scores <strong>indicatifs</strong> : communes d’après <em>Actu.fr</em>, arrondissements d’après <em>CityCrunch</em> (échelle dérivée). Pas une mesure “objective” de qualité de vie.</p>
+      <div class="hero-line"></div>
+    </header>
+    <main class="main">
+      <div class="main-split">
+        <section class="map-wrap view-dynamic" id="lyonMapWrap" aria-label="Carte Lyon">
+          <div class="map-legend">
+            <div class="map-legend-top">
+              <span class="map-legend-label">Carte &amp; calques</span>
+              <div class="map-legend-actions">
+                <button type="button" id="lyonBtnFullscreen" class="btn-fullscreen" title="Plein écran (Échap)">⛶</button>
+              </div>
+            </div>
+            <div class="venue-filters" aria-label="Filtres">
+              <div class="venue-filters-title">Afficher (score global = Actu si commune, CityCrunch si arr.)</div>
+              <div class="venue-filters-row">
+                <label><input type="checkbox" id="lyonFilterCommunes" checked><span class="venue-swatch" style="background:#22c55e;border-color:#14532d"></span> Communes (Actu.fr /100)</label>
+                <label><input type="checkbox" id="lyonFilterArr" checked><span class="venue-swatch" style="background:#6366f1;border-color:#312e81"></span> Arrondissements (CityCrunch)</label>
+                <label><input type="checkbox" id="lyonFilterTop10" title="N’afficher sur la carte que le top 10 du classement actuel (selon calques)"><strong>Top 10 seul</strong> sur la carte</label>
+              </div>
+            </div>
+          </div>
+          <div class="map-leaflet-stack"><div id="lyonLeafletMap"></div></div>
+        </section>
+        <div class="panel-shell" id="lyonPanelShell" aria-label="Panneau latéral">
+          <button type="button" class="panel-edge" id="lyonPanelToggle" title="Replier le panneau" aria-controls="lyonPanel" aria-expanded="true">Panneau</button>
+          <aside class="panel" id="lyonPanel">
+            <h2>Top 10 (score combiné)</h2>
+            <p class="detail-note" id="lyonTopNote">Tous calques : classement sur les 29 points.</p>
+            <ol class="top-list" id="lyonTopList"></ol>
+            <h3 id="lyonDetailTitle">Fiche</h3>
+            <div id="lyonDetailContent" class="detail-note">Cliquez un point sur la carte.</div>
+          </aside>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <nav class="footer-nav" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:0.35rem 0.65rem" aria-label="Pied de page">
+        <a href="index.html">Accueil</a>
+        <span class="footer-sep" style="opacity:.45">·</span>
+        <a href="france-map.html">France</a>
+        <span class="footer-sep" style="opacity:.45">·</span>
+        <a href="usa-map.html">USA</a>
+      </nav>
+    </footer>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script>
+    (function () {
+      const ACTU = 'https://actu.fr/auvergne-rhone-alpes/lyon_69123/classement-voici-les-20-communes-de-reve-ou-habiter-pres-de-lyon_60673554.html';
+      const CCR = 'https://lyon.citycrunch.fr/ou-habiter-a-lyon-en-2025-notre-avis-sur-chaque-arrondissement/2025/06/11/';
+
+      function esc(s) {
+        if (s == null) return '';
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      function communesColor(score) {
+        const t = (score - 55) / (66 - 55);
+        const u = Math.max(0, Math.min(1, t));
+        const g = Math.round(34 + (239 - 34) * (1 - u));
+        const r = Math.round(34 + 239 * u);
+        return 'rgb(' + r + ',' + g + ', 70)';
+      }
+
+      function arrColor(score) {
+        const u = (score - 40) / 55;
+        const h = 250;
+        const s = 70 + Math.round(20 * u);
+        const l = 38 + Math.round(20 * u);
+        return 'hsl(' + h + ',' + s + '%,' + l + '%)';
+      }
+
+      function markerRadius(kind, combined) {
+        if (kind === 'commune') {
+          if (combined >= 63) return 10;
+          if (combined >= 60) return 8;
+          return 7;
+        }
+        if (combined >= 85) return 11;
+        if (combined >= 70) return 9;
+        return 8;
+      }
+
+      function googleSatUrl(lat, lng) {
+        return 'https://www.google.com/maps/@' + lat + ',' + lng + ',16z/data=!3m1!1e3';
+      }
+
+      const layerCommunes = L.layerGroup();
+      const layerArr = L.layerGroup();
+      const byId = {};
+      let dataPayload = null;
+      let topIds = new Set();
+      const markers = [];
+
+      const map = L.map('lyonLeafletMap', { scrollWheelZoom: true }).setView([45.764, 4.835], 11);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap &copy; CARTO'
+      }).addTo(map);
+      layerCommunes.addTo(map);
+      layerArr.addTo(map);
+
+      function getSourceUrl(item) {
+        if (dataPayload && dataPayload.sources) {
+          if (item.kind === 'commune' && dataPayload.sources.actu) return dataPayload.sources.actu.url || ACTU;
+          if (item.kind === 'arrondissement' && dataPayload.sources.citycrunch) return dataPayload.sources.citycrunch.url || CCR;
+        }
+        return item.kind === 'commune' ? ACTU : CCR;
+      }
+
+      function tooltipText(item) {
+        const isC = item.kind === 'commune';
+        const head = isC ? 'Commune (Actu.fr)' : 'Arrondissement (CityCrunch)';
+        const scoreLine = isC
+          ? 'Actu : ' + item.scores.actu + '/100'
+          : 'CityCrunch : ' + item.scores.citycrunch + '/100' + (item.labels && item.labels.verdict ? ' — ' + item.labels.verdict : '');
+        const why = isC ? (item.why && item.why.actu) : (item.why && item.why.citycrunch);
+        return (
+          '<div class="tt-kind">' + esc(head) + '</div>' +
+          '<div class="tt-name">' + esc(item.name) + '</div>' +
+          '<div class="tt-desc">' + esc(scoreLine) + (why ? '<br>' + esc(why) : '') + '</div>'
+        );
+      }
+
+      function popupHtml(item) {
+        const u = getSourceUrl(item);
+        const lat = item.lat;
+        const lng = item.lng;
+        const g = googleSatUrl(lat, lng);
+        const isC = item.kind === 'commune';
+        const bullets = [];
+        if (isC) {
+          bullets.push('Note Actu.fr (classement) : ' + item.scores.actu + '/100');
+          if (item.sourceNotes && item.sourceNotes.actuName) {
+            bullets.push('Nom cité par Actu : « ' + String(item.sourceNotes.actuName) + ' »');
+          }
+        } else {
+          bullets.push('Avis (échelle CityCrunch dérivée) : ' + item.scores.citycrunch + '/100' +
+            (item.labels && item.labels.verdict ? ' — ' + item.labels.verdict : ''));
+        }
+        if (item.why) {
+          const w = isC ? item.why.actu : item.why.citycrunch;
+          if (w) bullets.push(esc(w));
+        }
+        return (
+          '<div style="line-height:1.45; font-size:0.9rem; color:#0f172a">' +
+            '<div style="font-weight:700; margin-bottom:0.4rem; color:#1e293b">' + esc(item.name) + '</div>' +
+            '<ul style="padding-left:1.1rem; margin:0.2rem 0 0.6rem">' + bullets.map(function (b) { return '<li>' + b + '</li>'; }).join('') + '</ul>' +
+            '<a href="' + esc(u) + '" target="_blank" rel="noopener" style="color:#0d9488">Article source</a><br>' +
+            '<a href="' + g + '" target="_blank" rel="noopener" style="color:#0d9488">Google Maps — vue satellite</a>' +
+          '</div>'
+        );
+      }
+
+      function visibleItems() {
+        if (!dataPayload) return [];
+        const fc = document.getElementById('lyonFilterCommunes').checked;
+        const fa = document.getElementById('lyonFilterArr').checked;
+        return dataPayload.items.filter(function (x) {
+          if (x.kind === 'commune' && !fc) return false;
+          if (x.kind === 'arrondissement' && !fa) return false;
+          return true;
+        });
+      }
+
+      function recomputeTop() {
+        const vis = visibleItems().slice().sort(function (a, b) {
+          return (b.scores.combined || 0) - (a.scores.combined || 0);
+        });
+        const top = vis.slice(0, 10);
+        topIds = new Set(top.map(function (x) { return x.id; }));
+        return top;
+      }
+
+      function refreshTopList() {
+        const list = document.getElementById('lyonTopList');
+        const note = document.getElementById('lyonTopNote');
+        if (!list) return;
+        const top = recomputeTop();
+        if (note) {
+          const n = visibleItems().length;
+          note.textContent = n ? ('Calques actifs : ' + n + ' point(s) — top 10 ci-dessous par score combiné.') : 'Aucun calque : cochez au moins un type ci-dessus.';
+        }
+        list.innerHTML = top.map(function (x, i) {
+          const src = x.kind === 'commune' ? 'Actu' : 'CityCrunch';
+          return (
+            '<li data-id="' + esc(x.id) + '">' +
+              '<span class="name">' + (i + 1) + '. ' + esc(x.name) + '</span>' +
+              ' <span class="sub"> — ' + src + ' · ' + (x.scores.combined) + '/100 (combiné)</span></li>'
+          );
+        }).join('');
+
+        list.querySelectorAll('li[data-id]').forEach(function (el) {
+          el.addEventListener('click', function () {
+            const it = byId[el.getAttribute('data-id')];
+            if (it) { selectItem(it, false); if (it._marker) it._marker.openPopup(); }
+          });
+        });
+      }
+
+      function setMarkerVisibility() {
+        recomputeTop();
+        layerCommunes.clearLayers();
+        layerArr.clearLayers();
+        const fc = document.getElementById('lyonFilterCommunes').checked;
+        const fa = document.getElementById('lyonFilterArr').checked;
+        const tonly = document.getElementById('lyonFilterTop10').checked;
+        markers.forEach(function (m) {
+          if (m.g === 'c' && !fc) return;
+          if (m.g === 'a' && !fa) return;
+          if (tonly && !topIds.has(m.itemId)) return;
+          if (m.g === 'c') m.circle.addTo(layerCommunes);
+          else m.circle.addTo(layerArr);
+        });
+        refreshTopList();
+      }
+
+      function selectItem(item, pan) {
+        const title = document.getElementById('lyonDetailTitle');
+        const cont = document.getElementById('lyonDetailContent');
+        if (!cont) return;
+        if (title) title.textContent = item.name;
+        cont.innerHTML =
+          '<p><b>Score combiné (tri global) :</b> ' + esc(String(item.scores.combined)) + '/100</p>' +
+          (item.kind === 'commune' ? '<p>Actu.fr : ' + esc(String(item.scores.actu)) + '/100</p>' : '<p>CityCrunch (dérivé) : ' + esc(String(item.scores.citycrunch)) + '/100' +
+            (item.labels && item.labels.verdict ? ' — ' + esc(item.labels.verdict) : '') + '</p>') +
+          (item.why && (item.kind === 'commune' ? item.why.actu : item.why.citycrunch) ? '<p style="margin-top:0.5rem">' + esc(item.kind === 'commune' ? item.why.actu : item.why.citycrunch) + '</p>' : '') +
+          '<div class="detail-actions">' +
+            '<a href="' + esc(getSourceUrl(item)) + '" target="_blank" rel="noopener">Article source</a>' +
+            '<a href="' + googleSatUrl(item.lat, item.lng) + '" target="_blank" rel="noopener">Google Maps — vue satellite (zoom 16)</a>' +
+          '</div>';
+        if (pan && item.lat && item.lng) {
+          map.setView([item.lat, item.lng], Math.max(map.getZoom(), 12));
+        }
+      }
+
+      function addMarkers(items) {
+        items.forEach(function (item) {
+          if (!Number.isFinite(item.lat) || !Number.isFinite(item.lng)) return;
+          byId[item.id] = item;
+          const isC = item.kind === 'commune';
+          const combined = item.scores.combined;
+          const fill = isC ? communesColor(item.scores.actu) : arrColor(item.scores.citycrunch);
+          const g = isC ? 'c' : 'a';
+          const c = L.circleMarker([item.lat, item.lng], {
+            radius: markerRadius(item.kind, combined),
+            color: isC ? '#14532d' : '#1e1b4b',
+            weight: 2,
+            fillColor: fill,
+            fillOpacity: 0.9
+          });
+          c.bindTooltip(tooltipText(item), { direction: 'top', className: 'lyon-tt', sticky: true });
+          c.bindPopup(function () { return popupHtml(item); });
+          c.on('click', function () { selectItem(item, false); });
+          c.itemId = item.id;
+          item._marker = c;
+          markers.push({ circle: c, itemId: item.id, g: g });
+        });
+        setMarkerVisibility();
+      }
+
+      function wireFilters() {
+        ['lyonFilterCommunes', 'lyonFilterArr', 'lyonFilterTop10'].forEach(function (id) {
+          const el = document.getElementById(id);
+          if (el) el.addEventListener('change', function () { recomputeTop(); setMarkerVisibility(); });
+        });
+      }
+
+      (function initFs() {
+        const fsWrap = document.getElementById('lyonMapWrap');
+        const btn = document.getElementById('lyonBtnFullscreen');
+        if (!fsWrap || !btn) return;
+        function exit() {
+          fsWrap.classList.remove('fullscreen');
+          document.body.style.overflow = '';
+          btn.textContent = '⛶';
+          setTimeout(function () { map.invalidateSize(); }, 120);
+        }
+        function enter() {
+          fsWrap.classList.add('fullscreen');
+          document.body.style.overflow = 'hidden';
+          btn.textContent = '✕';
+          setTimeout(function () { map.invalidateSize(); }, 120);
+        }
+        btn.addEventListener('click', function () {
+          if (fsWrap.classList.contains('fullscreen')) exit();
+          else enter();
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && fsWrap.classList.contains('fullscreen')) { e.preventDefault(); exit(); }
+        });
+      })();
+
+      (function initPanel() {
+        const sh = document.getElementById('lyonPanelShell');
+        const btn = document.getElementById('lyonPanelToggle');
+        if (!sh || !btn) return;
+        function refresh() {
+          const collapsed = sh.classList.contains('panel-shell--collapsed');
+          btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+          btn.textContent = collapsed ? '◄' : 'Panneau';
+          btn.title = collapsed ? 'Développer le panneau' : 'Replier le panneau';
+        }
+        btn.addEventListener('click', function () {
+          sh.classList.toggle('panel-shell--collapsed');
+          refresh();
+          setTimeout(function () { map.invalidateSize(); }, 200);
+        });
+        refresh();
+      })();
+
+      fetch('lyon-data.json')
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        })
+        .then(function (data) {
+          dataPayload = data;
+          addMarkers(data.items || []);
+          refreshTopList();
+        })
+        .catch(function (e) {
+          const cont = document.getElementById('lyonDetailContent');
+          if (cont) cont.textContent = 'Erreur : ' + e.message;
+        });
+    })();
+  </script>
+</body>
+</html>
