@@ -500,6 +500,15 @@
         { position: 'topright' }
       ).addTo(map);
 
+      // Scale (distance legend) like other maps
+      L.control.scale({
+        position: 'bottomright',
+        maxWidth: 140,
+        metric: true,
+        imperial: false,
+        updateWhenIdle: true
+      }).addTo(map);
+
       layerCommunes.addTo(map);
       layerArr.addTo(map);
       // isochrones off by default (toggle in legend)
@@ -749,6 +758,59 @@
           if (el) el.addEventListener('change', function () { recomputeTop(); setMarkerVisibility(); });
         });
       }
+
+      // Simple dynamic ruler: click 2 points to measure distance (km)
+      (function initRuler() {
+        let a = null;
+        let b = null;
+        let line = null;
+        let tip = null;
+
+        function clear() {
+          if (line) { map.removeLayer(line); line = null; }
+          if (tip) { map.closeTooltip(tip); tip = null; }
+          a = null; b = null;
+        }
+
+        function kmBetween(ll1, ll2) {
+          return haversineKm(ll1.lat, ll1.lng, ll2.lat, ll2.lng);
+        }
+
+        map.on('contextmenu', function () { // right click to clear
+          clear();
+        });
+
+        map.on('click', function (e) {
+          // ignore if user clicked a marker (Leaflet sets originalEvent.target inside marker pane)
+          const t = e && e.originalEvent && e.originalEvent.target;
+          if (t && t.closest && (t.closest('.leaflet-marker-pane') || t.closest('.leaflet-popup-pane'))) return;
+
+          if (!a) {
+            a = e.latlng;
+            if (tip) map.closeTooltip(tip);
+            tip = L.tooltip({ permanent: false, direction: 'top', className: 'lyon-tt', opacity: 1 })
+              .setLatLng(a)
+              .setContent('<div class="tt-kind">Règle</div><div class="tt-name">Point A</div><div class="tt-meta">Clique un 2ᵉ point pour mesurer<br><span style="opacity:.8">Clic droit : effacer</span></div>');
+            tip.addTo(map);
+            return;
+          }
+
+          b = e.latlng;
+          if (line) map.removeLayer(line);
+          line = L.polyline([a, b], { color: '#00d4aa', weight: 3, opacity: 0.85, dashArray: '6 8' }).addTo(map);
+          const km = kmBetween(a, b);
+          const mid = L.latLng((a.lat + b.lat) / 2, (a.lng + b.lng) / 2);
+          if (tip) map.closeTooltip(tip);
+          tip = L.tooltip({ permanent: false, direction: 'top', className: 'lyon-tt', opacity: 1 })
+            .setLatLng(mid)
+            .setContent('<div class="tt-kind">Distance</div><div class="tt-name">' + km.toFixed(2) + ' km</div><div class="tt-meta">Clic droit : effacer</div>');
+          tip.addTo(map);
+
+          // ready for next measurement
+          a = null;
+          b = null;
+        });
+      })();
 
       function latLngFromGridXY(x, y, grid) {
         const nx = grid.grid.nx, ny = grid.grid.ny;
