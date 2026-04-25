@@ -299,10 +299,22 @@
 
       const map = L.map('lyonLeafletMap', { scrollWheelZoom: true }).setView([45.764, 4.835], 11);
       /* dark_all : routes/eau quasi noires → carte « toute noire ». Voyager : lisible sur fond UI sombre. */
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      const voyagerLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
-      }).addTo(map);
+      });
+      const satelliteLayer = L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        { maxZoom: 19, attribution: '&copy; Esri' }
+      );
+
+      voyagerLayer.addTo(map);
+      L.control.layers(
+        { 'Carte': voyagerLayer, 'Satellite': satelliteLayer },
+        {},
+        { position: 'topright' }
+      ).addTo(map);
+
       layerCommunes.addTo(map);
       layerArr.addTo(map);
 
