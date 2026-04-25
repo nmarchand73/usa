@@ -50,6 +50,30 @@
       flex:0 0 auto; display:flex; flex-direction:column; gap:0.5rem;
       padding:0.75rem 1rem; background:var(--bg2); border-bottom:1px solid var(--border);
     }
+    .map-legend.map-legend--collapsed{
+      padding:0.55rem 0.85rem;
+    }
+    .map-legend-body{
+      overflow:hidden;
+      transition:max-height .22s ease, opacity .18s ease, transform .22s ease;
+      transform-origin:top;
+      max-height:1200px;
+      opacity:1;
+      transform:translateY(0);
+    }
+    .map-legend.map-legend--collapsed .map-legend-body{
+      max-height:0;
+      opacity:0;
+      transform:translateY(-6px);
+      pointer-events:none;
+    }
+    .btn-legend{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:30px; height:30px; background:var(--bg3); border:1px solid var(--border);
+      border-radius:6px; color:var(--text-dim); cursor:pointer; font-size:1rem; line-height:1;
+    }
+    .btn-legend:hover{ color:var(--text); border-color:var(--accent); }
+    .map-wrap.fullscreen .btn-legend{ background:var(--bg3); color:var(--text-dim); border-color:var(--border); }
     .map-legend-top{ display:flex; flex-wrap:wrap; align-items:center; gap:0.5rem 1rem; }
     .map-legend-label{ font-family:'JetBrains Mono',monospace; font-size:0.85rem; color:var(--text-dim); }
     .map-legend-actions{ margin-left:auto; display:flex; align-items:center; gap:0.5rem; }
@@ -295,9 +319,11 @@
             <div class="map-legend-top">
               <span class="map-legend-label">Carte &amp; calques</span>
               <div class="map-legend-actions">
+                <button type="button" id="lyonBtnLegend" class="btn-legend" title="Replier / déplier la légende">▾</button>
                 <button type="button" id="lyonBtnFullscreen" class="btn-fullscreen" title="Plein écran (Échap)">⛶</button>
               </div>
             </div>
+            <div class="map-legend-body" id="lyonLegendBody">
             <div class="venue-filters" aria-label="Filtres">
               <div class="venue-filters-title">Où habiter (pins)</div>
               <div class="venue-filters-row">
@@ -325,6 +351,7 @@
                 <span class="detail-note" id="lyonIsoNote" style="margin:0">Isochrones voiture (OSRM) : chargement…</span>
               </div>
               <!-- Scale moved to map right-side legend -->
+            </div>
             </div>
           </div>
           <div class="map-leaflet-stack"><div id="lyonLeafletMap"></div></div>
@@ -1072,6 +1099,26 @@
           setTimeout(function () { map.invalidateSize(); }, 200);
         });
         refresh();
+      })();
+
+      // Slide legend (collapse/expand)
+      (function initLegendSlide() {
+        const legend = document.querySelector('#lyonMapWrap .map-legend');
+        const body = document.getElementById('lyonLegendBody');
+        const btn = document.getElementById('lyonBtnLegend');
+        if (!legend || !body || !btn) return;
+
+        function setCollapsed(collapsed) {
+          legend.classList.toggle('map-legend--collapsed', !!collapsed);
+          btn.textContent = collapsed ? '▸' : '▾';
+          btn.title = collapsed ? 'Déplier la légende' : 'Replier la légende';
+          window.setTimeout(function () { if (map && map.invalidateSize) map.invalidateSize({ animate: false }); }, 220);
+        }
+
+        btn.addEventListener('click', function () {
+          const collapsed = legend.classList.contains('map-legend--collapsed');
+          setCollapsed(!collapsed);
+        });
       })();
 
       fetch('lyon-data.json')
