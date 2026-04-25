@@ -1210,6 +1210,9 @@
         });
       })();
 
+      // Wire base filters (pins + top10 + iso + sports + malls)
+      wireFilters();
+
       fetch('lyon-data.json')
         .then(function (r) {
           if (!r.ok) throw new Error('HTTP ' + r.status);
