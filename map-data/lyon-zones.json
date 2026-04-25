@@ -49,6 +49,28 @@
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7785644,45.7754498?overview=false&alternatives=false&steps=false"
         }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69081",
+          "name": "Écully",
+          "fetchedAt": "2026-04-25T16:30:22.791Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.7754498&lon=4.7785644"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 299,
+          "txCountKept": 299,
+          "txCountDropped": 0,
+          "medianEurM2": 6060.61,
+          "p25EurM2": 4943.36,
+          "p75EurM2": 7440,
+          "fetchedAt": "2026-04-25T16:38:37.650Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69081",
+          "communeName": "Écully"
+        }
       }
     },
     {
@@ -83,6 +105,28 @@
           "fetchedAt": "2026-04-25T08:39:18.857Z",
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7647304,45.735748?overview=false&alternatives=false&steps=false"
+        }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69089",
+          "name": "Francheville",
+          "fetchedAt": "2026-04-25T16:30:24.191Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.735748&lon=4.7647304"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 479,
+          "txCountKept": 479,
+          "txCountDropped": 0,
+          "medianEurM2": 5000,
+          "p25EurM2": 4115.87,
+          "p75EurM2": 5841.36,
+          "fetchedAt": "2026-04-25T16:38:37.650Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69089",
+          "communeName": "Francheville"
         }
       }
     },
@@ -122,6 +166,28 @@
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8438287,45.7580403?overview=false&alternatives=false&steps=false"
         }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69123",
+          "name": "Lyon",
+          "fetchedAt": "2026-04-25T16:30:25.584Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.7580403&lon=4.8438287"
+        },
+        "dvfMaison": {
+          "status": "no_data",
+          "txCountRaw": 0,
+          "txCountKept": 0,
+          "txCountDropped": 0,
+          "medianEurM2": null,
+          "p25EurM2": null,
+          "p75EurM2": null,
+          "fetchedAt": "2026-04-25T16:38:37.650Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69123",
+          "communeName": "Lyon"
+        }
       }
     },
     {
@@ -156,6 +222,28 @@
           "fetchedAt": "2026-04-25T08:39:20.857Z",
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7657747,45.7598386?overview=false&alternatives=false&steps=false"
+        }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69244",
+          "name": "Tassin-la-Demi-Lune",
+          "fetchedAt": "2026-04-25T16:30:26.970Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.7598386&lon=4.7657747"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 401,
+          "txCountKept": 401,
+          "txCountDropped": 0,
+          "medianEurM2": 6134.24,
+          "p25EurM2": 4928.62,
+          "p75EurM2": 7311.83,
+          "fetchedAt": "2026-04-25T16:38:37.650Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69244",
+          "communeName": "Tassin-la-Demi-Lune"
         }
       }
     },
@@ -192,6 +280,28 @@
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8423304,45.7969952?overview=false&alternatives=false&steps=false"
         }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69034",
+          "name": "Caluire-et-Cuire",
+          "fetchedAt": "2026-04-25T16:30:28.347Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.7969952&lon=4.8423304"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 457,
+          "txCountKept": 457,
+          "txCountDropped": 0,
+          "medianEurM2": 6276.6,
+          "p25EurM2": 5133.78,
+          "p75EurM2": 7510.53,
+          "fetchedAt": "2026-04-25T16:38:37.651Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69034",
+          "communeName": "Caluire-et-Cuire"
+        }
       }
     },
     {
@@ -226,6 +336,28 @@
           "fetchedAt": "2026-04-25T08:39:22.858Z",
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7934767,45.7362255?overview=false&alternatives=false&steps=false"
+        }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69202",
+          "name": "Sainte-Foy-lès-Lyon",
+          "fetchedAt": "2026-04-25T16:30:29.738Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.7362255&lon=4.7934767"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 416,
+          "txCountKept": 416,
+          "txCountDropped": 0,
+          "medianEurM2": 5806.62,
+          "p25EurM2": 4814.81,
+          "p75EurM2": 6867.63,
+          "fetchedAt": "2026-04-25T16:38:37.651Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69202",
+          "communeName": "Sainte-Foy-lès-Lyon"
         }
       }
     },
@@ -262,6 +394,28 @@
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7537701,45.8064992?overview=false&alternatives=false&steps=false"
         }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69072",
+          "name": "Dardilly",
+          "fetchedAt": "2026-04-25T16:30:31.110Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.8064992&lon=4.7537701"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 358,
+          "txCountKept": 358,
+          "txCountDropped": 0,
+          "medianEurM2": 4952.66,
+          "p25EurM2": 4275.47,
+          "p75EurM2": 5816.36,
+          "fetchedAt": "2026-04-25T16:38:37.651Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69072",
+          "communeName": "Dardilly"
+        }
       }
     },
     {
@@ -296,6 +450,28 @@
           "fetchedAt": "2026-04-25T08:39:24.857Z",
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7979353,45.8115147?overview=false&alternatives=false&steps=false"
+        }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69194",
+          "name": "Saint-Didier-au-Mont-d'Or",
+          "fetchedAt": "2026-04-25T16:30:32.518Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.8115147&lon=4.7979353"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 363,
+          "txCountKept": 363,
+          "txCountDropped": 0,
+          "medianEurM2": 6504.07,
+          "p25EurM2": 5196.08,
+          "p75EurM2": 7435.57,
+          "fetchedAt": "2026-04-25T16:38:37.651Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69194",
+          "communeName": "Saint-Didier-au-Mont-d'Or"
         }
       }
     },
@@ -332,6 +508,28 @@
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8039331,45.7153254?overview=false&alternatives=false&steps=false"
         }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69149",
+          "name": "Oullins-Pierre-Bénite",
+          "fetchedAt": "2026-04-25T16:30:33.898Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.7153254&lon=4.8039331"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 381,
+          "txCountKept": 381,
+          "txCountDropped": 0,
+          "medianEurM2": 5012.96,
+          "p25EurM2": 4099.09,
+          "p75EurM2": 5943.4,
+          "fetchedAt": "2026-04-25T16:38:37.651Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69149",
+          "communeName": "Oullins-Pierre-Bénite"
+        }
       }
     },
     {
@@ -366,6 +564,28 @@
           "fetchedAt": "2026-04-25T08:39:26.856Z",
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8238973,45.8378038?overview=false&alternatives=false&steps=false"
+        }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69233",
+          "name": "Saint-Romain-au-Mont-d'Or",
+          "fetchedAt": "2026-04-25T16:30:35.292Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.8378038&lon=4.8238973"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 76,
+          "txCountKept": 76,
+          "txCountDropped": 0,
+          "medianEurM2": 5415.1,
+          "p25EurM2": 4461.66,
+          "p75EurM2": 6221.43,
+          "fetchedAt": "2026-04-25T16:38:37.651Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69233",
+          "communeName": "Saint-Romain-au-Mont-d'Or"
         }
       }
     },
@@ -402,6 +622,28 @@
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7928827,45.6950021?overview=false&alternatives=false&steps=false"
         }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69204",
+          "name": "Saint-Genis-Laval",
+          "fetchedAt": "2026-04-25T16:30:36.733Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.6950021&lon=4.7928827"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 492,
+          "txCountKept": 492,
+          "txCountDropped": 0,
+          "medianEurM2": 4950.27,
+          "p25EurM2": 4195.85,
+          "p75EurM2": 5862.32,
+          "fetchedAt": "2026-04-25T16:38:37.652Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69204",
+          "communeName": "Saint-Genis-Laval"
+        }
       }
     },
     {
@@ -436,6 +678,28 @@
           "fetchedAt": "2026-04-25T08:39:28.858Z",
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8789977,45.8318096?overview=false&alternatives=false&steps=false"
+        }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69293",
+          "name": "Sathonay-Village",
+          "fetchedAt": "2026-04-25T16:30:38.111Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.8318096&lon=4.8789977"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 76,
+          "txCountKept": 76,
+          "txCountDropped": 0,
+          "medianEurM2": 4837.11,
+          "p25EurM2": 4215.58,
+          "p75EurM2": 5448.23,
+          "fetchedAt": "2026-04-25T16:38:37.652Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69293",
+          "communeName": "Sathonay-Village"
         }
       }
     },
@@ -472,6 +736,28 @@
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8855966,45.6977109?overview=false&alternatives=false&steps=false"
         }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69259",
+          "name": "Vénissieux",
+          "fetchedAt": "2026-04-25T16:30:39.506Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.6977109&lon=4.8855966"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 507,
+          "txCountKept": 507,
+          "txCountDropped": 0,
+          "medianEurM2": 3500.94,
+          "p25EurM2": 2896.67,
+          "p75EurM2": 4250.95,
+          "fetchedAt": "2026-04-25T16:38:37.652Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69259",
+          "communeName": "Vénissieux"
+        }
       }
     },
     {
@@ -506,6 +792,28 @@
           "fetchedAt": "2026-04-25T08:39:30.856Z",
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8175958,45.8156548?overview=false&alternatives=false&steps=false"
+        }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69191",
+          "name": "Saint-Cyr-au-Mont-d'Or",
+          "fetchedAt": "2026-04-25T16:30:40.897Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.8156548&lon=4.8175958"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 298,
+          "txCountKept": 298,
+          "txCountDropped": 0,
+          "medianEurM2": 6013.07,
+          "p25EurM2": 5201.47,
+          "p75EurM2": 7134.2,
+          "fetchedAt": "2026-04-25T16:38:37.652Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69191",
+          "communeName": "Saint-Cyr-au-Mont-d'Or"
         }
       }
     },
@@ -542,6 +850,28 @@
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8216902,45.6733141?overview=false&alternatives=false&steps=false"
         }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69100",
+          "name": "Irigny",
+          "fetchedAt": "2026-04-25T16:30:42.283Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.6733141&lon=4.8216902"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 233,
+          "txCountKept": 233,
+          "txCountDropped": 0,
+          "medianEurM2": 4419.35,
+          "p25EurM2": 3769.23,
+          "p75EurM2": 5283.48,
+          "fetchedAt": "2026-04-25T16:38:37.652Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69100",
+          "communeName": "Irigny"
+        }
       }
     },
     {
@@ -576,6 +906,28 @@
           "fetchedAt": "2026-04-25T08:39:32.856Z",
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7231057,45.743476?overview=false&alternatives=false&steps=false"
+        }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69069",
+          "name": "Craponne",
+          "fetchedAt": "2026-04-25T16:30:43.648Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.743476&lon=4.7231057"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 362,
+          "txCountKept": 362,
+          "txCountDropped": 0,
+          "medianEurM2": 4608.06,
+          "p25EurM2": 4017.35,
+          "p75EurM2": 5480.04,
+          "fetchedAt": "2026-04-25T16:38:37.652Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69069",
+          "communeName": "Craponne"
         }
       }
     },
@@ -612,6 +964,28 @@
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.9092352,45.7337532?overview=false&alternatives=false&steps=false"
         }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69029",
+          "name": "Bron",
+          "fetchedAt": "2026-04-25T16:30:45.027Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.7337532&lon=4.9092352"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 436,
+          "txCountKept": 436,
+          "txCountDropped": 0,
+          "medianEurM2": 4847.38,
+          "p25EurM2": 3982.49,
+          "p75EurM2": 5697.85,
+          "fetchedAt": "2026-04-25T16:38:37.652Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69029",
+          "communeName": "Bron"
+        }
       }
     },
     {
@@ -646,6 +1020,28 @@
           "fetchedAt": "2026-04-25T08:39:34.858Z",
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.9441635,45.6965347?overview=false&alternatives=false&steps=false"
+        }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69290",
+          "name": "Saint-Priest",
+          "fetchedAt": "2026-04-25T16:30:46.419Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.6965347&lon=4.9441635"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 628,
+          "txCountKept": 628,
+          "txCountDropped": 0,
+          "medianEurM2": 4022.33,
+          "p25EurM2": 3444.37,
+          "p75EurM2": 4653.96,
+          "fetchedAt": "2026-04-25T16:38:37.652Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69290",
+          "communeName": "Saint-Priest"
         }
       }
     },
@@ -682,6 +1078,28 @@
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8994366,45.823514?overview=false&alternatives=false&steps=false"
         }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69286",
+          "name": "Rillieux-la-Pape",
+          "fetchedAt": "2026-04-25T16:30:47.813Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.823514&lon=4.8994366"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 504,
+          "txCountKept": 504,
+          "txCountDropped": 0,
+          "medianEurM2": 4271.45,
+          "p25EurM2": 3609.23,
+          "p75EurM2": 5108.07,
+          "fetchedAt": "2026-04-25T16:38:37.653Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69286",
+          "communeName": "Rillieux-la-Pape"
+        }
       }
     },
     {
@@ -716,6 +1134,28 @@
           "fetchedAt": "2026-04-25T08:39:36.856Z",
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.7071338,45.7816572?overview=false&alternatives=false&steps=false"
+        }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69127",
+          "name": "Marcy-l'Étoile",
+          "fetchedAt": "2026-04-25T16:30:49.192Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.7816572&lon=4.7071338"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 136,
+          "txCountKept": 136,
+          "txCountDropped": 0,
+          "medianEurM2": 4938.97,
+          "p25EurM2": 4359.11,
+          "p75EurM2": 5417.75,
+          "fetchedAt": "2026-04-25T16:38:37.653Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69127",
+          "communeName": "Marcy-l'Étoile"
         }
       }
     },
@@ -752,6 +1192,28 @@
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8297127,45.7701426?overview=false&alternatives=false&steps=false"
         }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69123",
+          "name": "Lyon",
+          "fetchedAt": "2026-04-25T16:30:50.557Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.7701426&lon=4.8297127"
+        },
+        "dvfMaison": {
+          "status": "no_data",
+          "txCountRaw": 0,
+          "txCountKept": 0,
+          "txCountDropped": 0,
+          "medianEurM2": null,
+          "p25EurM2": null,
+          "p75EurM2": null,
+          "fetchedAt": "2026-04-25T16:38:37.653Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69123",
+          "communeName": "Lyon"
+        }
       }
     },
     {
@@ -786,6 +1248,28 @@
           "fetchedAt": "2026-04-25T08:39:38.857Z",
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8273739,45.7511118?overview=false&alternatives=false&steps=false"
+        }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69123",
+          "name": "Lyon",
+          "fetchedAt": "2026-04-25T16:30:51.254Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.7511118&lon=4.8273739"
+        },
+        "dvfMaison": {
+          "status": "no_data",
+          "txCountRaw": 0,
+          "txCountKept": 0,
+          "txCountDropped": 0,
+          "medianEurM2": null,
+          "p25EurM2": null,
+          "p75EurM2": null,
+          "fetchedAt": "2026-04-25T16:38:37.653Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69123",
+          "communeName": "Lyon"
         }
       }
     },
@@ -822,6 +1306,28 @@
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8622856,45.7555548?overview=false&alternatives=false&steps=false"
         }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69123",
+          "name": "Lyon",
+          "fetchedAt": "2026-04-25T16:30:51.955Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.7555548&lon=4.8622856"
+        },
+        "dvfMaison": {
+          "status": "no_data",
+          "txCountRaw": 0,
+          "txCountKept": 0,
+          "txCountDropped": 0,
+          "medianEurM2": null,
+          "p25EurM2": null,
+          "p75EurM2": null,
+          "fetchedAt": "2026-04-25T16:38:37.653Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69123",
+          "communeName": "Lyon"
+        }
       }
     },
     {
@@ -856,6 +1362,28 @@
           "fetchedAt": "2026-04-25T08:39:40.858Z",
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8255086,45.7784877?overview=false&alternatives=false&steps=false"
+        }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69123",
+          "name": "Lyon",
+          "fetchedAt": "2026-04-25T16:30:52.655Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.7784877&lon=4.8255086"
+        },
+        "dvfMaison": {
+          "status": "no_data",
+          "txCountRaw": 0,
+          "txCountKept": 0,
+          "txCountDropped": 0,
+          "medianEurM2": null,
+          "p25EurM2": null,
+          "p75EurM2": null,
+          "fetchedAt": "2026-04-25T16:38:37.653Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69123",
+          "communeName": "Lyon"
         }
       }
     },
@@ -892,6 +1420,28 @@
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8068266,45.7563067?overview=false&alternatives=false&steps=false"
         }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69123",
+          "name": "Lyon",
+          "fetchedAt": "2026-04-25T16:30:53.386Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.7563067&lon=4.8068266"
+        },
+        "dvfMaison": {
+          "status": "no_data",
+          "txCountRaw": 0,
+          "txCountKept": 0,
+          "txCountDropped": 0,
+          "medianEurM2": null,
+          "p25EurM2": null,
+          "p75EurM2": null,
+          "fetchedAt": "2026-04-25T16:38:37.653Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69123",
+          "communeName": "Lyon"
+        }
       }
     },
     {
@@ -926,6 +1476,28 @@
           "fetchedAt": "2026-04-25T08:39:42.857Z",
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8528227,45.7681444?overview=false&alternatives=false&steps=false"
+        }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69123",
+          "name": "Lyon",
+          "fetchedAt": "2026-04-25T16:30:54.097Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.7681444&lon=4.8528227"
+        },
+        "dvfMaison": {
+          "status": "no_data",
+          "txCountRaw": 0,
+          "txCountKept": 0,
+          "txCountDropped": 0,
+          "medianEurM2": null,
+          "p25EurM2": null,
+          "p75EurM2": null,
+          "fetchedAt": "2026-04-25T16:38:37.653Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69123",
+          "communeName": "Lyon"
         }
       }
     },
@@ -962,6 +1534,28 @@
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8366972,45.737442?overview=false&alternatives=false&steps=false"
         }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69123",
+          "name": "Lyon",
+          "fetchedAt": "2026-04-25T16:30:54.793Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.737442&lon=4.8366972"
+        },
+        "dvfMaison": {
+          "status": "no_data",
+          "txCountRaw": 0,
+          "txCountKept": 0,
+          "txCountDropped": 0,
+          "medianEurM2": null,
+          "p25EurM2": null,
+          "p75EurM2": null,
+          "fetchedAt": "2026-04-25T16:38:37.653Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69123",
+          "communeName": "Lyon"
+        }
       }
     },
     {
@@ -996,6 +1590,28 @@
           "fetchedAt": "2026-04-25T08:39:44.858Z",
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8707197,45.7351227?overview=false&alternatives=false&steps=false"
+        }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69123",
+          "name": "Lyon",
+          "fetchedAt": "2026-04-25T16:30:55.508Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.7351227&lon=4.8707197"
+        },
+        "dvfMaison": {
+          "status": "no_data",
+          "txCountRaw": 0,
+          "txCountKept": 0,
+          "txCountDropped": 0,
+          "medianEurM2": null,
+          "p25EurM2": null,
+          "p75EurM2": null,
+          "fetchedAt": "2026-04-25T16:38:37.653Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69123",
+          "communeName": "Lyon"
         }
       }
     },
@@ -1032,7 +1648,44 @@
           "source": "OSRM",
           "url": "https://router.project-osrm.org/route/v1/driving/4.8481081,45.7821579;4.8007449,45.7815392?overview=false&alternatives=false&steps=false"
         }
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "69123",
+          "name": "Lyon",
+          "fetchedAt": "2026-04-25T16:30:56.206Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=45.7815392&lon=4.8007449"
+        },
+        "dvfMaison": {
+          "status": "no_data",
+          "txCountRaw": 0,
+          "txCountKept": 0,
+          "txCountDropped": 0,
+          "medianEurM2": null,
+          "p25EurM2": null,
+          "p75EurM2": null,
+          "fetchedAt": "2026-04-25T16:38:37.653Z",
+          "sourceUrl": "https://files.data.gouv.fr/geo-dvf/latest/csv/ (years=2021,2022,2023,2024,2025 dept=69)",
+          "communeCode": "69123",
+          "communeName": "Lyon"
+        }
       }
     }
-  ]
+  ],
+  "immo": {
+    "dvfMaison": {
+      "source": {
+        "label": "DVF géolocalisées (fichiers data.gouv.fr, par département)",
+        "url": "https://files.data.gouv.fr/geo-dvf/latest/csv/"
+      },
+      "filters": {
+        "surfaceMin": 30,
+        "surfaceMax": 250,
+        "eurM2Min": 1000,
+        "eurM2Max": 10000
+      },
+      "updatedAt": "2026-04-25T16:38:32.641Z"
+    }
+  }
 }

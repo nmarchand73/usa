@@ -356,6 +356,17 @@
               <div class="venue-filters-row">
                 <label><input type="checkbox" id="lyonFilterMalls" checked><span class="venue-swatch venue-swatch--mall" title="Centres commerciaux"></span> Centres commerciaux</label>
               </div>
+              <div class="venue-filters-title" style="margin-top:.65rem">Optimisation “maison”</div>
+              <div class="venue-filters-row">
+                <label title="Classement combinant proximité (Interpol + sports + centres co.) et prix maison (DVF, médiane €/m² par commune).">
+                  <input type="checkbox" id="lyonFilterHouseFit">
+                  <strong>Mode maison</strong>
+                  <span style="opacity:.85">proximité + prix</span>
+                </label>
+              </div>
+              <div class="detail-note" id="lyonHouseFitNote" style="margin-top:.25rem; display:none">
+                DVF : agrégats (médiane €/m² maison) par commune INSEE — indicatif, pas une estimation d’annonce.
+              </div>
               <div class="venue-filters-title" style="margin-top:.65rem">Temps de trajet (voiture) — zones</div>
               <div class="venue-filters-row">
                 <label><input type="checkbox" id="lyonFilterIso"><span class="venue-swatch" style="background:rgba(74,222,128,.55);border-color:rgba(74,222,128,.85)"></span> Isochrones (OSRM, base 5/10/15/20/30 + extensions)</label>
@@ -508,6 +519,8 @@
       let isoGrid = null;
       let topIds = new Set();
       const markers = [];
+      let venuesFrCache = null;
+      let mallsCache = null;
 
       const map = L.map('lyonLeafletMap', { scrollWheelZoom: true }).setView([45.764, 4.835], 11);
       /* dark_all : routes/eau quasi noires → carte « toute noire ». Voyager : lisible sur fond UI sombre. */
@@ -641,6 +654,12 @@
         const scoreLine = isC
           ? ('Actu : ' + item.scores.actu + '/100')
           : ('CityCrunch : ' + item.scores.citycrunch + '/100' + (item.labels && item.labels.verdict ? ' — ' + item.labels.verdict : ''));
+        const dvf = item && item.immo && item.immo.dvfMaison && item.immo.dvfMaison.status === 'ok'
+          ? item.immo.dvfMaison
+          : null;
+        const dvfLine = dvf && Number.isFinite(dvf.medianEurM2)
+          ? ('Prix maison (DVF) : ~' + Math.round(dvf.medianEurM2) + ' €/m²')
+          : null;
         const why = isC ? (item.why && item.why.actu) : (item.why && item.why.citycrunch);
         let timeLine = '';
         if (Number.isFinite(item.lat) && Number.isFinite(item.lng)) {
@@ -655,7 +674,9 @@
         return (
           '<div class="tt-kind">' + esc(head) + '</div>' +
           '<div class="tt-name">' + esc(item.name) + '</div>' +
-          '<div class="tt-meta">' + esc(scoreLine) + (timeLine ? '<br>' + timeLine : '') + '</div>' +
+          '<div class="tt-meta">' + esc(scoreLine) +
+            (dvfLine ? '<br>' + esc(dvfLine) : '') +
+            (timeLine ? '<br>' + timeLine : '') + '</div>' +
           (why ? '<div class="tt-why">' + esc(why) + '</div>' : '')
         );
       }
@@ -707,9 +728,135 @@
         });
       }
 
+      function isHouseMode() {
+        return !!document.getElementById('lyonFilterHouseFit')?.checked;
+      }
+
+      function safeMin(arr) {
+        let best = Infinity;
+        for (const v of arr) {
+          const n = Number(v);
+          if (Number.isFinite(n) && n < best) best = n;
+        }
+        return best === Infinity ? null : best;
+      }
+
+      function clamp01(x) {
+        if (!Number.isFinite(x)) return 0;
+        return Math.max(0, Math.min(1, x));
+      }
+
+      // Higher is better. Uses a saturating curve anchored on a "target" (good) and "bad" (acceptable upper bound).
+      function scoreFromMinutes(mins, target, bad) {
+        if (!Number.isFinite(mins) || mins <= 0) return 0;
+        if (mins <= target) return 1;
+        if (mins >= bad) return 0;
+        const t = (mins - target) / (bad - target);
+        return clamp01(1 - t);
+      }
+
+      function scoreFromEurM2(eurM2, best, worst) {
+        if (!Number.isFinite(eurM2) || eurM2 <= 0) return 0;
+        if (!Number.isFinite(best) || !Number.isFinite(worst) || best >= worst) return 0;
+        if (eurM2 <= best) return 1;
+        if (eurM2 >= worst) return 0;
+        const t = (eurM2 - best) / (worst - best);
+        return clamp01(1 - t);
+      }
+
+      function computeHouseFitScores() {
+        if (!dataPayload) return;
+
+        const items = dataPayload.items || [];
+
+        // Price anchors from DVF medians across all items (communes+arr) that have data
+        const medians = items
+          .map((x) => (x && x.immo && x.immo.dvfMaison && x.immo.dvfMaison.status === 'ok') ? Number(x.immo.dvfMaison.medianEurM2) : NaN)
+          .filter((n) => Number.isFinite(n));
+        const best = medians.length ? medians.slice().sort((a, b) => a - b)[Math.floor(medians.length * 0.15)] : NaN;
+        const worst = medians.length ? medians.slice().sort((a, b) => a - b)[Math.floor(medians.length * 0.85)] : NaN;
+
+        // Gather POIs
+        const mx = venuesFrCache && venuesFrCache.mxTracks ? venuesFrCache.mxTracks : [];
+        const pump = venuesFrCache && venuesFrCache.pumptracks ? venuesFrCache.pumptracks : [];
+        const bmx = venuesFrCache && venuesFrCache.bmxTracks ? venuesFrCache.bmxTracks : [];
+        const malls = mallsCache || [];
+
+        function nearestMinutes(lat, lng, list) {
+          if (!Number.isFinite(lat) || !Number.isFinite(lng) || !Array.isArray(list) || !list.length) return null;
+          const mins = [];
+          for (const p of list) {
+            const plat = Number(p.lat), plng = Number(p.lng);
+            if (!Number.isFinite(plat) || !Number.isFinite(plng)) continue;
+            const km = haversineKm(lat, lng, plat, plng);
+            // Turn into a stable, readable car-time proxy (no OSRM explosion)
+            const carMin = Math.max(3, Math.round((km / 28) * 60 + 5));
+            mins.push(carMin);
+          }
+          return safeMin(mins);
+        }
+
+        for (const it of items) {
+          if (!it || !Number.isFinite(it.lat) || !Number.isFinite(it.lng)) continue;
+
+          const originMin = (it.durations && it.durations.carOsrm && it.durations.carOsrm.status === 'ok' && Number.isFinite(it.durations.carOsrm.minutes))
+            ? Number(it.durations.carOsrm.minutes)
+            : travelMinutesEstimate(it.lat, it.lng).car;
+
+          const mxMin = nearestMinutes(it.lat, it.lng, mx);
+          const bmxMin = nearestMinutes(it.lat, it.lng, bmx);
+          const pumpMin = nearestMinutes(it.lat, it.lng, pump);
+          const mallMin = nearestMinutes(it.lat, it.lng, malls);
+
+          const dvf = it.immo && it.immo.dvfMaison && it.immo.dvfMaison.status === 'ok'
+            ? it.immo.dvfMaison
+            : null;
+          const eurM2 = dvf ? Number(dvf.medianEurM2) : NaN;
+
+          // Subscores 0..1
+          const sOrigin = scoreFromMinutes(originMin, 12, 30);
+          const sMx = scoreFromMinutes(mxMin == null ? NaN : mxMin, 18, 40);
+          const sBmx = scoreFromMinutes(bmxMin == null ? NaN : bmxMin, 18, 40);
+          const sPump = scoreFromMinutes(pumpMin == null ? NaN : pumpMin, 15, 35);
+          const sMall = scoreFromMinutes(mallMin == null ? NaN : mallMin, 12, 30);
+          const sPrice = scoreFromEurM2(eurM2, best, worst);
+
+          // Weighting (v1)
+          const wOrigin = 0.30;
+          const wMx = 0.18;
+          const wBmx = 0.14;
+          const wPump = 0.10;
+          const wMall = 0.08;
+          const wPrice = 0.20;
+
+          const total =
+            wOrigin * sOrigin +
+            wMx * sMx +
+            wBmx * sBmx +
+            wPump * sPump +
+            wMall * sMall +
+            wPrice * sPrice;
+
+          it.scores = it.scores || {};
+          it.scores.houseFit = Math.round(100 * clamp01(total));
+          it.houseFit = {
+            originMin: originMin,
+            mxMin: mxMin,
+            bmxMin: bmxMin,
+            pumpMin: pumpMin,
+            mallMin: mallMin,
+            eurM2: Number.isFinite(eurM2) ? eurM2 : null,
+            anchors: (Number.isFinite(best) && Number.isFinite(worst)) ? { bestEurM2: best, worstEurM2: worst } : null
+          };
+        }
+      }
+
       function recomputeTop() {
+        if (isHouseMode()) computeHouseFitScores();
         const vis = visibleItems().slice().sort(function (a, b) {
-          return (b.scores.combined || 0) - (a.scores.combined || 0);
+          const ka = isHouseMode() ? (a.scores.houseFit || 0) : (a.scores.combined || 0);
+          const kb = isHouseMode() ? (b.scores.houseFit || 0) : (b.scores.combined || 0);
+          return kb - ka;
         });
         const top = vis.slice(0, 10);
         topIds = new Set(top.map(function (x) { return x.id; }));
@@ -723,14 +870,21 @@
         const top = recomputeTop();
         if (note) {
           const n = visibleItems().length;
-          note.textContent = n ? ('Calques actifs : ' + n + ' point(s) — top 10 ci-dessous par score combiné.') : 'Aucun calque : cochez au moins un type ci-dessus.';
+          if (!n) note.textContent = 'Aucun calque : cochez au moins un type ci-dessus.';
+          else {
+            note.textContent = isHouseMode()
+              ? ('Mode maison : ' + n + ' point(s) — top 10 par score proximité+prix (DVF).')
+              : ('Calques actifs : ' + n + ' point(s) — top 10 ci-dessous par score combiné.');
+          }
         }
         list.innerHTML = top.map(function (x, i) {
           const src = x.kind === 'commune' ? 'Actu' : 'CityCrunch';
+          const score = isHouseMode() ? (x.scores.houseFit || 0) : (x.scores.combined);
+          const scoreLabel = isHouseMode() ? 'maison' : 'combiné';
           return (
             '<li data-id="' + esc(x.id) + '">' +
               '<span class="name">' + (i + 1) + '. ' + esc(x.name) + '</span>' +
-              ' <span class="sub"> — ' + src + ' · ' + (x.scores.combined) + '/100 (combiné)</span></li>'
+              ' <span class="sub"> — ' + src + ' · ' + score + '/100 (' + scoreLabel + ')</span></li>'
           );
         }).join('');
 
@@ -782,10 +936,23 @@
         if (!cont) return;
         if (title) title.textContent = item.name;
         const dist = travelLineHtml(item);
+        const dvf = item && item.immo && item.immo.dvfMaison && item.immo.dvfMaison.status === 'ok'
+          ? item.immo.dvfMaison
+          : null;
+        const dvfHtml = dvf && Number.isFinite(dvf.medianEurM2)
+          ? (
+            '<p><b>Prix maison (DVF)</b> : ~' + Math.round(dvf.medianEurM2) + ' €/m² ' +
+            '<span style="opacity:.8">(médiane, n=' + esc(String(dvf.txCountKept || 0)) + ')</span></p>' +
+            (Number.isFinite(dvf.p25EurM2) && Number.isFinite(dvf.p75EurM2)
+              ? '<p style="opacity:.85;margin-top:-0.2rem">Quartiles: ' + Math.round(dvf.p25EurM2) + '–' + Math.round(dvf.p75EurM2) + ' €/m²</p>'
+              : '')
+          )
+          : '<p style="opacity:.8"><b>Prix maison (DVF)</b> : indisponible</p>';
         cont.innerHTML =
           '<p><b>Score combiné (tri global) :</b> ' + esc(String(item.scores.combined)) + '/100</p>' +
           (item.kind === 'commune' ? '<p>Actu.fr : ' + esc(String(item.scores.actu)) + '/100</p>' : '<p>CityCrunch (dérivé) : ' + esc(String(item.scores.citycrunch)) + '/100' +
             (item.labels && item.labels.verdict ? ' — ' + esc(item.labels.verdict) : '') + '</p>') +
+          dvfHtml +
           (dist ? '<p style="margin-top:0.45rem;padding-top:0.35rem;border-top:1px solid var(--border)">' + dist + '</p>' : '') +
           (item.why && (item.kind === 'commune' ? item.why.actu : item.why.citycrunch) ? '<p style="margin-top:0.5rem">' + esc(item.kind === 'commune' ? item.why.actu : item.why.citycrunch) + '</p>' : '') +
           '<div class="detail-actions">' +
@@ -824,9 +991,14 @@
       }
 
       function wireFilters() {
-        ['lyonFilterCommunes', 'lyonFilterArr', 'lyonFilterTop10', 'lyonFilterIso', 'lyonFilterMx', 'lyonFilterPump', 'lyonFilterBmx', 'lyonFilterMalls'].forEach(function (id) {
+        ['lyonFilterCommunes', 'lyonFilterArr', 'lyonFilterTop10', 'lyonFilterIso', 'lyonFilterMx', 'lyonFilterPump', 'lyonFilterBmx', 'lyonFilterMalls', 'lyonFilterHouseFit'].forEach(function (id) {
           const el = document.getElementById(id);
-          if (el) el.addEventListener('change', function () { recomputeTop(); setMarkerVisibility(); });
+          if (el) el.addEventListener('change', function () {
+            const hn = document.getElementById('lyonHouseFitNote');
+            if (hn && id === 'lyonFilterHouseFit') hn.style.display = el.checked ? '' : 'none';
+            recomputeTop();
+            setMarkerVisibility();
+          });
         });
       }
 
@@ -1040,6 +1212,7 @@
           { name: 'Porte de Lyon (Dardilly)', lat: 45.819167, lng: 4.767222, kind: 'retail' }, // 45°49'9"N 4°46'2"E
           { name: 'The Village — outlet', lat: 45.62605, lng: 5.160324, kind: 'outlet' }
         ];
+        mallsCache = malls;
 
         malls.forEach(function (m) {
           const lat = Number(m.lat), lng = Number(m.lng);
@@ -1253,14 +1426,19 @@
         .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
         .then(function (fr) {
           const venuesFr = fr && fr.venues ? fr.venues : null;
+          venuesFrCache = venuesFr;
           applySportLayers(venuesFr);
           applyMallsLayer();
+          computeHouseFitScores();
+          refreshTopList();
           // re-apply when toggles change
           ['lyonFilterMx', 'lyonFilterPump', 'lyonFilterBmx', 'lyonFilterMalls'].forEach(function (id) {
             const el = document.getElementById(id);
             if (el) el.addEventListener('change', function () {
               applySportLayers(venuesFr);
               applyMallsLayer();
+              computeHouseFitScores();
+              refreshTopList();
             });
           });
         })
@@ -1268,6 +1446,8 @@
           // silently ignore (lyon map still works without these layers)
           // malls layer still works without FR venues
           applyMallsLayer();
+          computeHouseFitScores();
+          refreshTopList();
         });
 
       // Isochrone grid (OSRM) is optional: page works without it.

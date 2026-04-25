@@ -73,6 +73,7 @@ Les points et scores viennent de `map-data/lyon-zones.json`. Après toute éditi
 $env:NOMINATIM_UA="usa-interactive-map/2.0 (Lyon zones; local dev)"
 # optionnel (recommandé) : $env:NOMINATIM_EMAIL="contact@exemple.com"
 npm run geocode:lyon
+npm run fetch:lyon-dvf
 npm run build:lyon
 ```
 
