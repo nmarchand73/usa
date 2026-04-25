@@ -249,6 +249,16 @@
         return 'https://www.google.com/maps/@' + lat + ',' + lng + ',16z/data=!3m1!1e3';
       }
 
+      function gmapsDirectionsUrl(originLabel, lat, lng, mode) {
+        // https://developers.google.com/maps/documentation/urls/get-started#directions-action
+        const u = new URL('https://www.google.com/maps/dir/');
+        u.searchParams.set('api', '1');
+        u.searchParams.set('origin', originLabel);
+        u.searchParams.set('destination', lat + ',' + lng);
+        if (mode) u.searchParams.set('travelmode', mode);
+        return u.toString();
+      }
+
       function haversineKm(lat1, lng1, lat2, lng2) {
         const R = 6371;
         const toRad = (d) => d * Math.PI / 180;
@@ -328,6 +338,8 @@
         const lat = item.lat;
         const lng = item.lng;
         const g = googleSatUrl(lat, lng);
+        const dirCar = gmapsDirectionsUrl(ORIGIN.label, lat, lng, 'driving');
+        const dirTc = gmapsDirectionsUrl(ORIGIN.label, lat, lng, 'transit');
         const isC = item.kind === 'commune';
         const dist = travelLineHtml(item);
         const bullets = [];
@@ -350,7 +362,9 @@
             '<ul style="padding-left:1.1rem; margin:0.2rem 0 0.6rem">' + bullets.map(function (b) { return '<li>' + b + '</li>'; }).join('') + '</ul>' +
             (dist ? '<div style="margin:0.25rem 0 0.55rem;padding:.45rem .55rem;border:1px solid rgba(15,23,42,.18);border-radius:10px;background:rgba(15,23,42,.04)">' + dist + '</div>' : '') +
             '<a href="' + esc(u) + '" target="_blank" rel="noopener" style="color:#0d9488">Article source</a><br>' +
-            '<a href="' + g + '" target="_blank" rel="noopener" style="color:#0d9488">Google Maps — vue satellite</a>' +
+            '<a href="' + g + '" target="_blank" rel="noopener" style="color:#0d9488">Google Maps — vue satellite</a><br>' +
+            '<a href="' + esc(dirCar) + '" target="_blank" rel="noopener" style="color:#0d9488">Itinéraire (voiture) — Google Maps</a><br>' +
+            '<a href="' + esc(dirTc) + '" target="_blank" rel="noopener" style="color:#0d9488">Itinéraire (transports) — Google Maps</a>' +
           '</div>'
         );
       }
