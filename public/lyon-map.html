@@ -222,9 +222,10 @@
       const markers = [];
 
       const map = L.map('lyonLeafletMap', { scrollWheelZoom: true }).setView([45.764, 4.835], 11);
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      /* dark_all : routes/eau quasi noires → carte « toute noire ». Voyager : lisible sur fond UI sombre. */
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         maxZoom: 19,
-        attribution: '&copy; OpenStreetMap &copy; CARTO'
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
       }).addTo(map);
       layerCommunes.addTo(map);
       layerArr.addTo(map);
