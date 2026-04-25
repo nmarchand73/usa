@@ -1137,6 +1137,22 @@
         return [lat, lng];
       }
 
+      function dvfCellAtLatLng(latlng, grid) {
+        if (!latlng || !grid || !grid.bbox || !grid.grid) return null;
+        const b = grid.bbox;
+        const nx = grid.grid.nx;
+        const ny = grid.grid.ny;
+        const lat = Number(latlng.lat);
+        const lng = Number(latlng.lng);
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+        if (lat < b.minLat || lat > b.maxLat || lng < b.minLng || lng > b.maxLng) return null;
+        const x = Math.floor(((lng - b.minLng) / (b.maxLng - b.minLng)) * nx);
+        const y = Math.floor(((b.maxLat - lat) / (b.maxLat - b.minLat)) * ny);
+        const ix = Math.max(0, Math.min(nx - 1, x));
+        const iy = Math.max(0, Math.min(ny - 1, y));
+        return { ix, iy, idx: iy * nx + ix };
+      }
+
       function clearIsoLayers() {
         layerIso.clearLayers();
         map.removeLayer(layerIso);
@@ -1156,6 +1172,16 @@
           map.removeLayer(dvfHeatRasterOverlay);
           dvfHeatRasterOverlay = null;
         }
+      }
+
+      let dvfHeatHoverTip = null;
+      let dvfHeatHoverLastIdx = null;
+      function clearDvfHeatHoverTip() {
+        if (dvfHeatHoverTip) {
+          map.closeTooltip(dvfHeatHoverTip);
+          dvfHeatHoverTip = null;
+        }
+        dvfHeatHoverLastIdx = null;
       }
 
       function dvfHeatColorRgb(t) {
@@ -1183,10 +1209,12 @@
       function renderDvfHeatmap() {
         if (!dvfHeatGrid || dvfHeatGrid.kind !== 'lyonDvfHouseHeatmap' || !Array.isArray(dvfHeatGrid.eurM2)) {
           clearDvfHeatRaster();
+          clearDvfHeatHoverTip();
           setDvfHeatLegendVisible(false);
           return;
         }
         clearDvfHeatRaster();
+        clearDvfHeatHoverTip();
         const show = !!document.getElementById('lyonFilterDvfHeat')?.checked;
         setDvfHeatLegendVisible(show);
         if (!show) return;
@@ -1248,6 +1276,48 @@
         dvfHeatRasterOverlay = L.imageOverlay(canvas.toDataURL('image/png'), bounds, { opacity: 0.88, interactive: false });
         dvfHeatRasterOverlay.addTo(map);
       }
+
+      // Hover tooltip for DVF heatmap: show median €/m² + sales count for the hovered cell.
+      map.on('mousemove', function (e) {
+        const show = !!document.getElementById('lyonFilterDvfHeat')?.checked;
+        if (!show || !dvfHeatGrid || !Array.isArray(dvfHeatGrid.eurM2)) {
+          clearDvfHeatHoverTip();
+          return;
+        }
+        // avoid fighting marker tooltips: ignore if mouse is over marker/popup panes
+        const t = e && e.originalEvent && e.originalEvent.target;
+        if (t && t.closest && (t.closest('.leaflet-marker-pane') || t.closest('.leaflet-popup-pane'))) return;
+
+        const cell = dvfCellAtLatLng(e.latlng, dvfHeatGrid);
+        if (!cell) {
+          clearDvfHeatHoverTip();
+          return;
+        }
+        if (cell.idx === dvfHeatHoverLastIdx) return;
+        dvfHeatHoverLastIdx = cell.idx;
+
+        const v = dvfHeatGrid.eurM2[cell.idx] == null ? null : Number(dvfHeatGrid.eurM2[cell.idx]);
+        const c = Array.isArray(dvfHeatGrid.counts) ? Number(dvfHeatGrid.counts[cell.idx]) : NaN;
+        if (!Number.isFinite(v)) {
+          clearDvfHeatHoverTip();
+          return;
+        }
+        const countLine = Number.isFinite(c) && c > 0 ? ('<div class="tt-meta">' + Math.round(c) + ' ventes</div>') : '';
+        const html =
+          '<div class="tt-kind">DVF (heatmap)</div>' +
+          '<div class="tt-name">≈ ' + Math.round(v) + ' €/m²</div>' +
+          countLine;
+
+        if (!dvfHeatHoverTip) {
+          dvfHeatHoverTip = L.tooltip({ permanent: false, direction: 'top', className: 'lyon-tt', opacity: 1, sticky: true });
+        }
+        dvfHeatHoverTip.setLatLng(e.latlng).setContent(html);
+        dvfHeatHoverTip.addTo(map);
+      });
+
+      map.on('mouseout', function () {
+        clearDvfHeatHoverTip();
+      });
 
       function renderIsochrones() {
         if (!isoGrid) return;
