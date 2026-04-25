@@ -108,13 +108,7 @@
     .venue-swatch--mx{ background:#d97706; border-color:#78350f; }
     .venue-swatch--pump{ background:#c084fc; border-color:#4c1d95; }
     .venue-swatch--bmx{ background:#f43f5e; border-color:#500724; }
-    .iso-scale{
-      display:flex;
-      gap:.6rem;
-      align-items:flex-start;
-      flex-wrap:wrap;
-      margin-top:.35rem;
-    }
+    .iso-scale{ display:flex; gap:.6rem; align-items:flex-start; flex-wrap:wrap; margin-top:.35rem; }
     .iso-scale__block{
       display:flex;
       flex-direction:row;
@@ -151,6 +145,24 @@
       color:var(--text-dim);
       margin-bottom:.15rem;
     }
+
+    /* Isochrone legend on map (right side) */
+    .lyon-iso-legend{
+      background:rgba(10,14,23,.92);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:.55rem .6rem;
+      box-shadow:0 10px 28px rgba(0,0,0,.45);
+      color:var(--text);
+      user-select:none;
+      pointer-events:auto;
+    }
+    .lyon-iso-legend .iso-scale__block{
+      border-color:rgba(148,163,184,.22);
+      background:rgba(26,34,53,.22);
+      padding:.45rem .55rem;
+    }
+    .lyon-iso-legend .iso-scale__labels{ min-width:64px; }
     .map-leaflet-stack{ position:relative; flex:1 1 auto; min-height:0; }
     #lyonLeafletMap{ width:100%; height:560px; min-height:360px; background:var(--bg3); border-radius:0 0 12px 12px; }
     .panel-shell{
@@ -312,31 +324,7 @@
                 <label><input type="checkbox" id="lyonFilterIso"><span class="venue-swatch" style="background:rgba(74,222,128,.55);border-color:rgba(74,222,128,.85)"></span> Isochrones (OSRM, base 5/10/15/20/30 + extensions)</label>
                 <span class="detail-note" id="lyonIsoNote" style="margin:0">Isochrones voiture (OSRM) : chargement…</span>
               </div>
-              <div class="iso-scale" aria-label="Échelle isochrones (minutes)">
-                <div class="iso-scale__block" title="Isochrones (voiture) : 5/10/15/20/30/45/60+ min">
-                  <div>
-                    <div class="iso-scale__title">Minutes</div>
-                    <div class="iso-scale__bar" style="height:92px">
-                      <div class="iso-scale__seg" style="background:rgba(34,197,94,.55)"></div>
-                      <div class="iso-scale__seg" style="background:rgba(74,222,128,.55)"></div>
-                      <div class="iso-scale__seg" style="background:rgba(251,191,36,.55)"></div>
-                      <div class="iso-scale__seg" style="background:rgba(249,115,22,.55)"></div>
-                      <div class="iso-scale__seg" style="background:rgba(239,68,68,.55)"></div>
-                      <div class="iso-scale__seg" style="background:rgba(239,68,68,.38)"></div>
-                      <div class="iso-scale__seg" style="background:rgba(239,68,68,.26)"></div>
-                    </div>
-                  </div>
-                  <div class="iso-scale__labels" style="padding-top:14px;padding-bottom:2px">
-                    <div>≤ 5</div>
-                    <div>10</div>
-                    <div>15</div>
-                    <div>20</div>
-                    <div>30</div>
-                    <div>45</div>
-                    <div>60+</div>
-                  </div>
-                </div>
-              </div>
+              <!-- Scale moved to map right-side legend -->
             </div>
           </div>
           <div class="map-leaflet-stack"><div id="lyonLeafletMap"></div></div>
@@ -508,6 +496,47 @@
         imperial: false,
         updateWhenIdle: true
       }).addTo(map);
+
+      // Isochrone legend (right side)
+      const isoLegend = L.control({ position: 'bottomright' });
+      isoLegend.onAdd = function () {
+        const div = L.DomUtil.create('div', 'lyon-iso-legend');
+        div.id = 'lyonIsoLegend';
+        div.style.display = 'none';
+        div.innerHTML =
+          '<div class="iso-scale__block" title="Isochrones (voiture) : 5/10/15/20/30/45/60+ min">' +
+            '<div>' +
+              '<div class="iso-scale__title">Minutes</div>' +
+              '<div class="iso-scale__bar" style="height:92px">' +
+                '<div class="iso-scale__seg" style="background:rgba(34,197,94,.55)"></div>' +
+                '<div class="iso-scale__seg" style="background:rgba(74,222,128,.55)"></div>' +
+                '<div class="iso-scale__seg" style="background:rgba(251,191,36,.55)"></div>' +
+                '<div class="iso-scale__seg" style="background:rgba(249,115,22,.55)"></div>' +
+                '<div class="iso-scale__seg" style="background:rgba(239,68,68,.55)"></div>' +
+                '<div class="iso-scale__seg" style="background:rgba(239,68,68,.38)"></div>' +
+                '<div class="iso-scale__seg" style="background:rgba(239,68,68,.26)"></div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="iso-scale__labels" style="padding-top:14px;padding-bottom:2px">' +
+              '<div>≤ 5</div>' +
+              '<div>10</div>' +
+              '<div>15</div>' +
+              '<div>20</div>' +
+              '<div>30</div>' +
+              '<div>45</div>' +
+              '<div>60+</div>' +
+            '</div>' +
+          '</div>';
+        L.DomEvent.disableClickPropagation(div);
+        return div;
+      };
+      isoLegend.addTo(map);
+
+      function setIsoLegendVisible(visible) {
+        const el = document.getElementById('lyonIsoLegend');
+        if (!el) return;
+        el.style.display = visible ? '' : 'none';
+      }
 
       layerCommunes.addTo(map);
       layerArr.addTo(map);
@@ -831,6 +860,7 @@
         clearIsoLayers();
 
         const show = !!document.getElementById('lyonFilterIso')?.checked;
+        setIsoLegendVisible(show);
         if (!show) return;
 
         const nx = isoGrid.grid.nx, ny = isoGrid.grid.ny;
