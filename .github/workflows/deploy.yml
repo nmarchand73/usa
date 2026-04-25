@@ -39,6 +39,18 @@ jobs:
       - name: Regenerate public/lyon-dvf-heatmap.json (DVF Rhône)
         run: node scripts/build-lyon-dvf-heatmap.js
 
+      - name: Regenerate public/bordeaux-data.json from map-data
+        run: node scripts/build-bordeaux-data.js
+
+      - name: Regenerate public/bordeaux-iso-grid.json (OSRM)
+        run: node scripts/build-bordeaux-isochrone-grid-osrm.js
+
+      - name: Regenerate public/bordeaux-dvf-heatmap.json (DVF Gironde)
+        run: node scripts/build-bordeaux-dvf-heatmap.js
+
+      - name: Regenerate public/bordeaux-map.html (from lyon template)
+        run: node scripts/build-bordeaux-map-html.js
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

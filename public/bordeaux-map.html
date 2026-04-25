@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bordeaux — où habiter (Actu + Lacartedescolocs)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root{
+      --bg:#0a0e17; --bg2:#111827; --bg3:#1a2235;
+      --accent:#00d4aa; --accent2:#7c3aed;
+      --green:#22c55e; --yellow:#fbbf24; --red:#ef4444;
+      --text:#e2e8f0; --text-dim:#94a3b8; --border:#1e293b;
+      --code-bg:#0d1117;
+    }
+    body{ background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; line-height:1.65; min-height:100vh; }
+    body::before{
+      content:''; position:fixed; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events:none; z-index:9999;
+    }
+    a{ color:var(--accent); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+    .app{ display:flex; flex-direction:column; min-height:100vh; }
+    .hero{ text-align:center; padding:2rem 1.5rem 1.25rem; }
+    .hero h1{
+      font-family:'JetBrains Mono',monospace;
+      font-size:clamp(1.5rem,4vw,2.2rem);
+      font-weight:700;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      margin-bottom:.4rem;
+    }
+    .hero-line{ height:2px; width:200px; margin:1rem auto 0; background:linear-gradient(90deg,transparent,var(--accent),transparent); }
+    .main{ flex:1; display:flex; flex-direction:column; padding:1rem 1.5rem 0; width:100%; max-width:none; margin:0; }
+    .main-split{ display:flex; flex-direction:row; align-items:stretch; gap:1rem; width:100%; flex:1; min-height:0; }
+    .map-wrap{
+      flex:1 1 0; min-width:min(100%,320px);
+      background:var(--bg2);
+      border:1px solid var(--border);
+      border-radius:12px;
+      overflow:hidden;
+      display:flex; flex-direction:column; padding:0; position:relative;
+    }
+    .map-legend{
+      flex:0 0 auto; display:flex; flex-direction:column; gap:0.5rem;
+      padding:0.75rem 1rem; background:var(--bg2); border-bottom:1px solid var(--border);
+    }
+    .map-legend.map-legend--collapsed{
+      padding:0.55rem 0.85rem;
+    }
+    .map-legend-body{
+      overflow:hidden;
+      transition:max-height .22s ease, opacity .18s ease, transform .22s ease;
+      transform-origin:top;
+      max-height:1200px;
+      opacity:1;
+      transform:translateY(0);
+    }
+    .map-legend.map-legend--collapsed .map-legend-body{
+      max-height:0;
+      opacity:0;
+      transform:translateY(-6px);
+      pointer-events:none;
+    }
+    .btn-legend{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:30px; height:30px; background:var(--bg3); border:1px solid var(--border);
+      border-radius:6px; color:var(--text-dim); cursor:pointer; font-size:1rem; line-height:1;
+    }
+    .btn-legend:hover{ color:var(--text); border-color:var(--accent); }
+    .map-wrap.fullscreen .btn-legend{ background:var(--bg3); color:var(--text-dim); border-color:var(--border); }
+    .btn-legend.btn-legend--active{
+      background:rgba(0,212,170,.16);
+      border-color:rgba(0,212,170,.6);
+      color:var(--text);
+    }
+    .map-legend-top{ display:flex; flex-wrap:wrap; align-items:center; gap:0.5rem 1rem; }
+    .map-legend-label{ font-family:'JetBrains Mono',monospace; font-size:0.85rem; color:var(--text-dim); }
+    .map-legend-actions{ margin-left:auto; display:flex; align-items:center; gap:0.5rem; }
+    .btn-fullscreen{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:30px; height:30px; background:var(--bg3); border:1px solid var(--border);
+      border-radius:6px; color:var(--text-dim); cursor:pointer; font-size:1rem; line-height:1;
+    }
+    .btn-fullscreen:hover{ color:var(--text); border-color:var(--accent); }
+    .map-wrap.fullscreen .btn-fullscreen{ background:var(--accent); color:var(--bg); border-color:var(--accent); }
+    /* Plein écran : même principe que france-map — la zone Leaflet doit être en flex colonne avec hauteur résolue */
+    .map-wrap.fullscreen{
+      position:fixed !important;
+      inset:0 !important;
+      z-index:10000 !important;
+      width:100vw !important;
+      height:100vh !important;
+      max-width:none !important;
+      max-height:none !important;
+      min-width:0 !important;
+      min-height:0 !important;
+      flex:none !important;
+      border-radius:0 !important;
+      border:none !important;
+      margin:0 !important;
+      padding:0 !important;
+      display:flex !important;
+      flex-direction:column !important;
+      overflow:visible !important;
+    }
+    .map-wrap.fullscreen .map-legend{
+      flex:0 0 auto !important;
+      border-radius:0 !important;
+    }
+    .map-wrap.fullscreen .map-leaflet-stack{
+      flex:1 1 0 !important;
+      min-height:0 !important;
+      display:flex !important;
+      flex-direction:column !important;
+    }
+    .map-wrap.fullscreen #lyonLeafletMap{
+      flex:1 1 0 !important;
+      height:0 !important;
+      min-height:0 !important;
+      border-radius:0 !important;
+    }
+    .venue-filters{ margin-top:0.35rem; padding-top:0.65rem; border-top:1px solid var(--border); }
+    .venue-filters .venue-filters-title{
+      font-family:'JetBrains Mono',monospace; font-size:0.7rem; text-transform:uppercase;
+      letter-spacing:1px; color:var(--text-dim); margin-bottom:0.4rem;
+    }
+    .venue-filters-row{ display:flex; flex-wrap:wrap; gap:0.5rem 0.75rem; align-items:center; }
+    .venue-filters-row label{ display:inline-flex; align-items:center; gap:0.35rem; font-size:0.8rem; cursor:pointer; }
+    .venue-filters-row input{ accent-color:var(--accent); }
+    .venue-swatch{ width:12px; height:12px; border-radius:50%; border:2px solid; }
+    .venue-swatch--mx{ background:#d97706; border-color:#78350f; }
+    .venue-swatch--pump{ background:#c084fc; border-color:#4c1d95; }
+    .venue-swatch--bmx{ background:#f43f5e; border-color:#500724; }
+    .venue-swatch--mall{ background:#38bdf8; border-color:#075985; border-radius:4px; }
+    .iso-scale{ display:flex; gap:.6rem; align-items:flex-start; flex-wrap:wrap; margin-top:.35rem; }
+    .iso-scale__block{
+      display:flex;
+      flex-direction:row;
+      gap:.45rem;
+      align-items:stretch;
+      padding:.35rem .45rem;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:rgba(26,34,53,.25);
+    }
+    .iso-scale__bar{
+      width:12px;
+      border-radius:8px;
+      border:1px solid rgba(148,163,184,.35);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    .iso-scale__seg{ flex:1 1 0; }
+    .iso-scale__labels{
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      font-size:.72rem;
+      color:var(--text-dim);
+      line-height:1.2;
+      min-width:66px;
+    }
+    .iso-scale__title{
+      font-family:'JetBrains Mono',monospace;
+      font-size:.68rem;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      color:var(--text-dim);
+      margin-bottom:.15rem;
+    }
+
+    /* Isochrone legend on map (right side) */
+    .lyon-iso-legend{
+      background:rgba(10,14,23,.92);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:.55rem .6rem;
+      box-shadow:0 10px 28px rgba(0,0,0,.45);
+      color:var(--text);
+      user-select:none;
+      pointer-events:auto;
+    }
+    .lyon-iso-legend .iso-scale__block{
+      border-color:rgba(148,163,184,.22);
+      background:rgba(26,34,53,.22);
+      padding:.45rem .55rem;
+    }
+    .lyon-iso-legend .iso-scale__labels{ min-width:64px; }
+    .lyon-dvf-heat-grad{
+      width:120px; height:10px; border-radius:8px;
+      background:linear-gradient(90deg,#22c55e 0%,#fbbf24 50%,#ef4444 100%);
+      border:1px solid rgba(148,163,184,.35);
+      box-shadow:0 0 0 1px rgba(0,0,0,.2) inset;
+    }
+    .lyon-dvf-heat-legend .dvf-heat-legend__foot{
+      font-size:.64rem; color:var(--text-dim); line-height:1.3; margin-top:.35rem; max-width:200px;
+    }
+    .lyon-dvf-heat-legend .iso-scale__block{ flex-direction:column; align-items:stretch; gap:.35rem; }
+    .map-leaflet-stack{ position:relative; flex:1 1 auto; min-height:0; }
+    #lyonLeafletMap{ width:100%; height:560px; min-height:360px; background:var(--bg3); border-radius:0 0 12px 12px; }
+    .panel-shell{
+      display:flex; flex-direction:row; flex:0 0 min(380px,36vw);
+      max-width:min(400px,40vw); min-width:0; min-height:0; border-radius:14px; overflow:hidden;
+      border:1px solid var(--border);
+      background:linear-gradient(180deg,var(--bg2),rgba(17,24,39,.75));
+    }
+    .panel-edge{
+      flex:0 0 44px; width:44px; writing-mode:vertical-rl; transform:rotate(180deg);
+      border:0; border-right:1px solid var(--border); background:rgba(15,23,42,.92);
+      color:var(--text); font-family:'JetBrains Mono',monospace; font-size:0.65rem;
+      font-weight:600; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer;
+    }
+    .panel-edge:hover{ color:var(--accent); }
+    .panel-shell--collapsed{
+      flex:0 0 44px !important; max-width:44px !important; min-width:44px !important;
+    }
+    .panel-shell--collapsed .panel{ display:none; }
+    .panel{ flex:1; overflow:auto; padding:1rem 1.1rem; }
+    .panel h2{ font-size:1.15rem; margin-bottom:0.5rem; }
+    .panel h3{ font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--accent); margin:0.8rem 0 0.4rem; }
+    .top-list{ list-style:none; }
+    .top-list li{ padding:0.45rem 0.5rem; margin-bottom:0.35rem; border:1px solid var(--border); border-radius:8px; cursor:pointer; }
+    .top-list li:hover{ border-color:var(--accent); }
+    .top-list .name{ font-weight:700; }
+    .top-list .sub{ color:var(--text-dim); font-size:0.85rem; }
+    .detail-note{ color:var(--text-dim); font-size:0.88rem; margin:0.4rem 0; }
+    .detail-actions{ display:flex; flex-direction:column; gap:0.4rem; margin-top:0.6rem; }
+    .detail-actions a{ font-size:0.9rem; }
+    footer{ color:var(--text-dim); padding:0.75rem 1.25rem 1rem; text-align:center; border-top:1px solid var(--border); font-size:0.92rem; }
+    .leaflet-tooltip.lyon-tt{
+      background:rgba(10,14,23,.94) !important; color:var(--text) !important;
+      border:1px solid var(--border) !important; border-radius:10px !important;
+      padding:0.52rem 0.72rem !important;
+      font-size:0.82rem;
+      max-width:min(320px,92vw);
+      box-shadow:0 10px 28px rgba(0,0,0,.45) !important;
+    }
+    .leaflet-tooltip.lyon-tt .tt-kind{ font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; }
+    .leaflet-tooltip.lyon-tt .tt-name{
+      font-weight:750;
+      color:#e2e8f0;
+      margin:0.18rem 0 0.12rem;
+      letter-spacing:.01em;
+    }
+    .leaflet-tooltip.lyon-tt .tt-city{
+      color:#cbd5e1;
+      opacity:.9;
+      font-size:.78rem;
+      margin-top:.08rem;
+    }
+    .leaflet-tooltip.lyon-tt .tt-meta{
+      color:#cbd5e1;
+      line-height:1.35;
+      margin-top:0.22rem;
+    }
+    .leaflet-tooltip.lyon-tt .tt-times{
+      color:#cbd5e1;
+      font-size:.76rem;
+      margin-top:.26rem;
+      padding-top:.26rem;
+      border-top:1px solid rgba(148,163,184,.18);
+      opacity:.92;
+      white-space:nowrap;
+    }
+    .leaflet-tooltip.lyon-tt .tt-why{
+      color:#cbd5e1;
+      line-height:1.35;
+      margin-top:0.32rem;
+      opacity:.9;
+    }
+
+    /* Pins (lieux de vie) — plus lisibles que des cercles en zone dense */
+    .leaflet-div-icon.lyon-pin-icon{
+      background:transparent !important;
+      border:none !important;
+    }
+    .lyon-pin{
+      width:22px; height:22px;
+      transform:rotate(45deg);
+      border-radius:22px 22px 22px 0;
+      position:relative;
+      box-shadow:0 10px 22px rgba(0,0,0,.38);
+      border:2px solid rgba(15,23,42,.92);
+    }
+    .lyon-pin::after{
+      content:'';
+      position:absolute;
+      width:9px; height:9px;
+      background:rgba(255,255,255,.92);
+      border-radius:50%;
+      top:50%; left:50%;
+      transform:translate(-50%,-50%) rotate(-45deg);
+      opacity:.9;
+    }
+    .lyon-pin--top10{
+      box-shadow:0 14px 26px rgba(0,0,0,.52);
+      border-width:3px;
+    }
+    .lyon-pin-label{
+      position:absolute;
+      top:50%; left:50%;
+      transform:translate(-50%,-50%) rotate(-45deg);
+      font-family:'JetBrains Mono',monospace;
+      font-weight:800;
+      font-size:10px;
+      color:#0a0e17;
+      text-shadow:0 1px 0 rgba(255,255,255,.25);
+      pointer-events:none;
+    }
+    @media (max-width: 960px){
+      #lyonLeafletMap{ min-height:300px; height:480px; }
+      .main-split{ flex-direction:column; }
+      .panel-shell{ flex:0 0 auto; max-width:none; min-height:min(48vh,420px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="hero">
+      <h1>Bordeaux + métropole — repères “où habiter”</h1>
+      <div class="hero-line"></div>
+    </header>
+    <main class="main">
+      <div class="main-split">
+        <section class="map-wrap view-dynamic" id="lyonMapWrap" aria-label="Carte Lyon">
+          <div class="map-legend">
+            <div class="map-legend-top">
+              <span class="map-legend-label">Carte &amp; calques</span>
+              <div class="map-legend-actions">
+                <button type="button" id="lyonBtnRuler" class="btn-legend" aria-pressed="false" title="Règle (mesurer des distances)">📏</button>
+                <button type="button" id="lyonBtnLegend" class="btn-legend" title="Replier / déplier la légende">▾</button>
+                <button type="button" id="lyonBtnFullscreen" class="btn-fullscreen" title="Plein écran (Échap)">⛶</button>
+              </div>
+            </div>
+            <div class="map-legend-body" id="lyonLegendBody">
+            <div class="venue-filters" aria-label="Filtres">
+              <div class="venue-filters-title">Où habiter (pins)</div>
+              <div class="venue-filters-row">
+                <label><input type="checkbox" id="lyonFilterCommunes" checked><span class="venue-swatch" style="background:linear-gradient(135deg,#22c55e,#fbbf24,#ef4444);border-color:#14532d"></span> Communes (Actu.fr /100)</label>
+                <label><input type="checkbox" id="lyonFilterArr" checked><span class="venue-swatch" style="background:linear-gradient(135deg,#6366f1,#a855f7);border-color:#312e81"></span> Quartiers (Lacartedescolocs)</label>
+                <label title="N’afficher sur la carte que le top 10 du classement actuel (selon calques).">
+                  <input type="checkbox" id="lyonFilterTop10">
+                  <strong title="N’afficher sur la carte que le top 10 du classement actuel (selon calques).">Top 10 seul</strong>
+                  <span style="opacity:.85">sur la carte</span>
+                  <span title="N’afficher sur la carte que le top 10 du classement actuel (selon calques)." style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:999px;border:1px solid var(--border);color:var(--text-dim);font-size:.72rem;line-height:1;margin-left:.15rem;cursor:help;">?</span>
+                </label>
+              </div>
+              <div class="detail-note" style="margin-top:.25rem">
+                Étoile (★) : dans le Top 10. Origine Interpol : pin turquoise « I ».
+              </div>
+              <div class="venue-filters-title" style="margin-top:.65rem">Lieux sportifs (autour de Lyon)</div>
+              <div class="venue-filters-row">
+                <label><input type="checkbox" id="lyonFilterMx" checked><span class="venue-swatch venue-swatch--mx" title="Motocross"></span> Motocross (OSM)</label>
+                <label><input type="checkbox" id="lyonFilterPump" checked><span class="venue-swatch venue-swatch--pump" title="Pumptrack"></span> Pumptracks (OSM)</label>
+                <label><input type="checkbox" id="lyonFilterBmx" checked><span class="venue-swatch venue-swatch--bmx" title="BMX"></span> BMX (OSM)</label>
+              </div>
+              <div class="venue-filters-title" style="margin-top:.65rem">Grand shopping (≤ 35 km)</div>
+              <div class="venue-filters-row">
+                <label><input type="checkbox" id="lyonFilterMalls" checked><span class="venue-swatch venue-swatch--mall" title="Centres commerciaux"></span> Centres commerciaux</label>
+              </div>
+              <div class="venue-filters-title" style="margin-top:.65rem">Optimisation “maison”</div>
+              <div class="venue-filters-row">
+                <label title="Classement combinant proximité (Interpol + sports + centres co.) et prix maison (DVF, médiane €/m² par commune).">
+                  <input type="checkbox" id="lyonFilterHouseFit">
+                  <strong>Mode maison</strong>
+                  <span style="opacity:.85">proximité + prix</span>
+                </label>
+              </div>
+              <div class="detail-note" id="lyonHouseFitNote" style="margin-top:.25rem; display:none">
+                DVF : agrégats (médiane €/m² maison) par commune INSEE — indicatif, pas une estimation d’annonce.
+              </div>
+              <div class="venue-filters-title" style="margin-top:.65rem">Temps de trajet (voiture) — zones</div>
+              <div class="venue-filters-row">
+                <label><input type="checkbox" id="lyonFilterIso"><span class="venue-swatch" style="background:rgba(74,222,128,.55);border-color:rgba(74,222,128,.85)"></span> Isochrones (OSRM, base 5/10/15/20/30 + extensions)</label>
+                <span class="detail-note" id="lyonIsoNote" style="margin:0">Isochrones voiture (OSRM) : chargement…</span>
+              </div>
+              <div class="venue-filters-title" style="margin-top:.65rem">Prix maisons (DVF 69)</div>
+              <div class="venue-filters-row">
+                <label title="Médiane €/m² par case (raster généré ; ventes « Maison » DVF, plusieurs années).">
+                  <input type="checkbox" id="lyonFilterDvfHeat">
+                  <span class="venue-swatch" style="background:linear-gradient(90deg,#22c55e,#fbbf24,#ef4444);border-color:#14532d"></span> Heatmap €/m²
+                </label>
+                <span class="detail-note" id="lyonDvfHeatNote" style="margin:0">Heatmap DVF : chargement…</span>
+              </div>
+              <!-- Scale moved to map right-side legend -->
+            </div>
+            </div>
+          </div>
+          <div class="map-leaflet-stack"><div id="lyonLeafletMap"></div></div>
+        </section>
+        <div class="panel-shell" id="lyonPanelShell" aria-label="Panneau latéral">
+          <button type="button" class="panel-edge" id="lyonPanelToggle" title="Replier le panneau" aria-controls="lyonPanel" aria-expanded="true">Panneau</button>
+          <aside class="panel" id="lyonPanel">
+            <h2>Top 10 (score combiné)</h2>
+            <p class="detail-note" id="lyonTopNote">Tous calques : classement sur les 29 points.</p>
+            <ol class="top-list" id="lyonTopList"></ol>
+            <h3 id="lyonDetailTitle">Fiche</h3>
+            <div id="lyonDetailContent" class="detail-note">Cliquez un point sur la carte.</div>
+          </aside>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <nav class="footer-nav" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:0.35rem 0.65rem" aria-label="Pied de page">
+        <a href="index.html">Accueil</a>
+        <span class="footer-sep" style="opacity:.45">·</span>
+        <a href="france-map.html">France</a>
+        <span class="footer-sep" style="opacity:.45">·</span>
+        <a href="usa-map.html">USA</a>
+      </nav>
+    </footer>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js" crossorigin=""></script>
+  <script>
+    (function () {
+      const ACTU = 'https://actu.fr/auvergne-rhone-alpes/lyon_69123/classement-voici-les-20-communes-de-reve-ou-habiter-pres-de-lyon_60673554.html';
+      const CCR = 'https://www.lacartedescolocs.fr/guides/logement-bordeaux-les-meilleurs-quartiers';
+      /** Origine (toujours affichée) : 200 Quai Charles de Gaulle, 69006 Lyon (Interpol) */
+      const ORIGIN = {
+        label: '200 Quai Charles de Gaulle, 69006 Lyon',
+        lat: 45.7821579,
+        lng: 4.8481081
+      };
+
+      function esc(s) {
+        if (s == null) return '';
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      function communesColor(score) {
+        const t = (score - 55) / (66 - 55);
+        const u = Math.max(0, Math.min(1, t));
+        const g = Math.round(34 + (239 - 34) * (1 - u));
+        const r = Math.round(34 + 239 * u);
+        return 'rgb(' + r + ',' + g + ', 70)';
+      }
+
+      function arrColor(score) {
+        const u = (score - 40) / 55;
+        const h = 250;
+        const s = 70 + Math.round(20 * u);
+        const l = 38 + Math.round(20 * u);
+        return 'hsl(' + h + ',' + s + '%,' + l + '%)';
+      }
+
+      function markerRadius(kind, combined) {
+        if (kind === 'commune') {
+          if (combined >= 63) return 10;
+          if (combined >= 60) return 8;
+          return 7;
+        }
+        if (combined >= 85) return 11;
+        if (combined >= 70) return 9;
+        return 8;
+      }
+
+      function googleSatUrl(lat, lng) {
+        return 'https://www.google.com/maps/@' + lat + ',' + lng + ',16z/data=!3m1!1e3';
+      }
+
+      function gmapsDirectionsUrl(originLabel, lat, lng, mode) {
+        // https://developers.google.com/maps/documentation/urls/get-started#directions-action
+        const u = new URL('https://www.google.com/maps/dir/');
+        u.searchParams.set('api', '1');
+        u.searchParams.set('origin', originLabel);
+        u.searchParams.set('destination', lat + ',' + lng);
+        if (mode) u.searchParams.set('travelmode', mode);
+        return u.toString();
+      }
+
+      function haversineKm(lat1, lng1, lat2, lng2) {
+        const R = 6371;
+        const toRad = (d) => d * Math.PI / 180;
+        const dLat = toRad(lat2 - lat1);
+        const dLon = toRad(lng2 - lng1);
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+          Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+      }
+
+      /**
+       * Pas d’API “temps de trajet” (Google/Navitia) : estimation lisible et stable.
+       * - voiture : vitesse urbaine moyenne ~28 km/h + 5 min (stationnement/feux)
+       * - TC : vitesse moyenne ~20 km/h + 12 min (attente + correspondances)
+       */
+      function travelMinutesEstimate(lat, lng) {
+        const km = haversineKm(ORIGIN.lat, ORIGIN.lng, lat, lng);
+        const car = Math.max(3, Math.round((km / 28) * 60 + 5));
+        const tc = Math.max(6, Math.round((km / 20) * 60 + 12));
+        return { km, car, tc };
+      }
+
+      function travelLineHtml(item) {
+        if (!Number.isFinite(item.lat) || !Number.isFinite(item.lng)) return '';
+        const t = travelMinutesEstimate(item.lat, item.lng);
+        const osrm = item && item.durations && item.durations.carOsrm && item.durations.carOsrm.status === 'ok'
+          ? item.durations.carOsrm
+          : null;
+        const carPart = osrm && Number.isFinite(osrm.minutes)
+          ? ('<b>' + osrm.minutes + ' min</b> voiture <span style=\"opacity:.85\">(OSRM)</span>')
+          : ('<b>' + t.car + ' min</b> voiture <span style=\"opacity:.85\">(estim.)</span>');
+        return 'Depuis ' + ORIGIN.label + ' : ' + carPart + ' · <b>' + t.tc + ' min</b> TC <span style=\"opacity:.85\">(estim.)</span>';
+      }
+
+      function travelLineCompactHtml(item) {
+        if (!Number.isFinite(item.lat) || !Number.isFinite(item.lng)) return '';
+        const t = travelMinutesEstimate(item.lat, item.lng);
+        const osrm = item && item.durations && item.durations.carOsrm && item.durations.carOsrm.status === 'ok'
+          ? item.durations.carOsrm
+          : null;
+        const carMin = osrm && Number.isFinite(osrm.minutes) ? osrm.minutes : t.car;
+        const carTag = osrm && Number.isFinite(osrm.minutes) ? 'OSRM' : 'estim.';
+        return '<b>' + carMin + ' min</b> voiture <span style=\"opacity:.8\">(' + carTag + ')</span> · <b>' + t.tc + ' min</b> TC <span style=\"opacity:.8\">(estim.)</span>';
+      }
+
+      const layerCommunes = L.layerGroup();
+      const layerArr = L.layerGroup();
+      const layerIso = L.layerGroup();
+      const layerMx = L.layerGroup();
+      const layerPump = L.layerGroup();
+      const layerBmx = L.layerGroup();
+      const layerMalls = L.layerGroup();
+      const byId = {};
+      let dataPayload = null;
+      let isoGrid = null;
+      let dvfHeatGrid = null;
+      let topIds = new Set();
+      const markers = [];
+      let venuesFrCache = null;
+      let mallsCache = null;
+
+      const map = L.map('lyonLeafletMap', { scrollWheelZoom: true }).setView([44.84, -0.58], 11);
+      /* dark_all : routes/eau quasi noires → carte « toute noire ». Voyager : lisible sur fond UI sombre. */
+      const voyagerLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+      });
+      const satelliteLayer = L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        { maxZoom: 19, attribution: '&copy; Esri' }
+      );
+
+      voyagerLayer.addTo(map);
+      L.control.layers(
+        { 'Carte': voyagerLayer, 'Satellite': satelliteLayer },
+        {},
+        { position: 'topright' }
+      ).addTo(map);
+
+      // Scale (distance legend) like other maps
+      L.control.scale({
+        position: 'bottomright',
+        maxWidth: 140,
+        metric: true,
+        imperial: false,
+        updateWhenIdle: true
+      }).addTo(map);
+
+      // Isochrone legend (right side)
+      const isoLegend = L.control({ position: 'bottomright' });
+      isoLegend.onAdd = function () {
+        const div = L.DomUtil.create('div', 'lyon-iso-legend');
+        div.id = 'lyonIsoLegend';
+        div.style.display = 'none';
+        div.innerHTML =
+          '<div class="iso-scale__block" title="Isochrones (voiture, OSRM) : ≤5 / 10 / 15 / 20 / 30 / 45 / 60 / 60+ min">' +
+            '<div>' +
+              '<div class="iso-scale__title">Minutes</div>' +
+              '<div class="iso-scale__bar" style="height:92px">' +
+                '<div class="iso-scale__seg" style="background:rgba(34,197,94,.62)"></div>' +  // ≤5
+                '<div class="iso-scale__seg" style="background:rgba(74,222,128,.62)"></div>' + // 10
+                '<div class="iso-scale__seg" style="background:rgba(251,191,36,.62)"></div>' + // 15
+                '<div class="iso-scale__seg" style="background:rgba(249,115,22,.62)"></div>' + // 20
+                '<div class="iso-scale__seg" style="background:rgba(239,68,68,.62)"></div>' +  // 30
+                '<div class="iso-scale__seg" style="background:rgba(239,68,68,.46)"></div>' +  // 45
+                '<div class="iso-scale__seg" style="background:rgba(239,68,68,.34)"></div>' +  // 60
+                '<div class="iso-scale__seg" style="background:rgba(239,68,68,.22)"></div>' +  // 60+
+              '</div>' +
+            '</div>' +
+            '<div class="iso-scale__labels" style="padding-top:14px;padding-bottom:2px">' +
+              '<div>≤ 5</div>' +
+              '<div>10</div>' +
+              '<div>15</div>' +
+              '<div>20</div>' +
+              '<div>30</div>' +
+              '<div>45</div>' +
+              '<div>60</div>' +
+              '<div>60+</div>' +
+            '</div>' +
+          '</div>';
+        L.DomEvent.disableClickPropagation(div);
+        return div;
+      };
+      isoLegend.addTo(map);
+
+      function setIsoLegendVisible(visible) {
+        const el = document.getElementById('lyonIsoLegend');
+        if (!el) return;
+        el.style.display = visible ? '' : 'none';
+      }
+
+      const dvfHeatLegend = L.control({ position: 'topleft' });
+      dvfHeatLegend.onAdd = function () {
+        const div = L.DomUtil.create('div', 'lyon-iso-legend lyon-dvf-heat-legend');
+        div.id = 'lyonDvfHeatLegend';
+        div.style.display = 'none';
+        div.innerHTML =
+          '<div class="iso-scale__block" title="Heatmap DVF (maisons) : couleur = position relative (p10–p90)">' +
+            '<div class="iso-scale__title">DVF — €/m²</div>' +
+            '<div class="lyon-dvf-heat-grad" role="img" aria-label="Échelle de prix bas à élevé"></div>' +
+            '<div class="iso-scale__labels" style="flex-direction:row; min-width:120px; justify-content:space-between; padding:0; margin:0.15rem 0 0; font-size:0.72rem">' +
+              '<span id="lyonDvfHeatL" style="color:var(--text)">—</span>' +
+              '<span id="lyonDvfHeatH" style="color:var(--text)">—</span>' +
+            '</div>' +
+            '<div class="dvf-heat-legend__foot">Médianes par cellule (5 ventes min.), années agrégées. Indicatif.</div>' +
+          '</div>';
+        L.DomEvent.disableClickPropagation(div);
+        return div;
+      };
+      dvfHeatLegend.addTo(map);
+
+      function setDvfHeatLegendVisible(visible) {
+        const el = document.getElementById('lyonDvfHeatLegend');
+        if (!el) return;
+        el.style.display = visible ? '' : 'none';
+      }
+
+      layerCommunes.addTo(map);
+      layerArr.addTo(map);
+      // isochrones off by default (toggle in legend)
+      layerMx.addTo(map);
+      layerPump.addTo(map);
+      layerBmx.addTo(map);
+      layerMalls.addTo(map);
+
+      // Origin marker (Interpol)
+      function pinIconHtml(opts) {
+        const fill = opts.fill || '#22c55e';
+        const border = opts.border || 'rgba(15,23,42,.92)';
+        const top10 = !!opts.top10;
+        const label = opts.label != null ? String(opts.label) : '';
+        const cls = 'lyon-pin' + (top10 ? ' lyon-pin--top10' : '');
+        const labelHtml = label ? '<div class="lyon-pin-label">' + esc(label) + '</div>' : '';
+        return '<div class="' + cls + '" style="background:' + fill + ';border-color:' + border + ';">' + labelHtml + '</div>';
+      }
+
+      function createPinMarker(lat, lng, opts) {
+        const icon = L.divIcon({
+          className: 'lyon-pin-icon',
+          html: pinIconHtml(opts || {}),
+          iconSize: [26, 26],
+          iconAnchor: [13, 24],
+          popupAnchor: [0, -20],
+          tooltipAnchor: [0, -14]
+        });
+        return L.marker([lat, lng], { icon: icon, keyboard: false });
+      }
+
+      const originMarker = createPinMarker(ORIGIN.lat, ORIGIN.lng, {
+        fill: '#00d4aa',
+        border: 'rgba(15,23,42,.92)',
+        label: 'I'
+      }).addTo(map);
+      originMarker.bindTooltip(
+        '<div class="tt-kind">Origine (Interpol)</div><div class="tt-name">' + esc(ORIGIN.label) + '</div>',
+        { direction: 'top', className: 'lyon-tt', sticky: true }
+      );
+      originMarker.bindPopup(
+        '<div style="line-height:1.45; font-size:0.9rem; color:#0f172a">' +
+          '<div style="font-weight:700; margin-bottom:0.4rem; color:#1e293b">Origine (Interpol)</div>' +
+          '<div style="margin-bottom:.35rem;">' + esc(ORIGIN.label) + '</div>' +
+          '<a href="' + googleSatUrl(ORIGIN.lat, ORIGIN.lng) + '" target="_blank" rel="noopener" style="color:#0d9488">Google Maps — vue satellite</a>' +
+        '</div>'
+      );
+
+      function getSourceUrl(item) {
+        if (dataPayload && dataPayload.sources) {
+          if (item.kind === 'commune' && dataPayload.sources.actu) return dataPayload.sources.actu.url || ACTU;
+          if (item.kind === 'quartier' && dataPayload.sources.lacartedescolocs) return dataPayload.sources.lacartedescolocs.url || CCR;
+        }
+        return item.kind === 'commune' ? ACTU : CCR;
+      }
+
+      function tooltipText(item) {
+        const isC = item.kind === 'commune';
+        const head = isC ? 'Commune (Actu.fr)' : 'Quartier (Lacartedescolocs)';
+        const scoreLine = isC
+          ? ('Actu : ' + item.scores.actu + '/100')
+          : ('Lacartedescolocs : ' + item.scores.lacartedescolocs + '/100' + (item.labels && item.labels.verdict ? ' — ' + item.labels.verdict : ''));
+        const dvf = item && item.immo && item.immo.dvfMaison && item.immo.dvfMaison.status === 'ok'
+          ? item.immo.dvfMaison
+          : null;
+        const dvfLine = dvf && Number.isFinite(dvf.medianEurM2)
+          ? ('Prix maison (DVF) : ~' + Math.round(dvf.medianEurM2) + ' €/m²')
+          : null;
+        const why = isC ? (item.why && item.why.actu) : (item.why && item.why.lacartedescolocs);
+        let timeLine = '';
+        if (Number.isFinite(item.lat) && Number.isFinite(item.lng)) {
+          const t = travelMinutesEstimate(item.lat, item.lng);
+          const osrm = item && item.durations && item.durations.carOsrm && item.durations.carOsrm.status === 'ok'
+            ? item.durations.carOsrm
+            : null;
+          const carMin = osrm && Number.isFinite(osrm.minutes) ? osrm.minutes : t.car;
+          const carTag = osrm && Number.isFinite(osrm.minutes) ? 'OSRM' : 'estim.';
+          timeLine = '<b>' + carMin + ' min</b> voiture <span style="opacity:.85">(' + carTag + ')</span> · <b>' + t.tc + ' min</b> TC <span style="opacity:.85">(estim.)</span>';
+        }
+        return (
+          '<div class="tt-kind">' + esc(head) + '</div>' +
+          '<div class="tt-name">' + esc(item.name) + '</div>' +
+          '<div class="tt-meta">' + esc(scoreLine) +
+            (dvfLine ? '<br>' + esc(dvfLine) : '') +
+            (timeLine ? '<br>' + timeLine : '') + '</div>' +
+          (why ? '<div class="tt-why">' + esc(why) + '</div>' : '')
+        );
+      }
+
+      function popupHtml(item) {
+        const u = getSourceUrl(item);
+        const lat = item.lat;
+        const lng = item.lng;
+        const g = googleSatUrl(lat, lng);
+        const dirCar = gmapsDirectionsUrl(ORIGIN.label, lat, lng, 'driving');
+        const dirTc = gmapsDirectionsUrl(ORIGIN.label, lat, lng, 'transit');
+        const isC = item.kind === 'commune';
+        const dist = travelLineHtml(item);
+        const bullets = [];
+        if (isC) {
+          bullets.push('Note Actu.fr (classement) : ' + item.scores.actu + '/100');
+          if (item.sourceNotes && item.sourceNotes.actuName) {
+            bullets.push('Nom cité par Actu : « ' + String(item.sourceNotes.actuName) + ' »');
+          }
+        } else {
+          bullets.push('Avis (Lacartedescolocs) : ' + item.scores.lacartedescolocs + '/100' +
+            (item.labels && item.labels.verdict ? ' — ' + item.labels.verdict : ''));
+        }
+        if (item.why) {
+          const w = isC ? item.why.actu : item.why.lacartedescolocs;
+          if (w) bullets.push(esc(w));
+        }
+        return (
+          '<div style="line-height:1.45; font-size:0.9rem; color:#0f172a">' +
+            '<div style="font-weight:700; margin-bottom:0.4rem; color:#1e293b">' + esc(item.name) + '</div>' +
+            '<ul style="padding-left:1.1rem; margin:0.2rem 0 0.6rem">' + bullets.map(function (b) { return '<li>' + b + '</li>'; }).join('') + '</ul>' +
+            (dist ? '<div style="margin:0.25rem 0 0.55rem;padding:.45rem .55rem;border:1px solid rgba(15,23,42,.18);border-radius:10px;background:rgba(15,23,42,.04)">' + dist + '</div>' : '') +
+            '<a href="' + esc(u) + '" target="_blank" rel="noopener" style="color:#0d9488">Article source</a><br>' +
+            '<a href="' + g + '" target="_blank" rel="noopener" style="color:#0d9488">Google Maps — vue satellite</a><br>' +
+            '<a href="' + esc(dirCar) + '" target="_blank" rel="noopener" style="color:#0d9488">Itinéraire (voiture) — Google Maps</a><br>' +
+            '<a href="' + esc(dirTc) + '" target="_blank" rel="noopener" style="color:#0d9488">Itinéraire (transports) — Google Maps</a>' +
+          '</div>'
+        );
+      }
+
+      function visibleItems() {
+        if (!dataPayload) return [];
+        const fc = document.getElementById('lyonFilterCommunes').checked;
+        const fa = document.getElementById('lyonFilterArr').checked;
+        return dataPayload.items.filter(function (x) {
+          if (x.kind === 'commune' && !fc) return false;
+          if (x.kind === 'arrondissement' && !fa) return false;
+          return true;
+        });
+      }
+
+      function isHouseMode() {
+        return !!document.getElementById('lyonFilterHouseFit')?.checked;
+      }
+
+      function safeMin(arr) {
+        let best = Infinity;
+        for (const v of arr) {
+          const n = Number(v);
+          if (Number.isFinite(n) && n < best) best = n;
+        }
+        return best === Infinity ? null : best;
+      }
+
+      function clamp01(x) {
+        if (!Number.isFinite(x)) return 0;
+        return Math.max(0, Math.min(1, x));
+      }
+
+      // Higher is better. Uses a saturating curve anchored on a "target" (good) and "bad" (acceptable upper bound).
+      function scoreFromMinutes(mins, target, bad) {
+        if (!Number.isFinite(mins) || mins <= 0) return 0;
+        if (mins <= target) return 1;
+        if (mins >= bad) return 0;
+        const t = (mins - target) / (bad - target);
+        return clamp01(1 - t);
+      }
+
+      function scoreFromEurM2(eurM2, best, worst) {
+        if (!Number.isFinite(eurM2) || eurM2 <= 0) return 0;
+        if (!Number.isFinite(best) || !Number.isFinite(worst) || best >= worst) return 0;
+        if (eurM2 <= best) return 1;
+        if (eurM2 >= worst) return 0;
+        const t = (eurM2 - best) / (worst - best);
+        return clamp01(1 - t);
+      }
+
+      function computeHouseFitScores() {
+        if (!dataPayload) return;
+
+        const items = dataPayload.items || [];
+
+        // Price anchors from DVF medians across all items (communes+arr) that have data
+        const medians = items
+          .map((x) => (x && x.immo && x.immo.dvfMaison && x.immo.dvfMaison.status === 'ok') ? Number(x.immo.dvfMaison.medianEurM2) : NaN)
+          .filter((n) => Number.isFinite(n));
+        const best = medians.length ? medians.slice().sort((a, b) => a - b)[Math.floor(medians.length * 0.15)] : NaN;
+        const worst = medians.length ? medians.slice().sort((a, b) => a - b)[Math.floor(medians.length * 0.85)] : NaN;
+
+        // Gather POIs
+        const mx = venuesFrCache && venuesFrCache.mxTracks ? venuesFrCache.mxTracks : [];
+        const pump = venuesFrCache && venuesFrCache.pumptracks ? venuesFrCache.pumptracks : [];
+        const bmx = venuesFrCache && venuesFrCache.bmxTracks ? venuesFrCache.bmxTracks : [];
+        const malls = mallsCache || [];
+
+        function nearestMinutes(lat, lng, list) {
+          if (!Number.isFinite(lat) || !Number.isFinite(lng) || !Array.isArray(list) || !list.length) return null;
+          const mins = [];
+          for (const p of list) {
+            const plat = Number(p.lat), plng = Number(p.lng);
+            if (!Number.isFinite(plat) || !Number.isFinite(plng)) continue;
+            const km = haversineKm(lat, lng, plat, plng);
+            // Turn into a stable, readable car-time proxy (no OSRM explosion)
+            const carMin = Math.max(3, Math.round((km / 28) * 60 + 5));
+            mins.push(carMin);
+          }
+          return safeMin(mins);
+        }
+
+        for (const it of items) {
+          if (!it || !Number.isFinite(it.lat) || !Number.isFinite(it.lng)) continue;
+
+          const originMin = (it.durations && it.durations.carOsrm && it.durations.carOsrm.status === 'ok' && Number.isFinite(it.durations.carOsrm.minutes))
+            ? Number(it.durations.carOsrm.minutes)
+            : travelMinutesEstimate(it.lat, it.lng).car;
+
+          const mxMin = nearestMinutes(it.lat, it.lng, mx);
+          const bmxMin = nearestMinutes(it.lat, it.lng, bmx);
+          const pumpMin = nearestMinutes(it.lat, it.lng, pump);
+          const mallMin = nearestMinutes(it.lat, it.lng, malls);
+
+          const dvf = it.immo && it.immo.dvfMaison && it.immo.dvfMaison.status === 'ok'
+            ? it.immo.dvfMaison
+            : null;
+          const eurM2 = dvf ? Number(dvf.medianEurM2) : NaN;
+
+          // Subscores 0..1
+          const sOrigin = scoreFromMinutes(originMin, 12, 30);
+          const sMx = scoreFromMinutes(mxMin == null ? NaN : mxMin, 18, 40);
+          const sBmx = scoreFromMinutes(bmxMin == null ? NaN : bmxMin, 18, 40);
+          const sPump = scoreFromMinutes(pumpMin == null ? NaN : pumpMin, 15, 35);
+          const sMall = scoreFromMinutes(mallMin == null ? NaN : mallMin, 12, 30);
+          const sPrice = scoreFromEurM2(eurM2, best, worst);
+
+          // Weighting (v1)
+          const wOrigin = 0.30;
+          const wMx = 0.18;
+          const wBmx = 0.14;
+          const wPump = 0.10;
+          const wMall = 0.08;
+          const wPrice = 0.20;
+
+          const total =
+            wOrigin * sOrigin +
+            wMx * sMx +
+            wBmx * sBmx +
+            wPump * sPump +
+            wMall * sMall +
+            wPrice * sPrice;
+
+          it.scores = it.scores || {};
+          it.scores.houseFit = Math.round(100 * clamp01(total));
+          it.houseFit = {
+            originMin: originMin,
+            mxMin: mxMin,
+            bmxMin: bmxMin,
+            pumpMin: pumpMin,
+            mallMin: mallMin,
+            eurM2: Number.isFinite(eurM2) ? eurM2 : null,
+            anchors: (Number.isFinite(best) && Number.isFinite(worst)) ? { bestEurM2: best, worstEurM2: worst } : null
+          };
+        }
+      }
+
+      function recomputeTop() {
+        if (isHouseMode()) computeHouseFitScores();
+        const vis = visibleItems().slice().sort(function (a, b) {
+          const ka = isHouseMode() ? (a.scores.houseFit || 0) : (a.scores.combined || 0);
+          const kb = isHouseMode() ? (b.scores.houseFit || 0) : (b.scores.combined || 0);
+          return kb - ka;
+        });
+        const top = vis.slice(0, 10);
+        topIds = new Set(top.map(function (x) { return x.id; }));
+        return top;
+      }
+
+      function refreshTopList() {
+        const list = document.getElementById('lyonTopList');
+        const note = document.getElementById('lyonTopNote');
+        if (!list) return;
+        const top = recomputeTop();
+        if (note) {
+          const n = visibleItems().length;
+          if (!n) note.textContent = 'Aucun calque : cochez au moins un type ci-dessus.';
+          else {
+            note.textContent = isHouseMode()
+              ? ('Mode maison : ' + n + ' point(s) — top 10 par score proximité+prix (DVF).')
+              : ('Calques actifs : ' + n + ' point(s) — top 10 ci-dessous par score combiné.');
+          }
+        }
+        list.innerHTML = top.map(function (x, i) {
+          const src = x.kind === 'commune' ? 'Actu' : 'CityCrunch';
+          const score = isHouseMode() ? (x.scores.houseFit || 0) : (x.scores.combined);
+          const scoreLabel = isHouseMode() ? 'maison' : 'combiné';
+          return (
+            '<li data-id="' + esc(x.id) + '">' +
+              '<span class="name">' + (i + 1) + '. ' + esc(x.name) + '</span>' +
+              ' <span class="sub"> — ' + src + ' · ' + score + '/100 (' + scoreLabel + ')</span></li>'
+          );
+        }).join('');
+
+        list.querySelectorAll('li[data-id]').forEach(function (el) {
+          el.addEventListener('click', function () {
+            const it = byId[el.getAttribute('data-id')];
+            if (it) { selectItem(it, false); if (it._marker) it._marker.openPopup(); }
+          });
+        });
+      }
+
+      function setMarkerVisibility() {
+        recomputeTop();
+        layerCommunes.clearLayers();
+        layerArr.clearLayers();
+        const fc = document.getElementById('lyonFilterCommunes').checked;
+        const fa = document.getElementById('lyonFilterArr').checked;
+        const tonly = document.getElementById('lyonFilterTop10').checked;
+        markers.forEach(function (m) {
+          // Update Top10 visual (star + thicker border) without recreating layers
+          const it = byId[m.itemId];
+          if (it && m.marker && typeof m.marker.setIcon === 'function') {
+            const isC = it.kind === 'commune';
+            const inTop = topIds && topIds.has(it.id);
+            const pinFill = isC ? communesColor(it.scores.actu) : arrColor(it.scores.citycrunch);
+            const pinBorder = isC ? '#14532d' : '#1e1b4b';
+            const icon = L.divIcon({
+              className: 'lyon-pin-icon',
+              html: pinIconHtml({ fill: pinFill, border: pinBorder, top10: inTop, label: inTop ? '★' : '' }),
+              iconSize: [26, 26],
+              iconAnchor: [13, 24],
+              popupAnchor: [0, -20],
+              tooltipAnchor: [0, -14]
+            });
+            m.marker.setIcon(icon);
+          }
+          if (m.g === 'c' && !fc) return;
+          if (m.g === 'a' && !fa) return;
+          if (tonly && !topIds.has(m.itemId)) return;
+          if (m.g === 'c') m.marker.addTo(layerCommunes);
+          else m.marker.addTo(layerArr);
+        });
+        refreshTopList();
+      }
+
+      function selectItem(item, pan) {
+        const title = document.getElementById('lyonDetailTitle');
+        const cont = document.getElementById('lyonDetailContent');
+        if (!cont) return;
+        if (title) title.textContent = item.name;
+        const dist = travelLineHtml(item);
+        const dvf = item && item.immo && item.immo.dvfMaison && item.immo.dvfMaison.status === 'ok'
+          ? item.immo.dvfMaison
+          : null;
+        const dvfHtml = dvf && Number.isFinite(dvf.medianEurM2)
+          ? (
+            '<p><b>Prix maison (DVF)</b> : ~' + Math.round(dvf.medianEurM2) + ' €/m² ' +
+            '<span style="opacity:.8">(médiane, n=' + esc(String(dvf.txCountKept || 0)) + ')</span></p>' +
+            (Number.isFinite(dvf.p25EurM2) && Number.isFinite(dvf.p75EurM2)
+              ? '<p style="opacity:.85;margin-top:-0.2rem">Quartiles: ' + Math.round(dvf.p25EurM2) + '–' + Math.round(dvf.p75EurM2) + ' €/m²</p>'
+              : '')
+          )
+          : '<p style="opacity:.8"><b>Prix maison (DVF)</b> : indisponible</p>';
+        cont.innerHTML =
+          '<p><b>Score combiné (tri global) :</b> ' + esc(String(item.scores.combined)) + '/100</p>' +
+          (item.kind === 'commune' ? '<p>Actu.fr : ' + esc(String(item.scores.actu)) + '/100</p>' : '<p>Lacartedescolocs : ' + esc(String(item.scores.lacartedescolocs)) + '/100' +
+            (item.labels && item.labels.verdict ? ' — ' + esc(item.labels.verdict) : '') + '</p>') +
+          dvfHtml +
+          (dist ? '<p style="margin-top:0.45rem;padding-top:0.35rem;border-top:1px solid var(--border)">' + dist + '</p>' : '') +
+          (item.why && (item.kind === 'commune' ? item.why.actu : item.why.lacartedescolocs) ? '<p style="margin-top:0.5rem">' + esc(item.kind === 'commune' ? item.why.actu : item.why.lacartedescolocs) + '</p>' : '') +
+          '<div class="detail-actions">' +
+            '<a href="' + esc(getSourceUrl(item)) + '" target="_blank" rel="noopener">Article source</a>' +
+            '<a href="' + googleSatUrl(item.lat, item.lng) + '" target="_blank" rel="noopener">Google Maps — vue satellite (zoom 16)</a>' +
+          '</div>';
+        if (pan && item.lat && item.lng) {
+          map.setView([item.lat, item.lng], Math.max(map.getZoom(), 12));
+        }
+      }
+
+      function addMarkers(items) {
+        items.forEach(function (item) {
+          if (!Number.isFinite(item.lat) || !Number.isFinite(item.lng)) return;
+          byId[item.id] = item;
+          const isC = item.kind === 'commune';
+          const combined = item.scores.combined;
+          const g = isC ? 'c' : 'a';
+          const pinFill = isC ? communesColor(item.scores.actu) : arrColor(item.scores.lacartedescolocs);
+          const pinBorder = isC ? '#14532d' : '#1e1b4b';
+          const inTop = topIds && topIds.has(item.id);
+          const m = createPinMarker(item.lat, item.lng, {
+            fill: pinFill,
+            border: pinBorder,
+            top10: inTop,
+            label: inTop ? '★' : ''
+          });
+          m.bindTooltip(tooltipText(item), { direction: 'top', className: 'lyon-tt', sticky: true });
+          m.bindPopup(function () { return popupHtml(item); });
+          m.on('click', function () { selectItem(item, false); });
+          m.itemId = item.id;
+          item._marker = m;
+          markers.push({ marker: m, itemId: item.id, g: g });
+        });
+        setMarkerVisibility();
+      }
+
+      function wireFilters() {
+        ['lyonFilterCommunes', 'lyonFilterArr', 'lyonFilterTop10', 'lyonFilterIso', 'lyonFilterDvfHeat', 'lyonFilterMx', 'lyonFilterPump', 'lyonFilterBmx', 'lyonFilterMalls', 'lyonFilterHouseFit'].forEach(function (id) {
+          const el = document.getElementById(id);
+          if (el) el.addEventListener('change', function () {
+            const hn = document.getElementById('lyonHouseFitNote');
+            if (hn && id === 'lyonFilterHouseFit') hn.style.display = el.checked ? '' : 'none';
+            recomputeTop();
+            setMarkerVisibility();
+          });
+        });
+      }
+
+      // Simple dynamic ruler: toggle + click 2 points to measure distance (km)
+      (function initRuler() {
+        let enabled = false;
+        let a = null;
+        let b = null;
+        let line = null;
+        let tip = null;
+
+        function clear() {
+          if (line) { map.removeLayer(line); line = null; }
+          if (tip) { map.closeTooltip(tip); tip = null; }
+          a = null; b = null;
+        }
+
+        function setEnabled(v) {
+          enabled = !!v;
+          clear();
+          const btn = document.getElementById('lyonBtnRuler');
+          if (btn) {
+            btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+            btn.classList.toggle('btn-legend--active', enabled);
+            btn.title = enabled ? 'Règle active — clique 2 points (clic droit : effacer)' : 'Règle (mesurer des distances)';
+          }
+          if (enabled) {
+            const startTip = L.tooltip({ permanent: false, direction: 'top', className: 'lyon-tt', opacity: 1 })
+              .setLatLng(map.getCenter())
+              .setContent('<div class="tt-kind">Règle</div><div class="tt-name">Activée</div><div class="tt-meta">Clique 2 points pour mesurer<br><span style="opacity:.8">Clic droit : effacer · Re-clique 📏 : quitter</span></div>');
+            startTip.addTo(map);
+            window.setTimeout(function () { map.closeTooltip(startTip); }, 1700);
+          }
+        }
+
+        (function wireButton() {
+          const btn = document.getElementById('lyonBtnRuler');
+          if (!btn) return;
+          btn.addEventListener('click', function () {
+            setEnabled(!enabled);
+          });
+        })();
+
+        function kmBetween(ll1, ll2) {
+          return haversineKm(ll1.lat, ll1.lng, ll2.lat, ll2.lng);
+        }
+
+        map.on('contextmenu', function () { // right click to clear
+          if (!enabled) return;
+          clear();
+        });
+
+        map.on('click', function (e) {
+          if (!enabled) return;
+          // ignore if user clicked a marker (Leaflet sets originalEvent.target inside marker pane)
+          const t = e && e.originalEvent && e.originalEvent.target;
+          if (t && t.closest && (t.closest('.leaflet-marker-pane') || t.closest('.leaflet-popup-pane'))) return;
+
+          if (!a) {
+            a = e.latlng;
+            if (tip) map.closeTooltip(tip);
+            tip = L.tooltip({ permanent: false, direction: 'top', className: 'lyon-tt', opacity: 1 })
+              .setLatLng(a)
+              .setContent('<div class="tt-kind">Règle</div><div class="tt-name">Point A</div><div class="tt-meta">Clique un 2ᵉ point pour mesurer<br><span style="opacity:.8">Clic droit : effacer</span></div>');
+            tip.addTo(map);
+            return;
+          }
+
+          b = e.latlng;
+          if (line) map.removeLayer(line);
+          line = L.polyline([a, b], { color: '#00d4aa', weight: 3, opacity: 0.85, dashArray: '6 8' }).addTo(map);
+          const km = kmBetween(a, b);
+          const mid = L.latLng((a.lat + b.lat) / 2, (a.lng + b.lng) / 2);
+          if (tip) map.closeTooltip(tip);
+          tip = L.tooltip({ permanent: false, direction: 'top', className: 'lyon-tt', opacity: 1 })
+            .setLatLng(mid)
+            .setContent('<div class="tt-kind">Distance</div><div class="tt-name">' + km.toFixed(2) + ' km</div><div class="tt-meta">Clic droit : effacer</div>');
+          tip.addTo(map);
+
+          // ready for next measurement
+          a = null;
+          b = null;
+        });
+      })();
+
+      function latLngFromGridXY(x, y, grid) {
+        const nx = grid.grid.nx, ny = grid.grid.ny;
+        const minLng = grid.bbox.minLng, maxLng = grid.bbox.maxLng;
+        const minLat = grid.bbox.minLat, maxLat = grid.bbox.maxLat;
+        const lng = minLng + (x / (nx - 1)) * (maxLng - minLng);
+        const lat = maxLat - (y / (ny - 1)) * (maxLat - minLat);
+        return [lat, lng];
+      }
+
+      function dvfCellAtLatLng(latlng, grid) {
+        if (!latlng || !grid || !grid.bbox || !grid.grid) return null;
+        const b = grid.bbox;
+        const nx = grid.grid.nx;
+        const ny = grid.grid.ny;
+        const lat = Number(latlng.lat);
+        const lng = Number(latlng.lng);
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+        if (lat < b.minLat || lat > b.maxLat || lng < b.minLng || lng > b.maxLng) return null;
+        const x = Math.floor(((lng - b.minLng) / (b.maxLng - b.minLng)) * nx);
+        const y = Math.floor(((b.maxLat - lat) / (b.maxLat - b.minLat)) * ny);
+        const ix = Math.max(0, Math.min(nx - 1, x));
+        const iy = Math.max(0, Math.min(ny - 1, y));
+        return { ix, iy, idx: iy * nx + ix };
+      }
+
+      function clearIsoLayers() {
+        layerIso.clearLayers();
+        map.removeLayer(layerIso);
+      }
+
+      let isoRasterOverlay = null;
+      function clearIsoRaster() {
+        if (isoRasterOverlay) {
+          map.removeLayer(isoRasterOverlay);
+          isoRasterOverlay = null;
+        }
+      }
+
+      let dvfHeatRasterOverlay = null;
+      function clearDvfHeatRaster() {
+        if (dvfHeatRasterOverlay) {
+          map.removeLayer(dvfHeatRasterOverlay);
+          dvfHeatRasterOverlay = null;
+        }
+      }
+
+      let dvfHeatHoverTip = null;
+      let dvfHeatHoverLastIdx = null;
+      function clearDvfHeatHoverTip() {
+        if (dvfHeatHoverTip) {
+          map.closeTooltip(dvfHeatHoverTip);
+          dvfHeatHoverTip = null;
+        }
+        dvfHeatHoverLastIdx = null;
+      }
+
+      function dvfHeatColorRgb(t) {
+        if (!Number.isFinite(t)) t = 0.5;
+        t = Math.max(0, Math.min(1, t));
+        const c0 = [0x22, 0xc5, 0x5e];
+        const c1 = [0xfb, 0xbf, 0x24];
+        const c2 = [0xef, 0x44, 0x44];
+        if (t <= 0.5) {
+          const s = t * 2;
+          return [
+            Math.round(c0[0] + (c1[0] - c0[0]) * s),
+            Math.round(c0[1] + (c1[1] - c0[1]) * s),
+            Math.round(c0[2] + (c1[2] - c0[2]) * s)
+          ];
+        }
+        const s = (t - 0.5) * 2;
+        return [
+          Math.round(c1[0] + (c2[0] - c1[0]) * s),
+          Math.round(c1[1] + (c2[1] - c1[1]) * s),
+          Math.round(c1[2] + (c2[2] - c1[2]) * s)
+        ];
+      }
+
+      function renderDvfHeatmap() {
+        if (!dvfHeatGrid || dvfHeatGrid.kind !== 'bordeauxDvfHouseHeatmap' || !Array.isArray(dvfHeatGrid.eurM2)) {
+          clearDvfHeatRaster();
+          clearDvfHeatHoverTip();
+          setDvfHeatLegendVisible(false);
+          return;
+        }
+        clearDvfHeatRaster();
+        clearDvfHeatHoverTip();
+        const show = !!document.getElementById('lyonFilterDvfHeat')?.checked;
+        setDvfHeatLegendVisible(show);
+        if (!show) return;
+
+        const nx = dvfHeatGrid.grid.nx;
+        const ny = dvfHeatGrid.grid.ny;
+        const vals = dvfHeatGrid.eurM2;
+        if (vals.length !== nx * ny) return;
+
+        let p10 = dvfHeatGrid.summary && Number.isFinite(dvfHeatGrid.summary.p10) ? dvfHeatGrid.summary.p10 : null;
+        let p90 = dvfHeatGrid.summary && Number.isFinite(dvfHeatGrid.summary.p90) ? dvfHeatGrid.summary.p90 : null;
+        if (!Number.isFinite(p10) || !Number.isFinite(p90) || p90 <= p10) {
+          const s = [];
+          for (let j = 0; j < vals.length; j++) {
+            const v = vals[j] == null ? null : Number(vals[j]);
+            if (Number.isFinite(v)) s.push(v);
+          }
+          s.sort(function (a, b) { return a - b; });
+          if (s.length > 0) {
+            p10 = s[Math.max(0, Math.floor(0.1 * (s.length - 1)))];
+            p90 = s[Math.min(s.length - 1, Math.floor(0.9 * (s.length - 1)))];
+          }
+        }
+        if (!Number.isFinite(p10) || !Number.isFinite(p90) || p90 <= p10) {
+          p10 = 2000; p90 = 6000;
+        }
+
+        const lEl = document.getElementById('lyonDvfHeatL');
+        const hEl = document.getElementById('lyonDvfHeatH');
+        if (lEl) lEl.textContent = '≈ ' + Math.round(p10) + ' €/m²';
+        if (hEl) hEl.textContent = '≈ ' + Math.round(p90) + ' €/m²';
+
+        const canvas = document.createElement('canvas');
+        canvas.width = nx;
+        canvas.height = ny;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        const img = ctx.createImageData(nx, ny);
+        for (let i = 0; i < vals.length; i++) {
+          const v = vals[i] == null ? null : Number(vals[i]);
+          const o = i * 4;
+          if (v == null || !Number.isFinite(v)) {
+            img.data[o + 3] = 0;
+            continue;
+          }
+          const t = (v - p10) / (p90 - p10);
+          const rgb = dvfHeatColorRgb(t);
+          img.data[o] = rgb[0];
+          img.data[o + 1] = rgb[1];
+          img.data[o + 2] = rgb[2];
+          img.data[o + 3] = Math.round(255 * 0.74);
+        }
+        ctx.putImageData(img, 0, 0);
+
+        const b = dvfHeatGrid.bbox;
+        if (!b || !Number.isFinite(b.minLat)) return;
+        const bounds = L.latLngBounds([b.minLat, b.minLng], [b.maxLat, b.maxLng]);
+        dvfHeatRasterOverlay = L.imageOverlay(canvas.toDataURL('image/png'), bounds, { opacity: 0.88, interactive: false });
+        dvfHeatRasterOverlay.addTo(map);
+      }
+
+      // Hover tooltip for DVF heatmap: show median €/m² + sales count for the hovered cell.
+      map.on('mousemove', function (e) {
+        const show = !!document.getElementById('lyonFilterDvfHeat')?.checked;
+        if (!show || !dvfHeatGrid || !Array.isArray(dvfHeatGrid.eurM2)) {
+          clearDvfHeatHoverTip();
+          return;
+        }
+        // avoid fighting marker tooltips: ignore if mouse is over marker/popup panes
+        const t = e && e.originalEvent && e.originalEvent.target;
+        if (t && t.closest && (t.closest('.leaflet-marker-pane') || t.closest('.leaflet-popup-pane'))) return;
+
+        const cell = dvfCellAtLatLng(e.latlng, dvfHeatGrid);
+        if (!cell) {
+          clearDvfHeatHoverTip();
+          return;
+        }
+        if (cell.idx === dvfHeatHoverLastIdx) return;
+        dvfHeatHoverLastIdx = cell.idx;
+
+        const v = dvfHeatGrid.eurM2[cell.idx] == null ? null : Number(dvfHeatGrid.eurM2[cell.idx]);
+        const c = Array.isArray(dvfHeatGrid.counts) ? Number(dvfHeatGrid.counts[cell.idx]) : NaN;
+        if (!Number.isFinite(v)) {
+          clearDvfHeatHoverTip();
+          return;
+        }
+        const countLine = Number.isFinite(c) && c > 0 ? ('<div class="tt-meta">' + Math.round(c) + ' ventes</div>') : '';
+        const html =
+          '<div class="tt-kind">DVF (heatmap)</div>' +
+          '<div class="tt-name">≈ ' + Math.round(v) + ' €/m²</div>' +
+          countLine;
+
+        if (!dvfHeatHoverTip) {
+          dvfHeatHoverTip = L.tooltip({ permanent: false, direction: 'top', className: 'lyon-tt', opacity: 1, sticky: true });
+        }
+        dvfHeatHoverTip.setLatLng(e.latlng).setContent(html);
+        dvfHeatHoverTip.addTo(map);
+      });
+
+      map.on('mouseout', function () {
+        clearDvfHeatHoverTip();
+      });
+
+      function renderIsochrones() {
+        if (!isoGrid) return;
+        clearIsoRaster();
+        clearIsoLayers();
+
+        const show = !!document.getElementById('lyonFilterIso')?.checked;
+        setIsoLegendVisible(show);
+        if (!show) return;
+
+        const nx = isoGrid.grid.nx, ny = isoGrid.grid.ny;
+        const mins = isoGrid.minutes;
+        if (!Array.isArray(mins) || mins.length !== nx * ny) return;
+
+        // Exact bins (merged): ≤5, 6–10, 11–15, 16–20, 21–30, 31–45, 46–60, 60+
+        const colors = [
+          'rgba(34,197,94,.62)',  // ≤5
+          'rgba(74,222,128,.62)', // 10
+          'rgba(251,191,36,.62)', // 15
+          'rgba(249,115,22,.62)', // 20
+          'rgba(239,68,68,.62)',  // 30
+          'rgba(239,68,68,.46)',  // 45
+          'rgba(239,68,68,.34)',  // 60
+          'rgba(239,68,68,.22)'   // 60+
+        ];
+
+        function bucket(m) {
+          if (!Number.isFinite(m) || m <= 0) return -1;
+          if (m <= 5) return 0;
+          if (m <= 10) return 1;
+          if (m <= 15) return 2;
+          if (m <= 20) return 3;
+          if (m <= 30) return 4;
+          if (m <= 45) return 5;
+          if (m <= 60) return 6;
+          return 7;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = nx;
+        canvas.height = ny;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        // Paint each cell as a pixel. (Nearest-neighbor upscale by Leaflet is fine.)
+        const img = ctx.createImageData(nx, ny);
+        for (let i = 0; i < mins.length; i++) {
+          const m = mins[i] == null ? NaN : Number(mins[i]);
+          const b = bucket(m);
+          const o = i * 4;
+          if (b < 0) {
+            img.data[o + 3] = 0;
+            continue;
+          }
+          // Parse rgba(r,g,b,a)
+          const c = colors[b];
+          const mm = c.match(/rgba\((\d+),(\d+),(\d+),([0-9.]+)\)/);
+          const r = mm ? Number(mm[1]) : 0;
+          const g = mm ? Number(mm[2]) : 0;
+          const bb = mm ? Number(mm[3]) : 0;
+          const a = mm ? Number(mm[4]) : 0.4;
+          img.data[o] = r;
+          img.data[o + 1] = g;
+          img.data[o + 2] = bb;
+          img.data[o + 3] = Math.round(255 * a);
+        }
+        ctx.putImageData(img, 0, 0);
+
+        const bounds = L.latLngBounds(
+          [isoGrid.bbox.minLat, isoGrid.bbox.minLng],
+          [isoGrid.bbox.maxLat, isoGrid.bbox.maxLng]
+        );
+        isoRasterOverlay = L.imageOverlay(canvas.toDataURL('image/png'), bounds, { opacity: 1, interactive: false });
+        isoRasterOverlay.addTo(map);
+      }
+
+      function isNearOrigin(lat, lng, radiusKm) {
+        const km = haversineKm(ORIGIN.lat, ORIGIN.lng, lat, lng);
+        return Number.isFinite(km) && km <= radiusKm;
+      }
+
+      function clearSportLayers() {
+        layerMx.clearLayers();
+        layerPump.clearLayers();
+        layerBmx.clearLayers();
+        map.removeLayer(layerMx);
+        map.removeLayer(layerPump);
+        map.removeLayer(layerBmx);
+      }
+
+      function applyMallsLayer() {
+        layerMalls.clearLayers();
+        map.removeLayer(layerMalls);
+        const show = !!document.getElementById('lyonFilterMalls')?.checked;
+        if (!show) return;
+
+        const R_KM = 35; // around Lyon origin
+        const malls = [
+          { name: 'Westfield La Part-Dieu', lat: 45.76139, lng: 4.85583, kind: 'centre' },
+          { name: 'Westfield Confluence', lat: 45.741405, lng: 4.815853, kind: 'centre' },
+          { name: 'Carré de Soie', lat: 45.7642, lng: 4.9219, kind: 'centre' },
+          { name: 'Grand Parilly (pôle commercial)', lat: 45.7186, lng: 4.8814, kind: 'retail' },
+          { name: 'Porte des Alpes (zone commerciale)', lat: 45.721667, lng: 4.925833, kind: 'retail' }, // 45°43'18"N 4°55'33"E
+          { name: 'Saint-Genis 2', lat: 45.6806, lng: 4.7920, kind: 'centre' }, // 45°40'50"N 4°47'31"E
+          { name: 'Porte de Lyon (Dardilly)', lat: 45.819167, lng: 4.767222, kind: 'retail' }, // 45°49'9"N 4°46'2"E
+          { name: 'The Village — outlet', lat: 45.62605, lng: 5.160324, kind: 'outlet' }
+        ];
+        mallsCache = malls;
+
+        malls.forEach(function (m) {
+          const lat = Number(m.lat), lng = Number(m.lng);
+          if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+          if (!isNearOrigin(lat, lng, R_KM)) return;
+          const label =
+            m.kind === 'outlet' ? 'Outlet' :
+            m.kind === 'retail' ? 'Zone commerciale' :
+            'Centre commercial';
+
+          const marker = L.circleMarker([lat, lng], {
+            radius: 7,
+            color: '#075985',
+            weight: 2,
+            fillColor: '#38bdf8',
+            fillOpacity: 0.92
+          });
+          marker.bindTooltip(
+            sportVenueTooltipHtml(label, m.name, { lat: lat, lng: lng }),
+            { direction: 'top', className: 'lyon-tt', sticky: true }
+          );
+          marker.bindPopup(
+            sportVenuePopupHtml(label, m.name, lat, lng, null)
+          );
+          marker.addTo(layerMalls);
+        });
+
+        layerMalls.addTo(map);
+      }
+
+      function sportVenueTooltipHtml(kindLabel, name, itemLike) {
+        const city =
+          (itemLike && itemLike.city != null && String(itemLike.city).trim()) ? String(itemLike.city).trim()
+          : (itemLike && itemLike.commune != null && String(itemLike.commune).trim()) ? String(itemLike.commune).trim()
+          : (itemLike && itemLike.locality != null && String(itemLike.locality).trim()) ? String(itemLike.locality).trim()
+          : (itemLike && itemLike.place != null && String(itemLike.place).trim()) ? String(itemLike.place).trim()
+          : (itemLike && itemLike.town != null && String(itemLike.town).trim()) ? String(itemLike.town).trim()
+          : (itemLike && itemLike.village != null && String(itemLike.village).trim()) ? String(itemLike.village).trim()
+          : '';
+        const times = travelLineCompactHtml(itemLike);
+        return (
+          '<div class="tt-kind">' + esc(kindLabel) + '</div>' +
+          '<div class="tt-name">' + esc(name) + '</div>' +
+          (city ? '<div class="tt-city">' + esc(city) + '</div>' : '') +
+          (times ? '<div class="tt-times">' + times + '</div>' : '')
+        );
+      }
+
+      function sportVenuePopupHtml(kindLabel, name, lat, lng, url) {
+        const g = googleSatUrl(lat, lng);
+        const dirCar = gmapsDirectionsUrl(ORIGIN.label, lat, lng, 'driving');
+        const dirTc = gmapsDirectionsUrl(ORIGIN.label, lat, lng, 'transit');
+        const dist = travelLineHtml({ lat: lat, lng: lng, durations: null });
+        return (
+          '<div style="line-height:1.45; font-size:0.9rem; color:#0f172a">' +
+            '<div style="font-weight:700; margin-bottom:0.1rem; color:#1e293b">' + esc(name) + '</div>' +
+            '<div style="font-size:.85rem;opacity:.85;margin-bottom:.45rem">' + esc(kindLabel) + '</div>' +
+            (dist ? '<div style="margin:0.25rem 0 0.55rem;padding:.45rem .55rem;border:1px solid rgba(15,23,42,.18);border-radius:10px;background:rgba(15,23,42,.04)">' + dist + '</div>' : '') +
+            (url ? '<a href="' + esc(url) + '" target="_blank" rel="noopener" style="color:#0d9488">OpenStreetMap</a><br>' : '') +
+            '<a href="' + esc(g) + '" target="_blank" rel="noopener" style="color:#0d9488">Google Maps — vue satellite</a><br>' +
+            '<a href="' + esc(dirCar) + '" target="_blank" rel="noopener" style="color:#0d9488">Itinéraire (voiture) — Google Maps</a><br>' +
+            '<a href="' + esc(dirTc) + '" target="_blank" rel="noopener" style="color:#0d9488">Itinéraire (transports) — Google Maps</a>' +
+          '</div>'
+        );
+      }
+
+      function applySportLayers(venuesFr) {
+        if (!venuesFr) return;
+        clearSportLayers();
+
+        const showMx = !!document.getElementById('lyonFilterMx')?.checked;
+        const showPump = !!document.getElementById('lyonFilterPump')?.checked;
+        const showBmx = !!document.getElementById('lyonFilterBmx')?.checked;
+        if (!showMx && !showPump && !showBmx) return;
+
+        const R_KM = 35; // around Lyon origin
+
+        function add(list, layer, style, kindLabel) {
+          (list || []).forEach(function (v) {
+            const lat = Number(v.lat), lng = Number(v.lng);
+            if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+            if (!isNearOrigin(lat, lng, R_KM)) return;
+            const name = v.name || 'Lieu';
+            const url = v.url || v.osmUrl || null;
+            const circle = L.circleMarker([lat, lng], style);
+            circle.bindTooltip(sportVenueTooltipHtml(kindLabel, name, v), { direction: 'top', className: 'lyon-tt', sticky: true });
+            circle.bindPopup(sportVenuePopupHtml(kindLabel, name, lat, lng, url));
+            circle.addTo(layer);
+          });
+        }
+
+        if (showMx && venuesFr.mxTracks) {
+          add(venuesFr.mxTracks, layerMx, { radius: 6, color: '#78350f', weight: 2, fillColor: '#d97706', fillOpacity: 0.9 }, 'Motocross (OSM)');
+          layerMx.addTo(map);
+        }
+        if (showPump && venuesFr.pumptracks) {
+          add(venuesFr.pumptracks, layerPump, { radius: 5.5, color: '#4c1d95', weight: 2, fillColor: '#c084fc', fillOpacity: 0.9 }, 'Pumptrack (OSM)');
+          layerPump.addTo(map);
+        }
+        if (showBmx && venuesFr.bmxTracks) {
+          add(venuesFr.bmxTracks, layerBmx, { radius: 5.5, color: '#500724', weight: 2, fillColor: '#f43f5e', fillOpacity: 0.9 }, 'BMX (OSM)');
+          layerBmx.addTo(map);
+        }
+      }
+
+      (function initFs() {
+        const fsWrap = document.getElementById('lyonMapWrap');
+        const btn = document.getElementById('lyonBtnFullscreen');
+        if (!fsWrap || !btn) return;
+        function exit() {
+          fsWrap.classList.remove('fullscreen');
+          document.body.style.overflow = '';
+          btn.textContent = '⛶';
+          window.setTimeout(function () { if (map && map.invalidateSize) map.invalidateSize({ animate: false }); }, 100);
+          window.setTimeout(function () { if (map && map.invalidateSize) map.invalidateSize({ animate: false }); }, 300);
+        }
+        function enter() {
+          fsWrap.classList.add('fullscreen');
+          document.body.style.overflow = 'hidden';
+          btn.textContent = '✕';
+          window.setTimeout(function () { if (map && map.invalidateSize) map.invalidateSize({ animate: false }); }, 100);
+          window.setTimeout(function () { if (map && map.invalidateSize) map.invalidateSize({ animate: false }); }, 300);
+        }
+        btn.addEventListener('click', function () {
+          if (fsWrap.classList.contains('fullscreen')) exit();
+          else enter();
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && fsWrap.classList.contains('fullscreen')) { e.preventDefault(); exit(); }
+        });
+      })();
+
+      (function initPanel() {
+        const sh = document.getElementById('lyonPanelShell');
+        const btn = document.getElementById('lyonPanelToggle');
+        if (!sh || !btn) return;
+        function refresh() {
+          const collapsed = sh.classList.contains('panel-shell--collapsed');
+          btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+          btn.textContent = collapsed ? '◄' : 'Panneau';
+          btn.title = collapsed ? 'Développer le panneau' : 'Replier le panneau';
+        }
+        btn.addEventListener('click', function () {
+          sh.classList.toggle('panel-shell--collapsed');
+          refresh();
+          setTimeout(function () { map.invalidateSize(); }, 200);
+        });
+        refresh();
+      })();
+
+      // Slide legend (collapse/expand)
+      (function initLegendSlide() {
+        const legend = document.querySelector('#lyonMapWrap .map-legend');
+        const body = document.getElementById('lyonLegendBody');
+        const btn = document.getElementById('lyonBtnLegend');
+        if (!legend || !body || !btn) return;
+
+        function setCollapsed(collapsed) {
+          legend.classList.toggle('map-legend--collapsed', !!collapsed);
+          btn.textContent = collapsed ? '▸' : '▾';
+          btn.title = collapsed ? 'Déplier la légende' : 'Replier la légende';
+          window.setTimeout(function () { if (map && map.invalidateSize) map.invalidateSize({ animate: false }); }, 220);
+        }
+
+        btn.addEventListener('click', function () {
+          const collapsed = legend.classList.contains('map-legend--collapsed');
+          setCollapsed(!collapsed);
+        });
+      })();
+
+      // Wire base filters (pins + top10 + iso + sports + malls)
+      wireFilters();
+
+      fetch('bordeaux-data.json')
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        })
+        .then(function (data) {
+          dataPayload = data;
+          if (data && data.origin && Number.isFinite(data.origin.lat) && Number.isFinite(data.origin.lng)) {
+            ORIGIN.label = String(data.origin.label || ORIGIN.label);
+            ORIGIN.lat = Number(data.origin.lat);
+            ORIGIN.lng = Number(data.origin.lng);
+          }
+          // keep the origin marker in sync if origin overridden by data
+          if (originMarker && originMarker.setLatLng) {
+            originMarker.setLatLng([ORIGIN.lat, ORIGIN.lng]);
+          }
+          // also refresh the origin icon (in case label/colors change later)
+          if (originMarker && originMarker.setIcon) {
+            originMarker.setIcon(L.divIcon({
+              className: 'lyon-pin-icon',
+              html: pinIconHtml({ fill: '#00d4aa', border: 'rgba(15,23,42,.92)', label: 'I' }),
+              iconSize: [26, 26],
+              iconAnchor: [13, 24],
+              popupAnchor: [0, -20],
+              tooltipAnchor: [0, -14]
+            }));
+          }
+          addMarkers(data.items || []);
+          refreshTopList();
+        })
+        .catch(function (e) {
+          const cont = document.getElementById('lyonDetailContent');
+          if (cont) cont.textContent = 'Erreur : ' + e.message;
+        });
+
+      // Load FR venues bundle and show sports venues around Lyon
+      fetch('app-data-fr.json')
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(function (fr) {
+          const venuesFr = fr && fr.venues ? fr.venues : null;
+          venuesFrCache = venuesFr;
+          applySportLayers(venuesFr);
+          applyMallsLayer();
+          computeHouseFitScores();
+          refreshTopList();
+          // re-apply when toggles change
+          ['lyonFilterMx', 'lyonFilterPump', 'lyonFilterBmx', 'lyonFilterMalls'].forEach(function (id) {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('change', function () {
+              applySportLayers(venuesFr);
+              applyMallsLayer();
+              computeHouseFitScores();
+              refreshTopList();
+            });
+          });
+        })
+        .catch(function () {
+          // silently ignore (lyon map still works without these layers)
+          // malls layer still works without FR venues
+          applyMallsLayer();
+          computeHouseFitScores();
+          refreshTopList();
+        });
+
+      // Isochrone grid (OSRM) is optional: page works without it.
+      fetch('bordeaux-iso-grid.json')
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(function (g) {
+          isoGrid = g;
+          const el = document.getElementById('lyonIsoNote');
+          if (el && g && g.summary) {
+            el.textContent = 'Isochrones voiture (OSRM) : grille ' + g.grid.nx + '×' + g.grid.ny + ' — ' + g.summary.ok + ' points OK.';
+          }
+        })
+        .catch(function () {
+          const el = document.getElementById('lyonIsoNote');
+          if (el) el.textContent = 'Isochrones : indisponibles (grille non générée).';
+        });
+
+      // DVF heatmap (raster) — optional
+      fetch('bordeaux-dvf-heatmap.json')
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(function (g) {
+          dvfHeatGrid = g;
+          const el = document.getElementById('lyonDvfHeatNote');
+          if (el && g && g.grid && g.summary) {
+            el.textContent = 'Heatmap DVF : ' + g.grid.nx + '×' + g.grid.ny + (g.summary.nonEmptyCells != null ? ' — ' + g.summary.nonEmptyCells + ' cases.' : '.');
+          }
+          window.setTimeout(renderDvfHeatmap, 0);
+        })
+        .catch(function () {
+          dvfHeatGrid = null;
+          const el = document.getElementById('lyonDvfHeatNote');
+          if (el) el.textContent = 'Heatmap DVF : indisponible (fichier non généré — npm run build:lyon-dvf-heat).';
+        });
+
+      // Re-render isochrones / DVF heat when toggles change
+      document.addEventListener('change', function (e) {
+        const id = e && e.target && e.target.id;
+        if (id === 'lyonFilterIso') {
+          window.setTimeout(renderIsochrones, 0);
+        }
+        if (id === 'lyonFilterDvfHeat') {
+          window.setTimeout(renderDvfHeatmap, 0);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

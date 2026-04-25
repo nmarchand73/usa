@@ -1,0 +1,1279 @@
+{
+  "fetchedAt": "2026-04-25T00:00:00.000Z",
+  "origin": {
+    "label": "Hôtel de Ville de Bordeaux",
+    "lat": 44.7724675,
+    "lng": -0.6082749,
+    "geocode": {
+      "status": "ok",
+      "query": "Hôtel de Ville de Bordeaux, Bordeaux, France",
+      "displayName": "Hôtel de Ville, Allée Gaston Rodrigues, Laurenzane, Gradignan, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33170, France",
+      "placeId": 268665869
+    }
+  },
+  "sources": {
+    "actu": {
+      "title": "Où faut-il habiter près de Bordeaux ? Voici le classement des villes où il fait bon vivre",
+      "url": "https://actu.fr/insolite/ou-faut-il-habiter-pres-de-bordeaux-voici-le-classement-des-villes-ou-il-fait-bon-vivre_48450254.html",
+      "notes": "Article 2022 : liste de 13 communes (rang national). Score /100 dérivé du rang (linéaire) pour permettre un tri indicatif."
+    },
+    "lacartedescolocs": {
+      "title": "Les meilleurs quartiers de Bordeaux",
+      "url": "https://www.lacartedescolocs.fr/guides/logement-bordeaux-les-meilleurs-quartiers",
+      "notes": "Notes /10 reprises en score /100 (x10) ; approche indicative."
+    }
+  },
+  "items": [
+    {
+      "id": "commune|bordeaux",
+      "kind": "commune",
+      "name": "Bordeaux",
+      "lat": 44.841225,
+      "lng": -0.5800364,
+      "scores": {
+        "actu": 100,
+        "lacartedescolocs": null,
+        "combined": 100
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Classement Actu.fr (2022) : rang #1 de la liste (14e national)."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Bordeaux, Gironde, France",
+        "displayName": "Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, France",
+        "placeId": 397665156
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33063",
+          "name": "Bordeaux",
+          "fetchedAt": "2026-04-25T17:38:18.684Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.841225&lon=-0.5800364"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 5846,
+          "txCountKept": 5846,
+          "txCountDropped": 0,
+          "medianEurM2": 5161.81,
+          "p25EurM2": 4263.8,
+          "p75EurM2": 6149.64,
+          "fetchedAt": "2026-04-25T17:38:40.395Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "commune|merignac",
+      "kind": "commune",
+      "name": "Mérignac",
+      "lat": 44.842168,
+      "lng": -0.6469022,
+      "scores": {
+        "actu": 92,
+        "lacartedescolocs": null,
+        "combined": 92
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Classement Actu.fr (2022) : rang #2 (78e national)."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Mérignac, Gironde, France",
+        "displayName": "Mérignac, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33700, France",
+        "placeId": 268547424
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33281",
+          "name": "Mérignac",
+          "fetchedAt": "2026-04-25T17:38:19.403Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.842168&lon=-0.6469022"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 2203,
+          "txCountKept": 2203,
+          "txCountDropped": 0,
+          "medianEurM2": 4323.31,
+          "p25EurM2": 3685.9,
+          "p75EurM2": 5103.19,
+          "fetchedAt": "2026-04-25T17:38:40.397Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "commune|villenave-d-ornon",
+      "kind": "commune",
+      "name": "Villenave-d'Ornon",
+      "lat": 44.7737872,
+      "lng": -0.5595029,
+      "scores": {
+        "actu": 85,
+        "lacartedescolocs": null,
+        "combined": 85
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Classement Actu.fr (2022) : rang #3 (116e national)."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Villenave-d'Ornon, Gironde, France",
+        "displayName": "Villenave-d'Ornon, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33140, France",
+        "placeId": 268440758
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33550",
+          "name": "Villenave-d'Ornon",
+          "fetchedAt": "2026-04-25T17:38:20.123Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.7737872&lon=-0.5595029"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 1668,
+          "txCountKept": 1668,
+          "txCountDropped": 0,
+          "medianEurM2": 3740.5,
+          "p25EurM2": 3237.18,
+          "p75EurM2": 4275.23,
+          "fetchedAt": "2026-04-25T17:38:40.399Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "commune|begles",
+      "kind": "commune",
+      "name": "Bègles",
+      "lat": 44.8074559,
+      "lng": -0.5488542,
+      "scores": {
+        "actu": 77,
+        "lacartedescolocs": null,
+        "combined": 77
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Classement Actu.fr (2022) : rang #4 (127e national)."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Bègles, Gironde, France",
+        "displayName": "Bègles, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33130, France",
+        "placeId": 290386848
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33039",
+          "name": "Bègles",
+          "fetchedAt": "2026-04-25T17:38:20.832Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8074559&lon=-0.5488542"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 1196,
+          "txCountKept": 1196,
+          "txCountDropped": 0,
+          "medianEurM2": 4316.7,
+          "p25EurM2": 3642.14,
+          "p75EurM2": 5093.87,
+          "fetchedAt": "2026-04-25T17:38:40.400Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "commune|cenon",
+      "kind": "commune",
+      "name": "Cenon",
+      "lat": 44.8552882,
+      "lng": -0.5239863,
+      "scores": {
+        "actu": 69,
+        "lacartedescolocs": null,
+        "combined": 69
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Classement Actu.fr (2022) : rang #5 (153e national)."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Cenon, Gironde, France",
+        "displayName": "Cenon, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33150, France",
+        "placeId": 290435690
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33119",
+          "name": "Cenon",
+          "fetchedAt": "2026-04-25T17:38:21.550Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8552882&lon=-0.5239863"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 682,
+          "txCountKept": 682,
+          "txCountDropped": 0,
+          "medianEurM2": 3645.99,
+          "p25EurM2": 3000,
+          "p75EurM2": 4348.9,
+          "fetchedAt": "2026-04-25T17:38:40.401Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "commune|pessac",
+      "kind": "commune",
+      "name": "Pessac",
+      "lat": 44.805615,
+      "lng": -0.6308396,
+      "scores": {
+        "actu": 62,
+        "lacartedescolocs": null,
+        "combined": 62
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Classement Actu.fr (2022) : rang #6 (163e national)."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Pessac, Gironde, France",
+        "displayName": "Pessac, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33600, France",
+        "placeId": 268036035
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33318",
+          "name": "Pessac",
+          "fetchedAt": "2026-04-25T17:38:22.267Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.805615&lon=-0.6308396"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 2485,
+          "txCountKept": 2485,
+          "txCountDropped": 0,
+          "medianEurM2": 4153.85,
+          "p25EurM2": 3501.5,
+          "p75EurM2": 4909.09,
+          "fetchedAt": "2026-04-25T17:38:40.402Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "commune|lormont",
+      "kind": "commune",
+      "name": "Lormont",
+      "lat": 44.8791708,
+      "lng": -0.5216683,
+      "scores": {
+        "actu": 54,
+        "lacartedescolocs": null,
+        "combined": 54
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Classement Actu.fr (2022) : rang #7 (165e national)."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Lormont, Gironde, France",
+        "displayName": "Lormont, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33310, France",
+        "placeId": 268622202
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33249",
+          "name": "Lormont",
+          "fetchedAt": "2026-04-25T17:38:22.988Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8791708&lon=-0.5216683"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 423,
+          "txCountKept": 423,
+          "txCountDropped": 0,
+          "medianEurM2": 3136.56,
+          "p25EurM2": 2686.94,
+          "p75EurM2": 3615.34,
+          "fetchedAt": "2026-04-25T17:38:40.402Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "commune|talence",
+      "kind": "commune",
+      "name": "Talence",
+      "lat": 44.8088438,
+      "lng": -0.5879629,
+      "scores": {
+        "actu": 46,
+        "lacartedescolocs": null,
+        "combined": 46
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Classement Actu.fr (2022) : rang #8 (166e national)."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Talence, Gironde, France",
+        "displayName": "Talence, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33400, France",
+        "placeId": 268243535
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33522",
+          "name": "Talence",
+          "fetchedAt": "2026-04-25T17:38:23.706Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8088438&lon=-0.5879629"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 1243,
+          "txCountKept": 1243,
+          "txCountDropped": 0,
+          "medianEurM2": 4652.98,
+          "p25EurM2": 3962.6,
+          "p75EurM2": 5555.56,
+          "fetchedAt": "2026-04-25T17:38:40.403Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "commune|bruges",
+      "kind": "commune",
+      "name": "Bruges",
+      "lat": 44.8842379,
+      "lng": -0.6111474,
+      "scores": {
+        "actu": 38,
+        "lacartedescolocs": null,
+        "combined": 38
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Classement Actu.fr (2022) : rang #9 (261e national)."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Bruges, Gironde, France",
+        "displayName": "Bruges, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33520, France",
+        "placeId": 289957200
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33075",
+          "name": "Bruges",
+          "fetchedAt": "2026-04-25T17:38:24.403Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8842379&lon=-0.6111474"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 597,
+          "txCountKept": 597,
+          "txCountDropped": 0,
+          "medianEurM2": 4368.42,
+          "p25EurM2": 3757.69,
+          "p75EurM2": 4954.87,
+          "fetchedAt": "2026-04-25T17:38:40.404Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "commune|le-bouscat",
+      "kind": "commune",
+      "name": "Le Bouscat",
+      "lat": 44.8661755,
+      "lng": -0.5992399,
+      "scores": {
+        "actu": 31,
+        "lacartedescolocs": null,
+        "combined": 31
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Classement Actu.fr (2022) : rang #10 (316e national)."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Le Bouscat, Gironde, France",
+        "displayName": "Le Bouscat, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33110, France",
+        "placeId": 290328826
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33069",
+          "name": "Le Bouscat",
+          "fetchedAt": "2026-04-25T17:38:25.111Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8661755&lon=-0.5992399"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 1048,
+          "txCountKept": 1048,
+          "txCountDropped": 0,
+          "medianEurM2": 5335.03,
+          "p25EurM2": 4487.76,
+          "p75EurM2": 6371.23,
+          "fetchedAt": "2026-04-25T17:38:40.404Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "commune|blanquefort",
+      "kind": "commune",
+      "name": "Blanquefort",
+      "lat": 44.9088982,
+      "lng": -0.6300363,
+      "scores": {
+        "actu": 23,
+        "lacartedescolocs": null,
+        "combined": 23
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Classement Actu.fr (2022) : rang #11 (369e national)."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Blanquefort, Gironde, France",
+        "displayName": "Blanquefort, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33290, France",
+        "placeId": 397665798
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33056",
+          "name": "Blanquefort",
+          "fetchedAt": "2026-04-25T17:38:25.806Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.9088982&lon=-0.6300363"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 603,
+          "txCountKept": 603,
+          "txCountDropped": 0,
+          "medianEurM2": 3668.12,
+          "p25EurM2": 3169.64,
+          "p75EurM2": 4199.19,
+          "fetchedAt": "2026-04-25T17:38:40.405Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "commune|gradignan",
+      "kind": "commune",
+      "name": "Gradignan",
+      "lat": 44.7739701,
+      "lng": -0.613907,
+      "scores": {
+        "actu": 15,
+        "lacartedescolocs": null,
+        "combined": 15
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Classement Actu.fr (2022) : rang #12 (392e national)."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Gradignan, Gironde, France",
+        "displayName": "Gradignan, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33170, France",
+        "placeId": 268043794
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33192",
+          "name": "Gradignan",
+          "fetchedAt": "2026-04-25T17:38:26.517Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.7739701&lon=-0.613907"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 752,
+          "txCountKept": 752,
+          "txCountDropped": 0,
+          "medianEurM2": 4039,
+          "p25EurM2": 3385.76,
+          "p75EurM2": 4738.62,
+          "fetchedAt": "2026-04-25T17:38:40.405Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "commune|eysines",
+      "kind": "commune",
+      "name": "Eysines",
+      "lat": 44.8854667,
+      "lng": -0.6486943,
+      "scores": {
+        "actu": 8,
+        "lacartedescolocs": null,
+        "combined": 8
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "actu": "Classement Actu.fr (2022) : rang #13 (426e national)."
+      },
+      "geocode": {
+        "status": "ok",
+        "query": "Eysines, Gironde, France",
+        "displayName": "Eysines, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33320, France",
+        "placeId": 266466149
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33162",
+          "name": "Eysines",
+          "fetchedAt": "2026-04-25T17:38:27.233Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8854667&lon=-0.6486943"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 984,
+          "txCountKept": 984,
+          "txCountDropped": 0,
+          "medianEurM2": 3851.36,
+          "p25EurM2": 3316.05,
+          "p75EurM2": 4411.99,
+          "fetchedAt": "2026-04-25T17:38:40.405Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "quartier|capucins-victoire",
+      "kind": "quartier",
+      "name": "Capucins - Victoire",
+      "lat": 44.8292147,
+      "lng": -0.5680474,
+      "scores": {
+        "actu": null,
+        "lacartedescolocs": 70,
+        "combined": 70
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "lacartedescolocs": "Lacartedescolocs : 7/10 (score global du guide)."
+      },
+      "geocodeQuery": "Capucins Victoire, Bordeaux, France",
+      "geocode": {
+        "status": "ok",
+        "query": "Capucins Victoire, Bordeaux, France",
+        "displayName": "Capucins, Rue de Bègles, Bordeaux, Port de la Lune, Bordeaux Sud, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33000, France",
+        "placeId": 268379358
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33063",
+          "name": "Bordeaux",
+          "fetchedAt": "2026-04-25T17:38:27.945Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8292147&lon=-0.5680474"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 5846,
+          "txCountKept": 5846,
+          "txCountDropped": 0,
+          "medianEurM2": 5161.81,
+          "p25EurM2": 4263.8,
+          "p75EurM2": 6149.64,
+          "fetchedAt": "2026-04-25T17:38:40.410Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "quartier|centre-ville",
+      "kind": "quartier",
+      "name": "Centre Ville",
+      "lat": 44.8411329,
+      "lng": -0.656785,
+      "scores": {
+        "actu": null,
+        "lacartedescolocs": 60,
+        "combined": 60
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "lacartedescolocs": "Lacartedescolocs : 6/10 (score global du guide)."
+      },
+      "geocodeQuery": "Centre-ville, Bordeaux, France",
+      "geocode": {
+        "status": "ok",
+        "query": "Centre-ville, Bordeaux, France",
+        "displayName": "Centre ville, Mérignac, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33700, France",
+        "placeId": 269688802
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33281",
+          "name": "Mérignac",
+          "fetchedAt": "2026-04-25T17:38:28.659Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8411329&lon=-0.656785"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 2203,
+          "txCountKept": 2203,
+          "txCountDropped": 0,
+          "medianEurM2": 4323.31,
+          "p25EurM2": 3685.9,
+          "p75EurM2": 5103.19,
+          "fetchedAt": "2026-04-25T17:38:40.411Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "quartier|chartrons",
+      "kind": "quartier",
+      "name": "Les Chartrons",
+      "lat": 44.8557929,
+      "lng": -0.5730103,
+      "scores": {
+        "actu": null,
+        "lacartedescolocs": 50,
+        "combined": 50
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "lacartedescolocs": "Lacartedescolocs : 5/10 (score global du guide)."
+      },
+      "geocodeQuery": "Les Chartrons, Bordeaux, France",
+      "geocode": {
+        "status": "ok",
+        "query": "Les Chartrons, Bordeaux, France",
+        "displayName": "Lycée professionnel Les Chartrons, 130, Rue du Jardin Public, Bordeaux, Port de la Lune, Chartrons - Grand Parc - Jardin Public, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33000, France",
+        "placeId": 267513799
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33063",
+          "name": "Bordeaux",
+          "fetchedAt": "2026-04-25T17:38:29.382Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8557929&lon=-0.5730103"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 5846,
+          "txCountKept": 5846,
+          "txCountDropped": 0,
+          "medianEurM2": 5161.81,
+          "p25EurM2": 4263.8,
+          "p75EurM2": 6149.64,
+          "fetchedAt": "2026-04-25T17:38:40.416Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "quartier|cauderan",
+      "kind": "quartier",
+      "name": "Caudéran",
+      "lat": 44.8517968,
+      "lng": -0.6175077,
+      "scores": {
+        "actu": null,
+        "lacartedescolocs": 40,
+        "combined": 40
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "lacartedescolocs": "Lacartedescolocs : 4/10 (score global du guide)."
+      },
+      "geocodeQuery": "Caudéran, Bordeaux, France",
+      "geocode": {
+        "status": "ok",
+        "query": "Caudéran, Bordeaux, France",
+        "displayName": "Caudéran, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33200, France",
+        "placeId": 267676092
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33063",
+          "name": "Bordeaux",
+          "fetchedAt": "2026-04-25T17:38:30.092Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8517968&lon=-0.6175077"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 5846,
+          "txCountKept": 5846,
+          "txCountDropped": 0,
+          "medianEurM2": 5161.81,
+          "p25EurM2": 4263.8,
+          "p75EurM2": 6149.64,
+          "fetchedAt": "2026-04-25T17:38:40.420Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "quartier|bastide",
+      "kind": "quartier",
+      "name": "La Bastide",
+      "lat": 44.8445064,
+      "lng": -0.5540583,
+      "scores": {
+        "actu": null,
+        "lacartedescolocs": 50,
+        "combined": 50
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "lacartedescolocs": "Lacartedescolocs : 5/10 (score global du guide)."
+      },
+      "geocodeQuery": "La Bastide, Bordeaux, France",
+      "geocode": {
+        "status": "ok",
+        "query": "La Bastide, Bordeaux, France",
+        "displayName": "La Bastide, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, France",
+        "placeId": 270012498
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33063",
+          "name": "Bordeaux",
+          "fetchedAt": "2026-04-25T17:38:30.795Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8445064&lon=-0.5540583"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 5846,
+          "txCountKept": 5846,
+          "txCountDropped": 0,
+          "medianEurM2": 5161.81,
+          "p25EurM2": 4263.8,
+          "p75EurM2": 6149.64,
+          "fetchedAt": "2026-04-25T17:38:40.424Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "quartier|bacalan-bassins-a-flot",
+      "kind": "quartier",
+      "name": "Bacalan - Bassins à flot",
+      "lat": 44.8612271,
+      "lng": -0.5522142,
+      "scores": {
+        "actu": null,
+        "lacartedescolocs": 50,
+        "combined": 50
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "lacartedescolocs": "Lacartedescolocs : 5/10 (score global du guide)."
+      },
+      "geocodeQuery": "Bacalan Bassins à flot, Bordeaux, France",
+      "geocode": {
+        "status": "ok",
+        "query": "Bacalan Bassins à flot, Bordeaux, France",
+        "displayName": "Quai de Bacalan, Bordeaux, Port de la Lune, Bordeaux Maritime, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33300, France",
+        "placeId": 268002706
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33063",
+          "name": "Bordeaux",
+          "fetchedAt": "2026-04-25T17:38:31.491Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8612271&lon=-0.5522142"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 5846,
+          "txCountKept": 5846,
+          "txCountDropped": 0,
+          "medianEurM2": 5161.81,
+          "p25EurM2": 4263.8,
+          "p75EurM2": 6149.64,
+          "fetchedAt": "2026-04-25T17:38:40.428Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "quartier|saint-pierre",
+      "kind": "quartier",
+      "name": "Saint-Pierre",
+      "lat": 44.8397951,
+      "lng": -0.570193,
+      "scores": {
+        "actu": null,
+        "lacartedescolocs": 50,
+        "combined": 50
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "lacartedescolocs": "Lacartedescolocs : 5/10 (score global du guide)."
+      },
+      "geocodeQuery": "Saint-Pierre, Bordeaux, France",
+      "geocode": {
+        "status": "ok",
+        "query": "Saint-Pierre, Bordeaux, France",
+        "displayName": "Église Saint-Pierre, Rue de la Cour des Aides, Bordeaux, Port de la Lune, Bordeaux Centre, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33000, France",
+        "placeId": 266251102
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33063",
+          "name": "Bordeaux",
+          "fetchedAt": "2026-04-25T17:38:32.205Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8397951&lon=-0.570193"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 5846,
+          "txCountKept": 5846,
+          "txCountDropped": 0,
+          "medianEurM2": 5161.81,
+          "p25EurM2": 4263.8,
+          "p75EurM2": 6149.64,
+          "fetchedAt": "2026-04-25T17:38:40.433Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "quartier|saint-michel",
+      "kind": "quartier",
+      "name": "Saint-Michel",
+      "lat": 44.8341343,
+      "lng": -0.5673487,
+      "scores": {
+        "actu": null,
+        "lacartedescolocs": 50,
+        "combined": 50
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "lacartedescolocs": "Lacartedescolocs : 5/10 (score global du guide)."
+      },
+      "geocodeQuery": "Saint-Michel, Bordeaux, France",
+      "geocode": {
+        "status": "ok",
+        "query": "Saint-Michel, Bordeaux, France",
+        "displayName": "Saint-Michel, Bordeaux Sud, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33000, France",
+        "placeId": 266543733
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33063",
+          "name": "Bordeaux",
+          "fetchedAt": "2026-04-25T17:38:32.910Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8341343&lon=-0.5673487"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 5846,
+          "txCountKept": 5846,
+          "txCountDropped": 0,
+          "medianEurM2": 5161.81,
+          "p25EurM2": 4263.8,
+          "p75EurM2": 6149.64,
+          "fetchedAt": "2026-04-25T17:38:40.437Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "quartier|saint-augustin",
+      "kind": "quartier",
+      "name": "Saint-Augustin",
+      "lat": 44.832339,
+      "lng": -0.6090288,
+      "scores": {
+        "actu": null,
+        "lacartedescolocs": 50,
+        "combined": 50
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "lacartedescolocs": "Lacartedescolocs : 5/10 (score global du guide)."
+      },
+      "geocodeQuery": "Saint-Augustin, Bordeaux, France",
+      "geocode": {
+        "status": "ok",
+        "query": "Saint-Augustin, Bordeaux, France",
+        "displayName": "Saint-Augustin, Saint-Augustin - Tauzin - Alphonse Dupeux, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33000, France",
+        "placeId": 268339872
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33063",
+          "name": "Bordeaux",
+          "fetchedAt": "2026-04-25T17:38:33.696Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.832339&lon=-0.6090288"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 5846,
+          "txCountKept": 5846,
+          "txCountDropped": 0,
+          "medianEurM2": 5161.81,
+          "p25EurM2": 4263.8,
+          "p75EurM2": 6149.64,
+          "fetchedAt": "2026-04-25T17:38:40.440Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "quartier|nansouty",
+      "kind": "quartier",
+      "name": "Nansouty",
+      "lat": 44.8201555,
+      "lng": -0.5722235,
+      "scores": {
+        "actu": null,
+        "lacartedescolocs": 50,
+        "combined": 50
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "lacartedescolocs": "Lacartedescolocs : 5/10 (score global du guide)."
+      },
+      "geocodeQuery": "Nansouty, Bordeaux, France",
+      "geocode": {
+        "status": "ok",
+        "query": "Nansouty, Bordeaux, France",
+        "displayName": "Nansouty, Nansouty - Saint-Genès, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33800, France",
+        "placeId": 287192643
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33063",
+          "name": "Bordeaux",
+          "fetchedAt": "2026-04-25T17:38:34.432Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8201555&lon=-0.5722235"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 5846,
+          "txCountKept": 5846,
+          "txCountDropped": 0,
+          "medianEurM2": 5161.81,
+          "p25EurM2": 4263.8,
+          "p75EurM2": 6149.64,
+          "fetchedAt": "2026-04-25T17:38:40.444Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    },
+    {
+      "id": "quartier|saint-genes",
+      "kind": "quartier",
+      "name": "Saint-Genès",
+      "lat": 44.8260812,
+      "lng": -0.5822204,
+      "scores": {
+        "actu": null,
+        "lacartedescolocs": 50,
+        "combined": 50
+      },
+      "labels": {
+        "verdict": null
+      },
+      "why": {
+        "lacartedescolocs": "Lacartedescolocs : 5/10 (score global du guide)."
+      },
+      "geocodeQuery": "Saint-Genès, Bordeaux, France",
+      "geocode": {
+        "status": "ok",
+        "query": "Saint-Genès, Bordeaux, France",
+        "displayName": "Saint-Genès, Nansouty - Saint-Genès, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33000, France",
+        "placeId": 268576947
+      },
+      "immo": {
+        "inseeCommune": {
+          "status": "ok",
+          "code": "33063",
+          "name": "Bordeaux",
+          "fetchedAt": "2026-04-25T17:38:35.127Z",
+          "sourceUrl": "https://geo.api.gouv.fr/communes?lat=44.8260812&lon=-0.5822204"
+        },
+        "dvfMaison": {
+          "status": "ok",
+          "txCountRaw": 5846,
+          "txCountKept": 5846,
+          "txCountDropped": 0,
+          "medianEurM2": 5161.81,
+          "p25EurM2": 4263.8,
+          "p75EurM2": 6149.64,
+          "fetchedAt": "2026-04-25T17:38:40.448Z",
+          "department": "33",
+          "years": [
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ]
+        }
+      }
+    }
+  ],
+  "immo": {
+    "dvfMaison": {
+      "source": {
+        "label": "DVF géolocalisées (fichiers data.gouv.fr, par département)",
+        "url": "https://files.data.gouv.fr/geo-dvf/latest/csv/"
+      },
+      "filters": {
+        "surfaceMin": 30,
+        "surfaceMax": 250,
+        "eurM2Min": 1000,
+        "eurM2Max": 10000
+      },
+      "updatedAt": "2026-04-25T17:38:17.883Z"
+    }
+  },
+  "builtAt": "2026-04-25T17:38:46.967Z"
+}

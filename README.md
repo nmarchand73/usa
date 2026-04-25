@@ -81,6 +81,24 @@ npm run build:lyon-dvf-heat
 
 Puis lancer le site et ouvrir [http://localhost:3000/lyon-map.html](http://localhost:3000/lyon-map.html) (fichier `public/lyon-map.html`, données `public/lyon-data.json` générées par `build:lyon` ; calque heatmap DVF : `lyon-dvf-heatmap.json`).
 
+### Carte Bordeaux (métropole : Actu + Lacartedescolocs)
+
+Les points et scores viennent de `map-data/bordeaux-zones.json`. Après édition (quartiers / communes), regéocodez puis publiez les JSON côté `public/` :
+
+```powershell
+$env:NOMINATIM_UA="usa-interactive-map/2.0 (Bordeaux zones; local dev)"
+# optionnel (recommandé) : $env:NOMINATIM_EMAIL="contact@exemple.com"
+npm run geocode:bordeaux
+npm run fetch:bordeaux-dvf
+npm run build:bordeaux
+npm run build:bordeaux-dvf-heat
+npm run build:bordeaux-map
+# (optionnel) isochrones OSRM : peut être long
+npm run build:bordeaux-iso
+```
+
+Puis lancer le site et ouvrir [http://localhost:3000/bordeaux-map.html](http://localhost:3000/bordeaux-map.html).
+
 ## Publication GitHub Pages
 
 Le dépôt est configuré pour publier automatiquement `public/` via GitHub Pages (workflow `.github/workflows/deploy.yml`) à chaque `push` sur `master`.
