@@ -176,6 +176,12 @@
                 <label><input type="checkbox" id="lyonFilterArr" checked><span class="venue-swatch" style="background:#6366f1;border-color:#312e81"></span> Arrondissements (CityCrunch)</label>
                 <label><input type="checkbox" id="lyonFilterTop10" title="N’afficher sur la carte que le top 10 du classement actuel (selon calques)"><strong>Top 10 seul</strong> sur la carte</label>
               </div>
+              <div class="venue-filters-title" style="margin-top:.65rem">Temps de trajet (voiture) — zones</div>
+              <div class="venue-filters-row">
+                <label><input type="checkbox" id="lyonFilterIsoA"><span class="venue-swatch" style="background:rgba(34,197,94,.55);border-color:rgba(34,197,94,.85)"></span> Isochrones A (10/20/30/45/60 min)</label>
+                <label><input type="checkbox" id="lyonFilterIsoB"><span class="venue-swatch" style="background:rgba(74,222,128,.55);border-color:rgba(74,222,128,.85)"></span> Isochrones B (5/10/15/20/30 min)</label>
+                <span class="detail-note" id="lyonIsoNote" style="margin:0">Isochrones voiture (OSRM) : chargement…</span>
+              </div>
             </div>
           </div>
           <div class="map-leaflet-stack"><div id="lyonLeafletMap"></div></div>
@@ -203,6 +209,7 @@
     </footer>
   </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js" crossorigin=""></script>
   <script>
     (function () {
       const ACTU = 'https://actu.fr/auvergne-rhone-alpes/lyon_69123/classement-voici-les-20-communes-de-reve-ou-habiter-pres-de-lyon_60673554.html';
@@ -299,8 +306,11 @@
 
       const layerCommunes = L.layerGroup();
       const layerArr = L.layerGroup();
+      const layerIsoA = L.layerGroup();
+      const layerIsoB = L.layerGroup();
       const byId = {};
       let dataPayload = null;
+      let isoGrid = null;
       let topIds = new Set();
       const markers = [];
 
@@ -324,6 +334,7 @@
 
       layerCommunes.addTo(map);
       layerArr.addTo(map);
+      // isochrones off by default (toggle in legend)
 
       function getSourceUrl(item) {
         if (dataPayload && dataPayload.sources) {
@@ -504,10 +515,75 @@
       }
 
       function wireFilters() {
-        ['lyonFilterCommunes', 'lyonFilterArr', 'lyonFilterTop10'].forEach(function (id) {
+        ['lyonFilterCommunes', 'lyonFilterArr', 'lyonFilterTop10', 'lyonFilterIsoA', 'lyonFilterIsoB'].forEach(function (id) {
           const el = document.getElementById(id);
           if (el) el.addEventListener('change', function () { recomputeTop(); setMarkerVisibility(); });
         });
+      }
+
+      function latLngFromGridXY(x, y, grid) {
+        const nx = grid.grid.nx, ny = grid.grid.ny;
+        const minLng = grid.bbox.minLng, maxLng = grid.bbox.maxLng;
+        const minLat = grid.bbox.minLat, maxLat = grid.bbox.maxLat;
+        const lng = minLng + (x / (nx - 1)) * (maxLng - minLng);
+        const lat = maxLat - (y / (ny - 1)) * (maxLat - minLat);
+        return [lat, lng];
+      }
+
+      function clearIsoLayers() {
+        layerIsoA.clearLayers();
+        layerIsoB.clearLayers();
+        map.removeLayer(layerIsoA);
+        map.removeLayer(layerIsoB);
+      }
+
+      function renderIsochrones() {
+        if (!isoGrid || !window.d3 || !d3.contours) return;
+        clearIsoLayers();
+
+        const showA = !!document.getElementById('lyonFilterIsoA')?.checked;
+        const showB = !!document.getElementById('lyonFilterIsoB')?.checked;
+        if (!showA && !showB) return;
+
+        const nx = isoGrid.grid.nx, ny = isoGrid.grid.ny;
+        // Use a large number for unreachable cells to avoid holes
+        const vals = isoGrid.minutes.map(function (m) { return (m == null ? 9999 : Number(m)); });
+
+        function addBands(thresholds, colors, targetLayer) {
+          const cont = d3.contours().size([nx, ny]).thresholds(thresholds)(vals);
+          cont.forEach(function (c, idx) {
+            // Each contour is a MultiPolygon in grid coords (x,y)
+            const color = colors[idx] || colors[colors.length - 1] || 'rgba(34,197,94,.18)';
+            const polyLatLngs = c.coordinates.map(function (poly) {
+              return poly.map(function (ring) {
+                return ring.map(function (pt) {
+                  const ll = latLngFromGridXY(pt[0], pt[1], isoGrid);
+                  return ll;
+                });
+              });
+            });
+            // Leaflet expects: MultiPolygon -> array of polygons -> array of rings -> latlngs
+            const p = L.polygon(polyLatLngs, {
+              stroke: false,
+              fill: true,
+              fillColor: color,
+              fillOpacity: 0.22,
+              interactive: false
+            });
+            p.addTo(targetLayer);
+          });
+        }
+
+        if (showA) {
+          // A: 0–10, 10–20, 20–30, 30–45, 45–60
+          addBands([10, 20, 30, 45, 60], ['rgba(34,197,94,.55)', 'rgba(132,204,22,.55)', 'rgba(251,191,36,.55)', 'rgba(249,115,22,.55)', 'rgba(239,68,68,.55)'], layerIsoA);
+          layerIsoA.addTo(map);
+        }
+        if (showB) {
+          // B: 0–5, 5–10, 10–15, 15–20, 20–30
+          addBands([5, 10, 15, 20, 30], ['rgba(34,197,94,.55)', 'rgba(74,222,128,.55)', 'rgba(251,191,36,.55)', 'rgba(249,115,22,.55)', 'rgba(239,68,68,.55)'], layerIsoB);
+          layerIsoB.addTo(map);
+        }
       }
 
       (function initFs() {
@@ -574,6 +650,30 @@
           const cont = document.getElementById('lyonDetailContent');
           if (cont) cont.textContent = 'Erreur : ' + e.message;
         });
+
+      // Isochrone grid (OSRM) is optional: page works without it.
+      fetch('lyon-iso-grid.json')
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(function (g) {
+          isoGrid = g;
+          const el = document.getElementById('lyonIsoNote');
+          if (el && g && g.summary) {
+            el.textContent = 'Isochrones voiture (OSRM) : grille ' + g.grid.nx + '×' + g.grid.ny + ' — ' + g.summary.ok + ' points OK.';
+          }
+        })
+        .catch(function () {
+          const el = document.getElementById('lyonIsoNote');
+          if (el) el.textContent = 'Isochrones : indisponibles (grille non générée).';
+        });
+
+      // Re-render isochrones when toggles change
+      document.addEventListener('change', function (e) {
+        const id = e && e.target && e.target.id;
+        if (id === 'lyonFilterIsoA' || id === 'lyonFilterIsoB') {
+          // ensure grid loaded
+          window.setTimeout(renderIsochrones, 0);
+        }
+      });
     })();
   </script>
 </body>

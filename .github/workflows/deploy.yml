@@ -33,6 +33,9 @@ jobs:
       - name: Regenerate public/lyon-data.json from map-data
         run: node scripts/build-lyon-data.js
 
+      - name: Regenerate public/lyon-iso-grid.json (OSRM)
+        run: node scripts/build-lyon-isochrone-grid-osrm.js
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
