@@ -79,7 +79,7 @@ npm run build:lyon
 npm run build:lyon-dvf-heat
 ```
 
-Puis lancer le site et ouvrir [http://localhost:3000/lyon-map.html](http://localhost:3000/lyon-map.html) (fichier `public/lyon-map.html`, données `public/lyon-data.json` générées par `build:lyon` ; calque heatmap DVF : `lyon-dvf-heatmap.json`).
+Puis lancer le site et ouvrir [http://localhost:3000/lyon-map.html](http://localhost:3000/lyon-map.html) (fichier `public/lyon-map.html`, données `public/lyon-data.json` générées par `build:lyon` ; calque heatmap DVF : `lyon-dvf-heatmap.json` — **médianes** €/m² par case, avec filtre **T4, T5+** (≥4 pièces DVF) dans l’UI).
 
 ### Carte Bordeaux (métropole : Actu + Lacartedescolocs)
 

@@ -5,7 +5,7 @@
  *   https://files.data.gouv.fr/geo-dvf/latest/csv/{YEAR}/departements/69.csv.gz
  *
  * Output:
- *   - public/lyon-dvf-heatmap.json
+ *   - public/lyon-dvf-heatmap.json (eurM2 = toutes maisons ; eurM2T4p = ≥4 pièces DVF, T4/T5+)
  *
  * Privacy/robustness:
  * - We only store per-cell medians and counts, not individual sales.
@@ -29,6 +29,10 @@ const DEFAULTS = {
   gridNx: 90,
   gridNy: 90,
   minCellCount: 5,
+  /** Moins d’occurrences T4+ par case → seuil légèrement bas pour remplir la grille. */
+  minCellCountT4: 4,
+  /** T4, T5 et + : DVF `nombre_pieces_principales` >= 4 */
+  minPiecesT4: 4,
   surfaceMin: 30,
   surfaceMax: 250,
   eurM2Min: 1000,
@@ -146,7 +150,7 @@ class CellAcc {
   }
 }
 
-async function scanYearToCells(year, bbox, stepLat, stepLng, minLat, minLng, idxW, acc) {
+async function scanYearToCells(year, bbox, stepLat, stepLng, minLat, minLng, idxW, acc, accT4) {
   const url = `${DVF_BASE}/${year}/departements/${DVF_DEPT}.csv.gz`;
   // eslint-disable-next-line no-console
   console.log('DVF heatmap: scan', url);
@@ -182,14 +186,20 @@ async function scanYearToCells(year, bbox, stepLat, stepLng, minLat, minLng, idx
             type_local: pos.type_local,
             valeur_fonciere: pos.valeur_fonciere,
             surface_reelle_bati: pos.surface_reelle_bati,
+            nombre_pieces_principales: pos.nombre_pieces_principales,
             latitude: pos.latitude,
             longitude: pos.longitude
           };
           for (const k of Object.keys(col)) {
+            if (k === 'nombre_pieces_principales') continue;
             if (col[k] == null) {
               // eslint-disable-next-line no-console
               console.warn('DVF heatmap: missing column', k);
             }
+          }
+          if (col.nombre_pieces_principales == null) {
+            // eslint-disable-next-line no-console
+            console.warn('DVF heatmap: missing column nombre_pieces_principales — couche T4+ indisponible');
           }
           continue;
         }
@@ -217,6 +227,15 @@ async function scanYearToCells(year, bbox, stepLat, stepLng, minLat, minLng, idx
         const cell = acc.get(id) || new CellAcc();
         cell.push(p);
         acc.set(id, cell);
+
+        if (accT4 && col.nombre_pieces_principales != null) {
+          const np = asNumber(c[col.nombre_pieces_principales]);
+          if (Number.isFinite(np) && np >= DEFAULTS.minPiecesT4) {
+            const cell4 = accT4.get(id) || new CellAcc();
+            cell4.push(p);
+            accT4.set(id, cell4);
+          }
+        }
       }
     });
     stream.on('end', () => {
@@ -257,9 +276,10 @@ async function main() {
   if (!(stepLat > 0) || !(stepLng > 0)) throw new Error('Invalid grid steps');
 
   const acc = new Map();
+  const accT4 = new Map();
   for (const y of YEARS) {
     // eslint-disable-next-line no-await-in-loop
-    await scanYearToCells(y, bbox, stepLat, stepLng, bbox.minLat, bbox.minLng, nx, acc);
+    await scanYearToCells(y, bbox, stepLat, stepLng, bbox.minLat, bbox.minLng, nx, acc, accT4);
   }
 
   const eurM2 = new Array(nx * ny).fill(null);
@@ -280,6 +300,23 @@ async function main() {
   const p10 = q(okVals, 0.1);
   const p90 = q(okVals, 0.9);
 
+  const eurM2T4p = new Array(nx * ny).fill(null);
+  const countsT4p = new Array(nx * ny).fill(0);
+  for (const [id, cell] of accT4) {
+    const c = cell.count();
+    if (c < DEFAULTS.minCellCountT4) {
+      eurM2T4p[Number(id)] = null;
+      countsT4p[Number(id)] = 0;
+      continue;
+    }
+    const m = cell.median();
+    eurM2T4p[Number(id)] = m == null ? null : round2(m);
+    countsT4p[Number(id)] = c;
+  }
+  const okT4 = eurM2T4p.filter((v) => Number.isFinite(v));
+  const p10T4 = q(okT4, 0.1);
+  const p90T4 = q(okT4, 0.9);
+
   const out = {
     kind: 'lyonDvfHouseHeatmap',
     builtAt: new Date().toISOString(),
@@ -288,6 +325,8 @@ async function main() {
     grid: { nx, ny, units: { x: 'lng', y: 'lat' } },
     filters: {
       minCellCount: DEFAULTS.minCellCount,
+      minCellCountT4: DEFAULTS.minCellCountT4,
+      minPiecesT4: DEFAULTS.minPiecesT4,
       years: YEARS,
       department: DVF_DEPT,
       type_local: 'Maison',
@@ -304,7 +343,16 @@ async function main() {
       p90: p90 == null ? null : round2(p90)
     },
     eurM2: eurM2,
-    counts: counts
+    counts: counts,
+    /** Maisons T4+ : médiane €/m² par case (DVF, nombre_pieces_principales ≥ 4). */
+    summaryT4p: {
+      nonEmptyCells: okT4.length,
+      medianGlobal: q(okT4, 0.5) == null ? null : round2(q(okT4, 0.5)),
+      p10: p10T4 == null ? null : round2(p10T4),
+      p90: p90T4 == null ? null : round2(p90T4)
+    },
+    eurM2T4p: eurM2T4p,
+    countsT4p: countsT4p
   };
 
   writeJson(OUT, out);
