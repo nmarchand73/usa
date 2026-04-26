@@ -26,7 +26,9 @@ const FILES = {
   /** Liste France : scripts/fetch-sandaya-fr.js (page nos-campings, hors étranger) */
   sandayaFr: path.join(MAP_DATA, 'sandaya-fr.json'),
   /** Circuits TT FFM : scripts/fetch-ffm-circuits-tt-fr.js (par ligue, ex. NA 62995) */
-  ffmCircuitsTt: path.join(MAP_DATA, 'ffm-circuits-tt-nouvelle-aquitaine.json')
+  ffmCircuitsTt: path.join(MAP_DATA, 'ffm-circuits-tt-nouvelle-aquitaine.json'),
+  /** Circuits motocross MXC40 (Gironde, Rhône, …) : node scripts/fetch-mxc40-mx-circuits.js */
+  mxc40Motocross: path.join(MAP_DATA, 'mxc40-mx-circuits.json')
 };
 
 const OUT_FILE = path.join(PUBLIC, 'app-data-fr.json');
@@ -41,6 +43,43 @@ function readJson(filePath, fallback) {
   }
 }
 
+function haversineKm(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const toR = (d) => (d * Math.PI) / 180;
+  const dLat = toR(lat2 - lat1);
+  const dLng = toR(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toR(lat1)) * Math.cos(toR(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+  return 2 * R * Math.asin(Math.sqrt(Math.min(1, a)));
+}
+
+/**
+ * Fusionne des circuits MXC40 sur la liste Overpass (OSM) sans doublon géographique fort.
+ * Si un point MXC40 est à moins de ~0,25 km d’une entrée OSM existante, on n’ajoute pas (on garde OSM).
+ */
+function mergeMxMxc40(osmList, mxc40List) {
+  const a = Array.isArray(osmList) ? osmList.slice() : [];
+  if (!mxc40List || !mxc40List.length) return a;
+  for (const m of mxc40List) {
+    const la = m.lat,
+      ln = m.lng;
+    if (typeof la !== 'number' || typeof ln !== 'number') continue;
+    let tooClose = false;
+    for (const e of a) {
+      const elat = e.lat;
+      const elng = e.lng;
+      if (typeof elat !== 'number' || typeof elng !== 'number') continue;
+      if (haversineKm(la, ln, elat, elng) < 0.25) {
+        tooClose = true;
+        break;
+      }
+    }
+    if (!tooClose) a.push(m);
+  }
+  return a;
+}
+
 const regionMap = readJson(FILES.regionMap, {});
 const cityCoordinates = readJson(FILES.cityCoordinates, {});
 const venues = readJson(FILES.venues, {});
@@ -50,6 +89,13 @@ if (mxFromOverlay.length) {
   venues.mxTracks = mxFromOverlay;
 } else if (!Array.isArray(venues.mxTracks)) {
   venues.mxTracks = [];
+}
+
+const mxc40File = readJson(FILES.mxc40Motocross, null);
+const mxc40Tracks = mxc40File && Array.isArray(mxc40File.mxTracks) ? mxc40File.mxTracks : [];
+if (mxc40Tracks.length) {
+  const merged = mergeMxMxc40(venues.mxTracks, mxc40Tracks);
+  if (merged.length) venues.mxTracks = merged;
 }
 const mtbCuratedRaw = readJson(FILES.mtbDownhillCurated, null);
 const mtbDownCurated = Array.isArray(mtbCuratedRaw) ? mtbCuratedRaw : [];

@@ -1448,7 +1448,7 @@
             { direction: 'top', className: 'lyon-tt', sticky: true }
           );
           marker.bindPopup(
-            sportVenuePopupHtml(label, m.name, lat, lng, null)
+            sportVenuePopupHtml(label, m.name, lat, lng, null, m)
           );
           marker.addTo(layerMalls);
         });
@@ -1456,32 +1456,40 @@
         layerMalls.addTo(map);
       }
 
+      function getSportVenueLocality(itemLike) {
+        if (!itemLike) return '';
+        if (itemLike.city != null && String(itemLike.city).trim()) return String(itemLike.city).trim();
+        if (itemLike.commune != null && String(itemLike.commune).trim()) return String(itemLike.commune).trim();
+        if (itemLike.locality != null && String(itemLike.locality).trim()) return String(itemLike.locality).trim();
+        if (itemLike.place != null && String(itemLike.place).trim()) return String(itemLike.place).trim();
+        if (itemLike.town != null && String(itemLike.town).trim()) return String(itemLike.town).trim();
+        if (itemLike.village != null && String(itemLike.village).trim()) return String(itemLike.village).trim();
+        return '';
+      }
+      function sportTitleWithLocality(name, itemLike) {
+        const loc = getSportVenueLocality(itemLike);
+        if (!loc) return name;
+        return name + ' — ' + loc;
+      }
       function sportVenueTooltipHtml(kindLabel, name, itemLike) {
-        const city =
-          (itemLike && itemLike.city != null && String(itemLike.city).trim()) ? String(itemLike.city).trim()
-          : (itemLike && itemLike.commune != null && String(itemLike.commune).trim()) ? String(itemLike.commune).trim()
-          : (itemLike && itemLike.locality != null && String(itemLike.locality).trim()) ? String(itemLike.locality).trim()
-          : (itemLike && itemLike.place != null && String(itemLike.place).trim()) ? String(itemLike.place).trim()
-          : (itemLike && itemLike.town != null && String(itemLike.town).trim()) ? String(itemLike.town).trim()
-          : (itemLike && itemLike.village != null && String(itemLike.village).trim()) ? String(itemLike.village).trim()
-          : '';
+        const titleLine = sportTitleWithLocality(name, itemLike);
         const times = travelLineCompactHtml(itemLike);
         return (
           '<div class="tt-kind">' + esc(kindLabel) + '</div>' +
-          '<div class="tt-name">' + esc(name) + '</div>' +
-          (city ? '<div class="tt-city">' + esc(city) + '</div>' : '') +
+          '<div class="tt-name">' + esc(titleLine) + '</div>' +
           (times ? '<div class="tt-times">' + times + '</div>' : '')
         );
       }
 
-      function sportVenuePopupHtml(kindLabel, name, lat, lng, url) {
+      function sportVenuePopupHtml(kindLabel, name, lat, lng, url, itemLike) {
+        const titleLine = sportTitleWithLocality(name, itemLike);
         const g = googleSatUrl(lat, lng);
         const dirCar = gmapsDirectionsUrl(ORIGIN.label, lat, lng, 'driving');
         const dirTc = gmapsDirectionsUrl(ORIGIN.label, lat, lng, 'transit');
         const dist = travelLineHtml({ lat: lat, lng: lng, durations: null });
         return (
           '<div style="line-height:1.45; font-size:0.9rem; color:#0f172a">' +
-            '<div style="font-weight:700; margin-bottom:0.1rem; color:#1e293b">' + esc(name) + '</div>' +
+            '<div style="font-weight:700; margin-bottom:0.1rem; color:#1e293b">' + esc(titleLine) + '</div>' +
             '<div style="font-size:.85rem;opacity:.85;margin-bottom:.45rem">' + esc(kindLabel) + '</div>' +
             (dist ? '<div style="margin:0.25rem 0 0.55rem;padding:.45rem .55rem;border:1px solid rgba(15,23,42,.18);border-radius:10px;background:rgba(15,23,42,.04)">' + dist + '</div>' : '') +
             (url ? '<a href="' + esc(url) + '" target="_blank" rel="noopener" style="color:#0d9488">OpenStreetMap</a><br>' : '') +
@@ -1512,7 +1520,7 @@
             const url = v.url || v.osmUrl || null;
             const circle = L.circleMarker([lat, lng], style);
             circle.bindTooltip(sportVenueTooltipHtml(kindLabel, name, v), { direction: 'top', className: 'lyon-tt', sticky: true });
-            circle.bindPopup(sportVenuePopupHtml(kindLabel, name, lat, lng, url));
+            circle.bindPopup(sportVenuePopupHtml(kindLabel, name, lat, lng, url, v));
             circle.addTo(layer);
           });
         }

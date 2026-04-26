@@ -99,6 +99,8 @@ npm run build:bordeaux-iso
 
 Puis lancer le site et ouvrir [http://localhost:3000/bordeaux-map.html](http://localhost:3000/bordeaux-map.html).
 
+**Circuits motocross (Lyon & Bordeaux, calque MX)** : les points viennent d’OSM (Overpass) + complément [MXC40](https://www.mxc40.com/) (Gironde 33, Rhône 69) fusionné dans `app-data-fr.json`. Mise à jour : `npm run fetch:mxc40-mx` puis `npm run build:fr` (déjà inclus dans `npm run refresh:fr-venues`). Donnée brute : `map-data/mxc40-mx-circuits.json`.
+
 ## Publication GitHub Pages
 
 Le dépôt est configuré pour publier automatiquement `public/` via GitHub Pages (workflow `.github/workflows/deploy.yml`) à chaque `push` sur `master`.
