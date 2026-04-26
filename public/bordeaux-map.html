@@ -353,7 +353,7 @@
                 </label>
               </div>
               <div class="detail-note" style="margin-top:.25rem">
-                Étoile (★) : dans le Top 10. Origine Interpol : pin turquoise « I ».
+                Étoile (★) : dans le Top 10. Origine (isochrones) : pin turquoise « I ».
               </div>
               <div class="venue-filters-title" style="margin-top:.65rem">Lieux sportifs (autour de Lyon)</div>
               <div class="venue-filters-row">
@@ -423,11 +423,11 @@
     (function () {
       const ACTU = 'https://actu.fr/auvergne-rhone-alpes/lyon_69123/classement-voici-les-20-communes-de-reve-ou-habiter-pres-de-lyon_60673554.html';
       const CCR = 'https://www.lacartedescolocs.fr/guides/logement-bordeaux-les-meilleurs-quartiers';
-      /** Origine (toujours affichée) : 200 Quai Charles de Gaulle, 69006 Lyon (Interpol) */
+      /** Origine (isochrones) : centre Bordeaux — Place de la Bourse */
       const ORIGIN = {
-        label: '200 Quai Charles de Gaulle, 69006 Lyon',
-        lat: 45.7821579,
-        lng: 4.8481081
+        label: 'Place de la Bourse — centre de Bordeaux (isochrones)',
+        lat: 44.8414565,
+        lng: -0.5703797
       };
 
       function esc(s) {
@@ -540,7 +540,7 @@
       let venuesFrCache = null;
       let mallsCache = null;
 
-      const map = L.map('lyonLeafletMap', { scrollWheelZoom: true }).setView([44.84, -0.58], 11);
+      const map = L.map('lyonLeafletMap', { scrollWheelZoom: true }).setView([44.841, -0.57], 11);
       /* dark_all : routes/eau quasi noires → carte « toute noire ». Voyager : lisible sur fond UI sombre. */
       const voyagerLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         maxZoom: 19,
@@ -673,12 +673,12 @@
         label: 'I'
       }).addTo(map);
       originMarker.bindTooltip(
-        '<div class="tt-kind">Origine (Interpol)</div><div class="tt-name">' + esc(ORIGIN.label) + '</div>',
+        '<div class="tt-kind">Origine (isochrones)</div><div class="tt-name">' + esc(ORIGIN.label) + '</div>',
         { direction: 'top', className: 'lyon-tt', sticky: true }
       );
       originMarker.bindPopup(
         '<div style="line-height:1.45; font-size:0.9rem; color:#0f172a">' +
-          '<div style="font-weight:700; margin-bottom:0.4rem; color:#1e293b">Origine (Interpol)</div>' +
+          '<div style="font-weight:700; margin-bottom:0.4rem; color:#1e293b">Origine (isochrones)</div>' +
           '<div style="margin-bottom:.35rem;">' + esc(ORIGIN.label) + '</div>' +
           '<a href="' + googleSatUrl(ORIGIN.lat, ORIGIN.lng) + '" target="_blank" rel="noopener" style="color:#0d9488">Google Maps — vue satellite</a>' +
         '</div>'

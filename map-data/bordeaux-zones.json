@@ -1,14 +1,15 @@
 {
   "fetchedAt": "2026-04-25T00:00:00.000Z",
   "origin": {
-    "label": "Hôtel de Ville de Bordeaux",
-    "lat": 44.7724675,
-    "lng": -0.6082749,
+    "label": "Place de la Bourse — centre de Bordeaux (isochrones)",
+    "geocodeQuery": "Place de la Bourse, Bordeaux, France",
+    "lat": 44.8414565,
+    "lng": -0.5703797,
     "geocode": {
       "status": "ok",
-      "query": "Hôtel de Ville de Bordeaux, Bordeaux, France",
-      "displayName": "Hôtel de Ville, Allée Gaston Rodrigues, Laurenzane, Gradignan, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33170, France",
-      "placeId": 268665869
+      "query": "Place de la Bourse, Bordeaux, France",
+      "displayName": "Place de la Bourse, Rue Leupold, Bordeaux, Port de la Lune, Bordeaux Centre, Bordeaux, Gironde, Nouvelle-Aquitaine, France métropolitaine, 33000, France",
+      "placeId": 266528939
     }
   },
   "sources": {

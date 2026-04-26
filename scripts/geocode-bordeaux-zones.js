@@ -82,10 +82,13 @@ function defaultQuartierQuery(name) {
 }
 
 async function geocodeOrigin(origin) {
-  const q = origin && origin.label ? String(origin.label) : 'Hôtel de Ville de Bordeaux';
+  // Requête explicite (éviter "Hôtel de Ville" → homonyme hors Bordeaux).
+  const q =
+    (origin && origin.geocodeQuery) ? String(origin.geocodeQuery)
+    : 'Place de la Bourse, Bordeaux, France';
   await sleep(DELAY_MS);
-  const hit = await searchNominatim(`${q}, Bordeaux, France`);
-  return { hit, usedQuery: `${q}, Bordeaux, France` };
+  const hit = await searchNominatim(q);
+  return { hit, usedQuery: q };
 }
 
 async function geocodeOneItem(item) {

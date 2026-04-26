@@ -62,12 +62,28 @@ function main() {
   html = replaceAllSafe(html, 'CityCrunch (dérivé)', 'Lacartedescolocs');
   html = replaceAllSafe(html, 'CityCrunch : ', 'Lacartedescolocs : ');
 
-  // Default map view: Bordeaux area
+  // Origine par défaut (avant chargement de bordeaux-data.json) = centre isochrones
+  html = replaceRe(
+    html,
+    /\/\*\* Origine \(toujours affichée\)[\s\S]*?const ORIGIN = \{[^}]+\};/,
+    `/** Origine (isochrones) : centre Bordeaux — Place de la Bourse */
+      const ORIGIN = {
+        label: 'Place de la Bourse — centre de Bordeaux (isochrones)',
+        lat: 44.8414565,
+        lng: -0.5703797
+      };`
+  );
+
+  // Default map view: autour de l’origine
   html = replaceRe(
     html,
     /setView\(\[45\.764, 4\.835\], 11\)/,
-    'setView([44.84, -0.58], 11)'
+    'setView([44.841, -0.57], 11)'
   );
+
+  // Texte « Interpol » hérité de Lyon
+  html = replaceAllSafe(html, 'Origine Interpol : pin turquoise « I ».', 'Origine (isochrones) : pin turquoise « I ».');
+  html = replaceAllSafe(html, 'Origine (Interpol)', 'Origine (isochrones)');
 
   fs.writeFileSync(OUT, html, 'utf8');
   console.log('→', OUT);
